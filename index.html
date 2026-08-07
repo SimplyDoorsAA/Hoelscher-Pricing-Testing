@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimplyDoors Quoting System - Hoelscher 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f4f7f9; color: #1e293b; }
+        .material-btn.active { background-color: #2563eb; color: #ffffff; border-color: #1d4ed8; }
+        .collection-card.active { border-color: #2563eb; background-color: #eff6ff; }
+        .collection-card.active h4 { color: #1d4ed8; }
+        
+        .tab-btn.active { border-bottom: 3px solid #3b82f6; color: #3b82f6; }
+        .tab-btn { border-bottom: 3px solid transparent; }
+        
+        input[type=range] { -webkit-appearance: none; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: #3b82f6; cursor: pointer; margin-top: -6px; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #cbd5e1; border-radius: 2px; }
+        
+        @media print {
+            body { background-color: white; padding: 0; }
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            .proposal-card { border: none !important; box-shadow: none !important; }
+        }
+        .print-only { display: none; }
+        
+        .cart-scroll::-webkit-scrollbar { width: 4px; }
+        .cart-scroll::-webkit-scrollbar-track { background: #1e293b; }
+        .cart-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- TOP NAVIGATION -->
+    <nav class="bg-[#0f172a] text-white py-3 px-6 flex justify-between items-center no-print sticky top-0 z-50 shadow-md">
+        <div class="flex items-center space-x-3">
+            <div class="bg-blue-600 p-2 rounded text-xl"><i class="fas fa-door-open"></i></div>
+            <div>
+                <h1 class="font-bold text-lg leading-tight">SimplyDoors</h1>
+                <p class="text-xs text-slate-400">Hoelscher Quoting System 2026</p>
+            </div>
+        </div>
+        
+        <div class="hidden md:flex space-x-6 text-sm font-bold mt-1">
+            <button onclick="switchTab('quote-tab')" id="nav-quote" class="tab-btn active pb-3 px-2 text-slate-300 hover:text-white transition-colors"><i class="fas fa-calculator mr-1"></i> Quote Builder</button>
+            <button onclick="switchTab('settings-tab')" id="nav-settings" class="tab-btn pb-3 px-2 text-slate-400 hover:text-white transition-colors"><i class="fas fa-sliders-h mr-1"></i> Settings & Pricing</button>
+        </div>
+
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center bg-slate-800 rounded px-3 py-1 border border-slate-700">
+                <i class="fas fa-user-circle text-slate-400 mr-2"></i>
+                <span class="text-xs text-slate-400 mr-2">Rep:</span>
+                <select id="salesRep" class="bg-transparent text-sm font-semibold outline-none cursor-pointer text-white" onchange="generateProposal()">
+                    <option value="Adem Atis">Adem Atis</option>
+                    <option value="Cory Broyles">Cory Broyles</option>
+                    <option value="House Account">House Account</option>
+                </select>
+            </div>
+            <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-sm font-semibold transition-colors flex items-center">
+                <i class="fas fa-print mr-2"></i> Print / PDF
+            </button>
+        </div>
+    </nav>
+
+    <!-- TAB 1: MAIN DASHBOARD -->
+    <main id="quote-tab" class="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 no-print" style="display: grid;">
+        
+        <!-- LEFT COLUMN (CONFIGURATOR) -->
+        <div class="lg:col-span-8 space-y-6">
+            
+            <!-- Customer Details -->
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h2 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
+                    <i class="fas fa-address-card text-blue-500 mr-2"></i> Customer & Project Details
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="md:col-span-1">
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Customer Name</label>
+                        <input type="text" id="custName" value="John Doe" oninput="generateProposal()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                    </div>
+                    <div class="md:col-span-1">
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Phone Number</label>
+                        <input type="text" id="custPhone" value="(210) 555-0199" oninput="generateProposal()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                    </div>
+                    <div class="md:col-span-1">
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Installation Address</label>
+                        <input type="text" id="custAddress" value="1234 Alamo Heights Blvd, San Antonio, TX" oninput="generateProposal()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                    </div>
+                    <div class="md:col-span-1">
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Quote / Job #</label>
+                        <input type="text" id="quoteNumber" value="SD-2026-0789" oninput="generateProposal()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1. Material & Collection Toggle -->
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex items-center mb-4">
+                    <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-2">1</span>
+                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">Door Material & Collection</h2>
+                </div>
+
+                <!-- Primary Material Toggle -->
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <button onclick="setMaterial('fiberglass')" id="mat-fiberglass" class="material-btn active p-3 border-2 rounded-lg text-center font-bold text-sm transition-all flex items-center justify-center">
+                        <i class="fas fa-layer-group mr-2"></i> Fiberglass Entry Doors
+                    </button>
+                    <button onclick="setMaterial('wood')" id="mat-wood" class="material-btn p-3 border-2 border-slate-200 text-slate-700 rounded-lg text-center font-bold text-sm transition-all flex items-center justify-center">
+                        <i class="fas fa-tree mr-2"></i> Solid Hardwood Doors
+                    </button>
+                </div>
+
+                <!-- Collection Cards Container -->
+                <div id="collection-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Dynamic collection buttons -->
+                </div>
+            </section>
+
+            <!-- 2. Door Model -->
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex items-center mb-4">
+                    <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-2">2</span>
+                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">Door Model & Dimensions</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Door Model Family</label>
+                        <select id="doorModel" onchange="populateOptions()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Nominal Door Size (W x H)</label>
+                        <select id="doorSize" onchange="handleSizeChange()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Shaped Top Warning Badge -->
+                <div id="shapedTopNotice" class="mt-4 p-3 bg-amber-50 border border-amber-200 text-amber-800 rounded text-xs hidden flex items-center">
+                    <i class="fas fa-exclamation-triangle text-amber-600 mr-2 text-base"></i>
+                    <div>
+                        <strong>MANUFACTURER PREHANG REQUIRED:</strong> Arch Top / Circle Top unit selected. Prehang frame must be built directly by Hoelscher.
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Glass & Finish -->
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex items-center mb-4">
+                    <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-2">3</span>
+                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">Glass & Finish Selection</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div id="glassContainer" style="display: none;">
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Glass / Glazing Type</label>
+                        <select id="doorGlass" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Finish / Stain Color</label>
+                        <select id="doorFinish" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. System & Sidelites -->
+            <section id="system-section" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex items-center mb-4">
+                    <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-2">4</span>
+                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">System Configuration & Sidelites</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">System Layout</label>
+                        <select id="systemLayout" onchange="handleLayoutChange()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                            <option value="Single">Single Door System</option>
+                            <option value="Single + 1 SL">Single w/ 1 Sidelite</option>
+                            <option value="Single + 2 SL">Single w/ 2 Sidelites</option>
+                            <option value="Double">Double Door System</option>
+                            <option value="Slab Only">Slab Only (No Frame)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Handing & Swing</label>
+                        <select id="doorHanding" onchange="generateProposal()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                            <option value="Left Hand (LH) Inswing">Left Hand (LH) Inswing</option>
+                            <option value="Right Hand (RH) Inswing">Right Hand (RH) Inswing</option>
+                            <option value="Left Hand (LH) Outswing">Left Hand (LH) Outswing</option>
+                            <option value="Right Hand (RH) Outswing">Right Hand (RH) Outswing</option>
+                            <option value="N/A (Slab)">N/A (Slab Only)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Jamb Depth</label>
+                        <select id="jambDepth" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                            <option value="4 9/16">4-9/16" Standard Jamb</option>
+                            <option value="6 9/16">6-9/16" Wide Jamb</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="slContainer" class="hidden pt-4 border-t border-slate-100 mt-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Sidelite Model</label>
+                            <select id="slModel" onchange="populateSideliteSizes()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm"></select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Sidelite Size</label>
+                            <select id="slSize" onchange="populateSideliteGlass()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm"></select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Sidelite Glass</label>
+                            <select id="slGlass" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="prehangAlert" class="p-4 rounded border text-sm mt-4" style="display: none;">
+                </div>
+            </section>
+
+            <!-- 5. Add-ons, Hardware & Labor -->
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex items-center mb-4">
+                    <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-2">5</span>
+                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">Add-ons, Hardware & Labor</h2>
+                </div>
+
+                <!-- Barn Door Hardware Section -->
+                <div id="barnHardwareContainer" class="hidden space-y-4 mb-4 p-4 bg-slate-50 rounded border border-slate-200">
+                    <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center"><i class="fas fa-toolbox text-blue-500 mr-2"></i> Barn Door Hardware Kits</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Hardware Kit</label>
+                            <select id="barnHardware" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                                <option value="0">None (Slab Only)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Standard Add-ons & Speakeasy Options -->
+                <div id="standardAddonsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                    <div id="addOnContainer" style="display: none;">
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Decorative Grille / Speakeasy Mask</label>
+                        <select id="addOns" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                            <option value="0">None</option>
+                        </select>
+                    </div>
+
+                    <!-- Wood Casing Adders -->
+                    <div id="casingAdderContainer" style="display: none;">
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Prehang Interior Casing Adders</label>
+                        <select id="casingAdder" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                            <option value="0">None (Standard Frame)</option>
+                            <option value="int_casing">Add Interior Casing</option>
+                            <option value="1x4_casing">Add 1x4 Casing</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Installation Labor -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Installation & Removal Labor</label>
+                        <select id="installLabor" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                            <option value="0">None (Delivery Only)</option>
+                            <option value="std">Standard Single Door Install</option>
+                            <option value="sl">Single + Sidelites Install</option>
+                            <option value="dbl">Double Door System Install</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- RIGHT COLUMN (SUMMARY STICKY & CART) -->
+        <div class="lg:col-span-4">
+            <div class="bg-[#0f172a] text-white rounded-xl shadow-lg sticky top-20 border border-slate-800 flex flex-col max-h-[90vh]">
+                
+                <!-- CURRENT ITEM SUMMARY -->
+                <div class="flex-shrink-0">
+                    <div class="p-5 border-b border-slate-700 flex justify-between items-center bg-slate-900 rounded-t-xl">
+                        <h3 class="font-bold tracking-wide flex items-center"><i class="fas fa-calculator mr-2 text-blue-400"></i> CONFIGURATION</h3>
+                        <span class="text-xs bg-slate-800 px-2 py-1 rounded text-slate-300 font-mono" id="sku-display">SKU: ---</span>
+                    </div>
+                    
+                    <div class="p-4 border-b border-slate-700 bg-slate-800/50">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-slate-400">Unit Size (W x H):</span>
+                            <span class="font-semibold font-mono" id="sumUnitSize"></span>
+                        </div>
+                        <div class="flex justify-between text-sm text-emerald-400">
+                            <span>Rec. Rough Opening:</span>
+                            <span class="font-semibold font-mono" id="sumRO"></span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 space-y-2 text-sm border-b border-slate-700">
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Door Slab(s) Net Cost:</span>
+                            <span class="font-mono" id="costSlab">$0.00</span>
+                        </div>
+                        <div class="flex justify-between" id="summary-sidelite-row" style="display: none;">
+                            <span class="text-slate-400">Sidelite(s) Net Cost:</span>
+                            <span class="font-mono" id="costSidelite">$0.00</span>
+                        </div>
+                        <div class="flex justify-between" id="summary-prehang-row">
+                            <span class="text-slate-400">Prehanging / Frame Cost:</span>
+                            <span class="font-mono" id="costPrehang">$0.00</span>
+                        </div>
+                        <div class="flex justify-between" id="summary-addons-row" style="display: none;">
+                            <span class="text-slate-400">Add-ons & Hardware Net:</span>
+                            <span class="font-mono" id="costAddons">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Installation / Labor:</span>
+                            <span class="font-mono" id="costLabor">$0.00</span>
+                        </div>
+                        <div class="flex justify-between font-bold text-base pt-2 border-t border-slate-700 text-blue-300">
+                            <span>Item Dealer Cost:</span>
+                            <span class="font-mono" id="costTotal">$0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 border-b border-slate-700">
+                        <div class="flex justify-between text-xs font-bold text-slate-400 mb-2">
+                            <span>TARGET GROSS MARGIN</span>
+                            <span class="text-emerald-400" id="marginDisplay">40%</span>
+                        </div>
+                        <input type="range" id="marginSlider" min="15" max="60" value="40" oninput="runQuoteEngine()" class="w-full">
+                    </div>
+                    
+                    <div class="p-4 bg-slate-900 text-center flex justify-between items-center">
+                        <div class="text-left">
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Current Item Price</p>
+                            <p class="text-2xl font-black text-white" id="priceRetail">$0.00</p>
+                        </div>
+                        <button onclick="addToQuote()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded text-sm font-bold transition-colors shadow-lg">
+                            <i class="fas fa-plus mr-1"></i> Add to Quote
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CART LIST -->
+                <div id="cart-container" class="hidden flex-col flex-1 overflow-hidden">
+                    <div class="p-3 bg-slate-800 text-xs font-bold text-slate-400 border-t border-b border-slate-700">
+                        QUOTE ITEMS (<span id="cart-count">0</span>)
+                    </div>
+                    <div id="cart-items" class="p-3 space-y-2 overflow-y-auto cart-scroll flex-1">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div class="p-4 bg-slate-900 border-t border-slate-700 mt-auto">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-sm font-bold text-slate-400 uppercase tracking-widest">Grand Total</span>
+                            <span class="text-3xl font-black text-white" id="grandTotalRetail">$0.00</span>
+                        </div>
+                        <button onclick="scrollToProposal()" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded text-sm font-bold transition-colors">
+                            <i class="fas fa-file-invoice mr-2"></i> View Customer Proposal
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+
+    <!-- TAB 2: SETTINGS & PRICING -->
+    <main id="settings-tab" class="max-w-7xl mx-auto p-6 hidden no-print">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">Pricing Database & Settings</h2>
+                    <p class="text-sm text-slate-500">Modify global multipliers, labor rates, and exact door base list prices below.</p>
+                </div>
+                <button onclick="saveSettings()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded shadow font-bold transition-colors flex items-center">
+                    <i class="fas fa-save mr-2"></i> Save Pricing Settings
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                <!-- Global Variables -->
+                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <h3 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-globe text-blue-500 mr-2"></i> Global Multipliers</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Vendor Net Multiplier</label>
+                            <input type="number" step="0.01" id="set-multiplier" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none font-mono text-slate-800">
+                            <p class="text-xs text-slate-500 mt-1">Applied to catalog list prices (Default: 0.48)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Labor & Add-ons -->
+                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 lg:col-span-2">
+                    <h3 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-hammer text-blue-500 mr-2"></i> Labor & Add-on Rates (Net $)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Standard Install</label>
+                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600">$</span><input type="number" id="set-labor-std" class="w-full p-2 border border-slate-300 rounded-r focus:border-blue-500 outline-none font-mono text-slate-800"></div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Sidelites Install</label>
+                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600">$</span><input type="number" id="set-labor-sl" class="w-full p-2 border border-slate-300 rounded-r focus:border-blue-500 outline-none font-mono text-slate-800"></div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Double Door Install</label>
+                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600">$</span><input type="number" id="set-labor-dbl" class="w-full p-2 border border-slate-300 rounded-r focus:border-blue-500 outline-none font-mono text-slate-800"></div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Speakeasy Masks (List $)</label>
+                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600">$</span><input type="number" id="set-addon-mask" class="w-full p-2 border border-slate-300 rounded-r focus:border-blue-500 outline-none font-mono text-slate-800"></div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Wrought Iron Grilles (List $)</label>
+                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600">$</span><input type="number" id="set-addon-grille" class="w-full p-2 border border-slate-300 rounded-r focus:border-blue-500 outline-none font-mono text-slate-800"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-200 pt-8">
+                <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center"><i class="fas fa-list-alt text-blue-500 mr-2"></i> Edit Door Catalog Base Prices</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Select Material & Collection</label>
+                        <select id="editCollection" onchange="populateEditModels()" class="w-full p-2 border border-slate-300 rounded outline-none text-sm text-slate-800 font-semibold">
+                            <option value="fiberglass:Mahogany">Fiberglass - Mahogany Grain</option>
+                            <option value="fiberglass:Oak">Fiberglass - Oak Grain</option>
+                            <option value="fiberglass:Smooth">Fiberglass - Smooth Skin</option>
+                            <option value="fiberglass:Fir">Fiberglass - Fir Skin</option>
+                            <option value="wood:Mahogany Wood">Solid Wood - Mahogany</option>
+                            <option value="wood:Knotty Alder Wood">Solid Wood - Knotty Alder</option>
+                            <option value="wood:Barn Doors">Solid Wood - Barn Doors</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Select Model to Edit</label>
+                        <select id="editModel" onchange="renderEditTable()" class="w-full p-2 border border-slate-300 rounded outline-none text-sm text-slate-800 font-semibold">
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                    <table class="w-full text-sm text-left border-collapse">
+                        <thead class="bg-slate-100 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
+                            <tr>
+                                <th class="p-3 border-r border-slate-200">Size Code</th>
+                                <th class="p-3 border-r border-slate-200 text-center text-amber-800 bg-amber-50">Unfinished Slab ($)</th>
+                                <th class="p-3 border-r border-slate-200 text-center text-amber-800 bg-amber-50">Unfinished Single PH ($)</th>
+                                <th class="p-3 border-r border-slate-200 text-center text-amber-800 bg-amber-50">Unfinished Double PH ($)</th>
+                                <th class="p-3 border-r border-slate-200 text-center text-blue-800 bg-blue-50">Prefinished Slab ($)</th>
+                                <th class="p-3 border-r border-slate-200 text-center text-blue-800 bg-blue-50">Prefinished Single PH ($)</th>
+                                <th class="p-3 text-center text-blue-800 bg-blue-50">Prefinished Double PH ($)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="editTableBody" class="bg-white">
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-slate-500 mt-2 italic">*All values entered above represent Hoelscher's gross List Price. The Global Vendor Net Multiplier will automatically be applied to these values during quoting.</p>
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-6 py-3 rounded shadow-xl font-semibold transition-opacity duration-300 opacity-0 pointer-events-none z-50">
+        <i class="fas fa-check-circle text-emerald-400 mr-2"></i> Settings Saved Successfully!
+    </div>
+
+    <!-- PRINT PROPOSAL TEMPLATE -->
+    <div id="proposal-anchor" class="max-w-4xl mx-auto p-6 mb-12 print-only">
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-10 proposal-card">
+            
+            <div class="flex justify-between border-b border-slate-200 pb-6 mb-6">
+                <div>
+                    <h1 class="text-2xl font-black text-slate-900 tracking-tight">SimplyDoors</h1>
+                    <p class="text-xs text-slate-500">San Antonio Door & Window Specialists</p>
+                    <p class="text-xs text-slate-500">Sales Order & Installation Quote</p>
+                </div>
+                <div class="text-right text-xs text-slate-600 space-y-1">
+                    <p><strong>Quote #:</strong> <span id="prop-quote-num"></span></p>
+                    <p><strong>Date:</strong> <span id="prop-date"></span></p>
+                    <p><strong>Sales Rep:</strong> <span id="prop-rep"></span></p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-8 mb-8 text-sm">
+                <div>
+                    <h4 class="font-bold text-slate-800 mb-2">CUSTOMER INFORMATION</h4>
+                    <p class="font-semibold text-slate-700" id="prop-cust-name"></p>
+                    <p class="text-slate-600" id="prop-cust-phone"></p>
+                    <p class="text-slate-600" id="prop-cust-address"></p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-800 mb-2">TERMS</h4>
+                    <p class="text-slate-600">Quote valid for 30 days.</p>
+                    <p class="text-slate-600">Custom orders non-refundable once approved.</p>
+                </div>
+            </div>
+
+            <table class="w-full text-sm border-collapse mb-8">
+                <thead>
+                    <tr class="bg-[#0f172a] text-white">
+                        <th class="py-2 px-3 text-left w-1/3">SKU / Item Description</th>
+                        <th class="py-2 px-3 text-left">Specs & Options</th>
+                        <th class="py-2 px-3 text-right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="prop-tbody" class="border-b border-slate-200">
+                    <!-- Populated dynamically by JS -->
+                </tbody>
+            </table>
+
+            <div class="flex justify-between items-end">
+                <div class="w-2/3 pr-8 text-xs text-slate-500 space-y-2">
+                    <p><strong>Warranty Summary:</strong> Hoelscher Limited Warranty on Door Slabs & Prefinished Stains; 2-Year Insulated Glass Seal Warranty.</p>
+                    <p><strong>Deposit Requirement:</strong> 50% deposit required upon order approval. Remaining balance due upon installation completion.</p>
+                </div>
+                <div class="w-1/3 text-right">
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">TOTAL PRICE</p>
+                    <p class="text-3xl font-black text-slate-900" id="prop-total">$0.00</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const NET_MULTIPLIER = 0.48;
+
+        const defaultDBJSON = {
+  "fiberglass": {
+    "Mahogany": [
+      {
+        "name": "Contemporary 1 Lite Vertical",
+        "page": "4",
+        "sizes": {
+          "3080": {
+            "glass": [
+              "Clear Low E",
+              "Reeded",
+              "Sandblast",
+              "Satin"
+            ],
+            "prices": {
+              "u_slab": 1728.0,
+              "u_single": 2516.0,
+              "u_double": 4480.0,
+              "p_slab": 2334.0,
+              "p_single": 3828.0,
+              "p_double": 7104.0
+            }
+          }
+        }
+      },
+      {
+        "name": "Contemporary 3 Lite",
+        "page": "4",
+        "sizes": {
+          "3068": {
+            "glass": [
+              "Clear Low E",
+              "Rain",
+              "Reeded",
+              "Satin"
+            ],
+            "prices": {
+              "u_slab": 1485.0,
+              "u_single": 2204.0,
+              "u_double": 3891.0,
+              "p_slab": 2005.0,
+              "p_single": 3270.0,
+              "p_double": 6023.0
+            }
+          },
+          "3080": {
+            "glass": [
+              "Clear Low E",
+              "Flemish",
+              "Rain",
+              "Reeded",
+              "Satin"
+            ],
+            "prices": {
+              "u_slab": 1728.0,
+              "u_single": 2516.0,
+              "u_double": 4480.0,
+              "p_slab": 2334.0,
+              "p_single": 3828.0,
+              "p_double": 7104.0
+            }
+          }
+        }
+      },
+      {
+        "name": "Contemporary 4 Lite",
+        "page": "5",
+        "sizes": {
+          "3068": {
+            "glass": [
+              "Clear Low E",
+              "Rain",
+              "Reeded",
+              "Sandblast",
+              "Satin"
+            ],
+            "prices": {
+              "u_slab": 1485.0,
+              "u_single": 2204.0,
+              "u_double": 3891.0,
+              "p_slab": 2005.0,
+              "p_single": 3270.0,
+              "p_double": 6023.0
+            }
+          }
+        }
+      },
+      {
+        "name": "Contemporary 5 Lite",
+        "page": "5",
+        "sizes": {
+          "3080": {
+            "glass": [
+              "Clear Low E",
+              "Flemish",
+              "Rain",
+              "Reeded",
+              "Sandblast",
+              "Satin"
+            ],
+            "prices": {
+              "u_slab": 1728.0,
+              "u_single": 2516.0,
+              "u_double": 4480.0,
+              "p_slab": 2334.0,
+              "p_single": 3828.0,
+              "p_double": 7104.0
+            }
+          },
+          "3680": {
+            "glass": [
+              "Clear Low E",
+              "Flemish",
+              "Rain",
+              "Reeded",
+              "Sandblast",
+              "Satin"
+            ],
+            "prices": {
+              "u_slab": 1938.0,
+              "u_single": 2769.0,
+              "u_double": 4943.0,
+              "p_slab": 2633.0,
+              "p_single": 4257.0,
+              "p_double": 7919.0
+            }
+          }
+        }
+      },
+      {
+        "name": "Contemporary 5 Lite Horizontal",
+        "page": "6",
+        "sizes": {
+          "3068": {
+            "glass": [
+              "Clear Low E",
+              "Rain",
+              "Sandblast",
+              "Satin"
+            ],
+            "prices": {
+              "u_slab": 1485.0,
+              "u_single": 2204.0,
+              "u_double": 3891.0,
+              "p_slab": 2005.0,
+              "p_single": 3270.0,
+              "p_double": 6023.0
+            }
+          }
+        }
+      },
+      {
+        "name": "Contemporary 6 lite Horiztonal",
+        "page": "6",
+        "sizes": {
+          "3080": {
+            "glass": [
+              "Clear Low E",
+              "Rain",
+              "Sandblast",
+              "Satin"
+            ],
+            "prices": {
+              "u_slab": 1728.0,
+              "u_single": The updated web application for the **SimplyDoors Quoting System - Hoelscher 2026** has been generated and exported to Google Drive.
+
+### Scope & Purpose of Updates
+
+1. **Primary Material Toggle (Step 1)**:
+   - Added a top-level toggle allowing sales reps to switch between **Fiberglass Entry Doors** and **Solid Hardwood Doors**.
+
+2. **Hardwood Collections & Species**:
+   - Added **Mahogany Wood**, **Knotty Alder Wood**, and **Barn Doors** alongside existing fiberglass collections.
+
+3. **Complete Wood Pricing & Catalog Database**:
+   - Integrated models, size options, and list prices from the 2026 Hardwood Catalog and Price List across Contemporary, True Divided Lite (TDL), Simulated Divided Lite (SDL), Legacy & Panel doors, Wrought Iron Grilles, and Barn Doors.
+
+4. **Wood Stain Finishes (Step 3)**:
+   - Integrated Hoelscher stain selections (`Aged Barrel`, `Ebony`, `English Chestnut`, `Jacobean`, `Red Oak`, `Special Walnut`).
+
+5. **Shaped Top Door Handling (Step 2)**:
+   - Arch Top and Circle Top models automatically activate a "Vendor Prehang Required" notice.
+
+6. **Prehang Inclusions & Casing Adders (Step 4 & 5)**:
+   - Configured prehang calculations so exterior wood frames up to 6-9/16" are included in the prehang list price.
+   - Added **Interior Casing** and **1x4 Casing** prehang adders under Step 5.
+
+7. **Barn Door Workflow**:
+   - Selecting Barn Doors automatically locks the system layout to "Slab Only" and enables Barn Door Hardware Kits (Strap Kits, Bypass Bracket Kits, Handles, Flush Pulls, Soft Close Kits, Privacy Latches, Floor Guides).
+
+---
+
+### Google Drive Links
+
+You can access and download the updated application files directly on Google Drive:
+- [SimplyDoors Quoting System Hoelscher 2026 (HTML File)](https://docs.google.com/document/d/1XMfaTjhu_pI7rCc2qKGor-BFlwckYe-51Pi16X1h7DA/edit?usp=drivesdk&ouid=116137011854013350187)
+- [SimplyDoors Quoting System Hoelscher 2026 (Source Text File)](https://docs.google.com/document/d/1g4PJZRmcj4s-x_V3cJ-lEFLuJn9alMvXJBLmSJohCeM/edit?usp=drivesdk&ouid=116137011854013350187)
+
+http://googleusercontent.com/action_card_content/7a3f392d-643f-40bc-8655-0489219fdb48
+http://googleusercontent.com/action_card_content/8e456c07-b5e0-4bcf-8d43-472bd8948e4e
