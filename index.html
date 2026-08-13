@@ -586,15 +586,20 @@
         };
 
         function loadSettings() {
-            const saved = localStorage.getItem('simplyDoorsPricingDB_2026');
+            const saved = localStorage.getItem('simplyDoorsPricingDB_v2');
             if (saved) {
                 const parsed = JSON.parse(saved);
                 appSettings.multiplier = parsed.multiplier || 0.48;
                 appSettings.labor = parsed.labor || appSettings.labor;
                 appSettings.addons = parsed.addons || appSettings.addons;
-                if(parsed.db) {
+                
+                if(parsed.db && parsed.db.wood) {
                     appSettings.db = parsed.db;
+                } else {
+                    appSettings.db = defaultDBJSON;
                 }
+            } else {
+                appSettings.db = defaultDBJSON;
             }
             renderSettingsUI();
             populateEditModels(); 
@@ -608,7 +613,7 @@
             appSettings.addons.maskList = parseFloat(document.getElementById('set-addon-mask').value);
             appSettings.addons.grilleList = parseFloat(document.getElementById('set-addon-grille').value);
 
-            localStorage.setItem('simplyDoorsPricingDB_2026', JSON.stringify({
+            localStorage.setItem('simplyDoorsPricingDB_v2', JSON.stringify({
                 multiplier: appSettings.multiplier,
                 labor: appSettings.labor,
                 addons: appSettings.addons,
