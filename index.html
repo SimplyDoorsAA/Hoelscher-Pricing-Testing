@@ -537,205 +537,839 @@
     </div>
 
     <script>
-        const NET_MULTIPLIER = 0.48;
+        const defaultDBJSON = {"fiberglass": {"Mahogany": [{"name": "Contemporary 1 Lite Vertical", "page": "4", "sizes": {"3080": {"glass": ["Clear Low E", "Reeded", "Sandblast", "Satin"], "prices": {"u_slab": 1728.0, "u_single": 2516.0, "u_double": 4480.0, "p_slab": 2334.0, "p_single": 3828.0, "p_double": 7104.0}}}}, {"name": "Contemporary 3 Lite", "page": "4", "sizes": {"3068": {"glass": ["Clear Low E", "Rain", "Reeded", "Satin"], "prices": {"u_slab": 1485.0, "u_single": 2204.0, "u_double": 3891.0, "p_slab": 2005.0, "p_single": 3270.0, "p_double": 6023.0}}, "3080": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Satin"], "prices": {"u_slab": 1728.0, "u_single": 2516.0, "u_double": 4480.0, "p_slab": 2334.0, "p_single": 3828.0, "p_double": 7104.0}}}}, {"name": "Contemporary 4 Lite", "page": "5", "sizes": {"3068": {"glass": ["Clear Low E", "Rain", "Reeded", "Sandblast", "Satin"], "prices": {"u_slab": 1485.0, "u_single": 2204.0, "u_double": 3891.0, "p_slab": 2005.0, "p_single": 3270.0, "p_double": 6023.0}}}}, {"name": "Contemporary 5 Lite", "page": "5", "sizes": {"3080": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Sandblast", "Satin"], "prices": {"u_slab": 1728.0, "u_single": 2516.0, "u_double": 4480.0, "p_slab": 2334.0, "p_single": 3828.0, "p_double": 7104.0}}, "3680": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Sandblast", "Satin"], "prices": {"u_slab": 1938.0, "u_single": 2769.0, "u_double": 4943.0, "p_slab": 2633.0, "p_single": 4257.0, "p_double": 7919.0}}}}, {"name": "Contemporary 5 Lite Horizontal", "page": "6", "sizes": {"3068": {"glass": ["Clear Low E", "Rain", "Sandblast", "Satin"], "prices": {"u_slab": 1485.0, "u_single": 2204.0, "u_double": 3891.0, "p_slab": 2005.0, "p_single": 3270.0, "p_double": 6023.0}}}}, {"name": "Contemporary 6 lite Horiztonal", "page": "6", "sizes": {"3080": {"glass": ["Clear Low E", "Rain", "Sandblast", "Satin"], "prices": {"u_slab": 1728.0, "u_single": 2516.0, "u_double": 4480.0, "p_slab": 2334.0, "p_single": 3828.0, "p_double": 7104.0}}}}, {"name": "3/4 Lite 1 Panel", "page": "7", "sizes": {"3068": {"glass": ["Clear Low E", "Flemish", "Rain", "Satin"], "prices": {"u_slab": 1165.0, "u_single": 1884.0, "u_double": 3251.0, "p_slab": 1685.0, "p_single": 2950.0, "p_double": 5383.0}}, "3080": {"glass": ["Clear Low E", "Flemish", "Rain", "Satin"], "prices": {"u_slab": 1370.0, "u_single": 2158.0, "u_double": 3764.0, "p_slab": 1976.0, "p_single": 3470.0, "p_double": 6388.0}}}}, {"name": "4 Lite TDL 1 Panel", "page": "8", "sizes": {"2668": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1324.0, "u_single": 2043.0, "u_double": 3569.0, "p_slab": 1844.0, "p_single": 3109.0, "p_double": 5701.0}}, "2680": {"glass": ["Clear Bevel Low E", "Clear Low E"], "prices": {"u_slab": 1534.0, "u_single": 2322.0, "u_double": 4092.0, "p_slab": 2140.0, "p_single": 3634.0, "p_double": 6716.0}}, "2868": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1324.0, "u_single": 2043.0, "u_double": 3569.0, "p_slab": 1844.0, "p_single": 3109.0, "p_double": 5701.0}}, "2880": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1534.0, "u_single": 2322.0, "u_double": 4092.0, "p_slab": 2140.0, "p_single": 3634.0, "p_double": 6716.0}}, "3068": {"glass": ["Clear Bevel Low E", "Flemish", "Rain"], "prices": {"u_slab": 1324.0, "u_single": 2043.0, "u_double": 3569.0, "p_slab": 1844.0, "p_single": 3109.0, "p_double": 5701.0}}, "3080": {"glass": ["Clear Bevel Low E", "Clear Low E", "Flemish", "Rain"], "prices": {"u_slab": 1534.0, "u_single": 2322.0, "u_double": 4092.0, "p_slab": 2140.0, "p_single": 3634.0, "p_double": 6716.0}}}}, {"name": "6 Lite TDL 1 Panel", "page": "8", "sizes": {"2668": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1324.0, "u_single": 2043.0, "u_double": 3569.0, "p_slab": 1844.0, "p_single": 3109.0, "p_double": 5701.0}}, "2680": {"glass": ["Clear Bevel Low E", "Clear Low E"], "prices": {"u_slab": 1534.0, "u_single": 2322.0, "u_double": 4092.0, "p_slab": 2140.0, "p_single": 3634.0, "p_double": 6716.0}}, "2868": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1324.0, "u_single": 2043.0, "u_double": 3569.0, "p_slab": 1844.0, "p_single": 3109.0, "p_double": 5701.0}}, "2880": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1534.0, "u_single": 2322.0, "u_double": 4092.0, "p_slab": 2140.0, "p_single": 3634.0, "p_double": 6716.0}}, "3068": {"glass": ["Clear Bevel Low E", "Flemish", "Rain"], "prices": {"u_slab": 1324.0, "u_single": 2043.0, "u_double": 3569.0, "p_slab": 1844.0, "p_single": 3109.0, "p_double": 5701.0}}, "3080": {"glass": ["Clear Bevel Low E", "Clear Low E", "Flemish", "Rain"], "prices": {"u_slab": 1534.0, "u_single": 2322.0, "u_double": 4092.0, "p_slab": 2140.0, "p_single": 3634.0, "p_double": 6716.0}}, "3680": {"glass": ["Clear Bevel Low E", "Clear Low E", "Flemish", "Rain"], "prices": {"u_slab": 1938.0, "u_single": 2769.0, "u_double": 4943.0, "p_slab": 2633.0, "p_single": 4257.0, "p_double": 7919.0}}}}, {"name": "2 Panel Square", "page": "9", "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 630.0, "u_single": 1349.0, "u_double": 2181.0, "p_slab": 1136.0, "p_single": 2415.0, "p_double": 4313.0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 856.0, "u_single": 1644.0, "u_double": 2736.0, "p_slab": 1449.0, "p_single": 2956.0, "p_double": 5360.0}}}}, {"name": "2 Panel Arch, V-Grooved", "page": "10", "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 630.0, "u_single": 1349.0, "u_double": 2181.0, "p_slab": 1136.0, "p_single": 2415.0, "p_double": 4313.0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 856.0, "u_single": 1644.0, "u_double": 2736.0, "p_slab": 1449.0, "p_single": 2956.0, "p_double": 5360.0}}}}, {"name": "Craftsman 6 Lite 2 Panel Shaker", "page": "10", "sizes": {"3068": {"glass": ["Clear Bevel Low E", "Flemish", "Rain"], "prices": {"u_slab": 1252.0, "u_single": 1971.0, "u_double": 3425.0, "p_slab": 1877.0, "p_single": 3037.0, "p_double": 5557.0}}, "3080": {"glass": ["Clear Bevel Low E", "Flemish", "Rain"], "prices": {"u_slab": 1615.0, "u_single": 2403.0, "u_double": 4254.0, "p_slab": 2387.0, "p_single": 3715.0, "p_double": 6878.0}}}}, {"name": "2 Panel Arch V-Grooved w/ Speakeasy", "page": "11", "sizes": {"3068": {"glass": ["Clear Low E", "Flemish", "Rain", "Wood"], "prices": {"u_slab": 953.0, "u_single": 1672.0, "u_double": 2827.0, "p_slab": 1473.0, "p_single": 2738.0, "p_double": 4959.0}}, "3080": {"glass": ["Clear Low E", "Flemish", "Rain", "Wood"], "prices": {"u_slab": 1179.0, "u_single": 1967.0, "u_double": 3382.0, "p_slab": 1785.0, "p_single": 3279.0, "p_double": 6006.0}}}}], "Oak": [{"name": "6 Panel", "page": "9", "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 440.0, "u_single": 1159.0, "u_double": 1801.0, "p_slab": 963.0, "p_single": 2225.0, "p_double": 3933.0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 856.0, "u_single": 1644.0, "u_double": 2736.0, "p_slab": 1193.0, "p_single": 2956.0, "p_double": 5360.0}}}}], "Smooth": [{"name": "Craftsman 3 Panel Shaker", "page": "14", "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 403.0, "u_single": 1122.0, "u_double": 1727.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 513.0, "u_single": 1301.0, "u_double": 2050.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "Craftsman 1 Lite 2 Panel Shaker", "page": "14", "sizes": {"3068": {"glass": ["Clear Low E", "Rain"], "prices": {"u_slab": 600.0, "u_single": 1319.0, "u_double": 2121.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Clear Low E", "Rain"], "prices": {"u_slab": 689.0, "u_single": 1477.0, "u_double": 2402.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "Craftsman Flat Panel", "page": "15", "sizes": {"3068": {"glass": ["Clear Low E", "Rain"], "prices": {"u_slab": 643.0, "u_single": 1362.0, "u_double": 2207.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Clear Low E", "Rain"], "prices": {"u_slab": 737.0, "u_single": 1525.0, "u_double": 2497.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "Half Lite 2 Panel", "page": "15", "sizes": {"2868": {"glass": ["Clear Low E"], "prices": {"u_slab": 722.0, "u_single": 1441.0, "u_double": 2366.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "2 Panel Shaker", "page": "16", "sizes": {"2868": {"glass": ["Solid Panel"], "prices": {"u_slab": 403.0, "u_single": 1122.0, "u_double": 1727.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2880": {"glass": ["Solid Panel"], "prices": {"u_slab": 607.0, "u_single": 1395.0, "u_double": 2238.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 630.0, "u_single": 1349.0, "u_double": 2181.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 609.0, "u_single": 1397.0, "u_double": 2242.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "2 Panel Raised Panel", "page": "16", "sizes": {"2868": {"glass": ["Solid Panel"], "prices": {"u_slab": 358.0, "u_single": 1077.0, "u_double": 1637.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 630.0, "u_single": 1349.0, "u_double": 2181.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 522.0, "u_single": 1310.0, "u_double": 2068.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "1 Panel Flat Panel", "page": "17", "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 642.0, "u_single": 1361.0, "u_double": 2205.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 995.0, "u_single": 1783.0, "u_double": 3013.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "6 Panel", "page": "17", "sizes": {"2868": {"glass": ["Solid Panel"], "prices": {"u_slab": 358.0, "u_single": 1077.0, "u_double": 1637.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2880": {"glass": ["Solid Panel"], "prices": {"u_slab": 651.0, "u_single": 1439.0, "u_double": 2326.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 390.0, "u_single": 1109.0, "u_double": 1702.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 651.0, "u_single": 1439.0, "u_double": 2326.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "Full Lite", "page": "18", "sizes": {"2068": {"glass": ["Clear Low E", "Translucent"], "prices": {"u_slab": 642.0, "u_single": 1361.0, "u_double": 2205.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2080": {"glass": ["Clear Low E", "Translucent"], "prices": {"u_slab": 995.0, "u_single": 1783.0, "u_double": 3013.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2668": {"glass": ["Clear Low E", "Translucent"], "prices": {"u_slab": 642.0, "u_single": 1361.0, "u_double": 2205.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2680": {"glass": ["Clear Low E", "Translucent"], "prices": {"u_slab": 995.0, "u_single": 1783.0, "u_double": 3013.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2868": {"glass": ["Clear Low E", "Translucent"], "prices": {"u_slab": 642.0, "u_single": 1361.0, "u_double": 2205.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2880": {"glass": ["Clear Low E", "Translucent"], "prices": {"u_slab": 995.0, "u_single": 1783.0, "u_double": 3013.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3068": {"glass": ["Clear Low E", "Translucent"], "prices": {"u_slab": 642.0, "u_single": 1361.0, "u_double": 2205.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Clear Low E", "Translucent"], "prices": {"u_slab": 995.0, "u_single": 1783.0, "u_double": 3013.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "Full Lite with Mini Blind", "page": "18", "sizes": {"2068": {"glass": ["Clear Low E"], "prices": {"u_slab": 974.0, "u_single": 1693.0, "u_double": 2869.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2080": {"glass": ["Clear Low E"], "prices": {"u_slab": 1341.0, "u_single": 2129.0, "u_double": 3706.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2668": {"glass": ["Clear Low E"], "prices": {"u_slab": 974.0, "u_single": 1693.0, "u_double": 2869.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2680": {"glass": ["Clear Low E"], "prices": {"u_slab": 1341.0, "u_single": 2129.0, "u_double": 3706.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2868": {"glass": ["Clear Low E"], "prices": {"u_slab": 974.0, "u_single": 1693.0, "u_double": 2869.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2880": {"glass": ["Clear Low E"], "prices": {"u_slab": 1341.0, "u_single": 2129.0, "u_double": 3706.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3068": {"glass": ["Clear Low E"], "prices": {"u_slab": 974.0, "u_single": 1693.0, "u_double": 2869.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Clear Low E"], "prices": {"u_slab": 1341.0, "u_single": 2129.0, "u_double": 3706.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "3/4 Lite 1 Panel", "page": "19", "sizes": {"2668": {"glass": ["Clear Low E", "Flemish", "Rain", "Translucent"], "prices": {"u_slab": 722.0, "u_single": 1441.0, "u_double": 2366.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2680": {"glass": ["Clear Low E", "Translucent"], "prices": {"u_slab": 1083.0, "u_single": 1871.0, "u_double": 3189.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2868": {"glass": ["Clear Low E", "Translucent"], "prices": {"u_slab": 722.0, "u_single": 1441.0, "u_double": 2366.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2880": {"glass": ["Clear Low E", "Translucent"], "prices": {"u_slab": 1083.0, "u_single": 1871.0, "u_double": 3189.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3068": {"glass": ["Clear Low E", "Flemish", "Rain", "Translucent"], "prices": {"u_slab": 722.0, "u_single": 1441.0, "u_double": 2366.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Clear Low E", "Flemish", "Rain", "Translucent"], "prices": {"u_slab": 1083.0, "u_single": 1871.0, "u_double": 3189.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "3/4 Lite 1 Panel with Mini Blind", "page": "19", "sizes": {"2668": {"glass": ["Clear Low E"], "prices": {"u_slab": 1050.0, "u_single": 1769.0, "u_double": 3022.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2680": {"glass": ["Clear Low E"], "prices": {"u_slab": 1416.0, "u_single": 2204.0, "u_double": 3856.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2868": {"glass": ["Clear Low E"], "prices": {"u_slab": 1050.0, "u_single": 1769.0, "u_double": 3022.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2880": {"glass": ["Clear Low E"], "prices": {"u_slab": 1416.0, "u_single": 2204.0, "u_double": 3856.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3068": {"glass": ["Clear Low E"], "prices": {"u_slab": 1050.0, "u_single": 1769.0, "u_double": 3022.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Clear Low E"], "prices": {"u_slab": 1416.0, "u_single": 2204.0, "u_double": 3856.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "Flush", "page": "", "sizes": {"2068": {"glass": ["Solid Panel"], "prices": {"u_slab": 390.0, "u_single": 1109.0, "u_double": 1702.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2080": {"glass": ["Solid Panel"], "prices": {"u_slab": 651.0, "u_single": 1439.0, "u_double": 2326.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "21080": {"glass": ["Solid Panel"], "prices": {"u_slab": 651.0, "u_single": 1439.0, "u_double": 2326.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2468": {"glass": ["Solid Panel"], "prices": {"u_slab": 390.0, "u_single": 1109.0, "u_double": 1702.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2668": {"glass": ["Solid Panel"], "prices": {"u_slab": 390.0, "u_single": 1109.0, "u_double": 1702.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2680": {"glass": ["Solid Panel"], "prices": {"u_slab": 651.0, "u_single": 1439.0, "u_double": 2326.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2868": {"glass": ["Solid Panel"], "prices": {"u_slab": 390.0, "u_single": 1109.0, "u_double": 1702.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "2880": {"glass": ["Solid Panel"], "prices": {"u_slab": 651.0, "u_single": 1439.0, "u_double": 2326.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 390.0, "u_single": 1109.0, "u_double": 1702.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 651.0, "u_single": 1439.0, "u_double": 2326.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}], "Fir": [{"name": "Craftsman 3 Panel Shaker", "page": "14", "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 450.0, "u_single": 1169.0, "u_double": 1821.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 546.0, "u_single": 1334.0, "u_double": 2116.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "Craftsman 1 Lite 2 Panel Shaker", "page": "14", "sizes": {"3068": {"glass": ["Clear Low E"], "prices": {"u_slab": 660.0, "u_single": 1379.0, "u_double": 2241.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Clear Low E"], "prices": {"u_slab": 752.0, "u_single": 1540.0, "u_double": 2528.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3680": {"glass": ["Clear Low E"], "prices": {"u_slab": 1150.0, "u_single": 1981.0, "u_double": 3367.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "Craftsman Flat Panel", "page": "15", "sizes": {"3068": {"glass": ["Clear Low E", "Rain"], "prices": {"u_slab": 708.0, "u_single": 1427.0, "u_double": 2337.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "3080": {"glass": ["Clear Low E", "Rain"], "prices": {"u_slab": 804.0, "u_single": 1592.0, "u_double": 2632.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}]}, "fiberglass_sidelites": [{"name": "3/4 Lite 1 Panel Sidelite", "page": "19", "sizes": {"1068": {"glass": ["Clear Low E"], "prices": {"u_slab": 613.0, "u_single": 1332.0, "u_double": 1332.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "1080": {"glass": ["Clear Low E"], "prices": {"u_slab": 718.0, "u_single": 1506.0, "u_double": 1506.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "1268": {"glass": ["Clear Low E"], "prices": {"u_slab": 613.0, "u_single": 1332.0, "u_double": 1332.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "1280": {"glass": ["Clear Low E"], "prices": {"u_slab": 718.0, "u_single": 1506.0, "u_double": 1506.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "Full Lite Sidelite", "page": "20", "sizes": {"1068": {"glass": ["Clear Low E"], "prices": {"u_slab": 604.0, "u_single": 1323.0, "u_double": 1323.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "1080": {"glass": ["Clear Low E"], "prices": {"u_slab": 707.0, "u_single": 1495.0, "u_double": 1495.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "1268": {"glass": ["Clear Low E"], "prices": {"u_slab": 604.0, "u_single": 1323.0, "u_double": 1323.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}, "1280": {"glass": ["Clear Low E"], "prices": {"u_slab": 707.0, "u_single": 1495.0, "u_double": 1495.0, "p_slab": 0.0, "p_single": 0.0, "p_double": 0.0}}}}, {"name": "Contemporary Full Lite Sidelite", "page": "12", "sizes": {"1268": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Satin"], "prices": {"u_slab": 725.0, "u_single": 1444.0, "u_double": 1444.0, "p_slab": 1245.0, "p_single": 2510.0, "p_double": 2510.0}}, "1280": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Satin"], "prices": {"u_slab": 905.0, "u_single": 1693.0, "u_double": 1693.0, "p_slab": 1511.0, "p_single": 3005.0, "p_double": 3005.0}}}}], "wood": {"Mahogany Wood": [{"name": "Contemporary 1 Lite Vertical", "page": "8", "sizes": {"3080": {"glass": ["Clear Low E", "Reeded", "Sandblast", "Satin"], "prices": {"u_slab": 1372, "u_single": 2160, "u_double": 3768, "p_slab": 1889, "p_single": 3343, "p_double": 6134}}, "3680": {"glass": ["Clear Low E", "Reeded", "Sandblast", "Satin"], "prices": {"u_slab": 1544, "u_single": 2375, "u_double": 4155, "p_slab": 2148, "p_single": 3722, "p_double": 6849}}}}, {"name": "Contemporary 3 Lite", "page": "8", "sizes": {"2880": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Satin"], "prices": {"u_slab": 1346, "u_single": 2134, "u_double": 3716, "p_slab": 1863, "p_single": 3317, "p_double": 6082}}, "3068": {"glass": ["Clear Low E", "Rain", "Reeded", "Satin"], "prices": {"u_slab": 1198, "u_single": 1917, "u_double": 3317, "p_slab": 1629, "p_single": 2861, "p_double": 5205}}, "3080": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Satin"], "prices": {"u_slab": 1346, "u_single": 2134, "u_double": 3716, "p_slab": 1863, "p_single": 3317, "p_double": 6082}}, "3680": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Satin"], "prices": {"u_slab": 1613, "u_single": 2444, "u_double": 4293, "p_slab": 2217, "p_single": 3791, "p_double": 6987}}}}, {"name": "Contemporary 4 Lite", "page": "8", "sizes": {"3068": {"glass": ["Clear Low E", "Rain", "Reeded", "Sandblast", "Satin"], "prices": {"u_slab": 1201, "u_single": 1920, "u_double": 3323, "p_slab": 1632, "p_single": 2864, "p_double": 5211}}}}, {"name": "Contemporary 5 Lite", "page": "8", "sizes": {"2880": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Satin"], "prices": {"u_slab": 1346, "u_single": 2134, "u_double": 3716, "p_slab": 1863, "p_single": 3317, "p_double": 6082}}, "3080": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Satin"], "prices": {"u_slab": 1346, "u_single": 2134, "u_double": 3716, "p_slab": 1863, "p_single": 3317, "p_double": 6082}}, "3680": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Satin"], "prices": {"u_slab": 1613, "u_single": 2444, "u_double": 4293, "p_slab": 2217, "p_single": 3791, "p_double": 6987}}}}, {"name": "Contemporary 5 Lite Horizontal", "page": "9", "sizes": {"3068": {"glass": ["Clear Low E", "Rain", "Sandblast", "Satin"], "prices": {"u_slab": 1191, "u_single": 1910, "u_double": 3303, "p_slab": 1622, "p_single": 2854, "p_double": 5191}}}}, {"name": "Contemporary 6 Lite Horizontal", "page": "9", "sizes": {"3080": {"glass": ["Clear Low E", "Rain", "Sandblast", "Satin"], "prices": {"u_slab": 1379, "u_single": 2167, "u_double": 3782, "p_slab": 1896, "p_single": 3350, "p_double": 6148}}}}, {"name": "Contemporary 7 Panel", "page": "9", "sizes": {"3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 846, "u_single": 1634, "u_double": 2716, "p_slab": 1363, "p_single": 2817, "p_double": 5082}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 1018, "u_single": 1849, "u_double": 3103, "p_slab": 1622, "p_single": 3196, "p_double": 5797}}}}, {"name": "TDL 4 Lite Arch Top Double (Vendor Frame)", "page": "14", "shaped": true, "sizes": {"5080": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 3088, "u_single": 0, "u_double": 3748, "p_slab": 4641, "p_single": 0, "p_double": 5301}}, "6080": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 3174, "u_single": 0, "u_double": 3834, "p_slab": 4727, "p_single": 0, "p_double": 5387}}}}, {"name": "TDL 6 Lite Arch Top Single (Vendor Frame)", "page": "16", "shaped": true, "sizes": {"3080": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 2053, "u_single": 2548, "u_double": 0, "p_slab": 3088, "p_single": 3583, "p_double": 0}}, "3680": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 2226, "u_single": 2721, "u_double": 0, "p_slab": 3347, "p_single": 3842, "p_double": 0}}}}, {"name": "TDL 6 Lite Arch Top Double (Vendor Frame)", "page": "18", "shaped": true, "sizes": {"5080": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 3088, "u_single": 0, "u_double": 3748, "p_slab": 4641, "p_single": 0, "p_double": 5301}}, "5480": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 3174, "u_single": 0, "u_double": 3834, "p_slab": 4727, "p_single": 0, "p_double": 5387}}, "6080": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 3174, "u_single": 0, "u_double": 3834, "p_slab": 4727, "p_single": 0, "p_double": 5387}}}}, {"name": "TDL 4 Lite 1 Panel RM", "page": "15", "sizes": {"2668": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1104, "u_single": 1823, "u_double": 3129, "p_slab": 1535, "p_single": 2767, "p_double": 5017}}, "2868": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1104, "u_single": 1823, "u_double": 3129, "p_slab": 1535, "p_single": 2767, "p_double": 5017}}, "3068": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1122, "u_single": 1841, "u_double": 3165, "p_slab": 1553, "p_single": 2785, "p_double": 5053}}}}, {"name": "TDL 6 Lite 1 Panel RM", "page": "17", "sizes": {"2668": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1104, "u_single": 1823, "u_double": 3129, "p_slab": 1535, "p_single": 2767, "p_double": 5017}}, "2680": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1191, "u_single": 1979, "u_double": 3406, "p_slab": 1708, "p_single": 3162, "p_double": 5772}}, "3068": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1122, "u_single": 1841, "u_double": 3165, "p_slab": 1553, "p_single": 2785, "p_double": 5053}}, "3080": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1191, "u_single": 1979, "u_double": 3406, "p_slab": 1708, "p_single": 3162, "p_double": 5772}}, "3680": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1467, "u_single": 2298, "u_double": 4001, "p_slab": 2071, "p_single": 3645, "p_double": 6695}}}}, {"name": "2 Panel Square VG", "page": "25", "speakeasy": true, "sizes": {"3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 949, "u_single": 1737, "u_double": 2922, "p_slab": 1466, "p_single": 2920, "p_double": 5288}}}}, {"name": "2 Panel Arch VG", "page": "26", "speakeasy": true, "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 828, "u_single": 1547, "u_double": 2577, "p_slab": 1259, "p_single": 2491, "p_double": 4465}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 949, "u_single": 1737, "u_double": 2922, "p_slab": 1466, "p_single": 2920, "p_double": 5288}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 1173, "u_single": 2004, "u_double": 3413, "p_slab": 1777, "p_single": 3351, "p_double": 6107}}}}, {"name": "2 Panel Arch Smooth", "page": "26", "speakeasy": true, "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 828, "u_single": 1547, "u_double": 2577, "p_slab": 1259, "p_single": 2491, "p_double": 4465}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 949, "u_single": 1737, "u_double": 2922, "p_slab": 1466, "p_single": 2920, "p_double": 5288}}}}, {"name": "Full Lite Decorative Glass (Pecos/Dartmouth/Columbia/San Jacinto)", "page": "28", "sizes": {"3068": {"glass": ["Pecos Patina", "Pecos Zinc", "Dartmouth Patina", "Dartmouth Zinc", "Columbia Patina", "Columbia Zinc", "San Jacinto Patina", "San Jacinto Zinc"], "prices": {"u_slab": 1308, "u_single": 2027, "u_double": 3537, "p_slab": 1739, "p_single": 2971, "p_double": 5425}}}}, {"name": "3/4 Lite Decorative Glass", "page": "29", "sizes": {"2868": {"glass": ["Columbia", "Medina", "Pecos", "San Jacinto"], "prices": {"u_slab": 1353, "u_single": 2072, "u_double": 3627, "p_slab": 1784, "p_single": 3016, "p_double": 5515}}, "3068": {"glass": ["Columbia", "Medina", "Pecos", "San Jacinto"], "prices": {"u_slab": 1353, "u_single": 2072, "u_double": 3627, "p_slab": 1784, "p_single": 3016, "p_double": 5515}}, "3080": {"glass": ["Columbia", "Pecos", "San Jacinto"], "prices": {"u_slab": 1546, "u_single": 2334, "u_double": 4116, "p_slab": 2063, "p_single": 3517, "p_double": 6482}}}}, {"name": "2/3 Lite Iron Grille (Avignon/Barcelona/Cordoba/Santiago/Sienna/Whitney)", "page": "36", "sizes": {"3280": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Stippolyte"], "prices": {"u_slab": 1719, "u_single": 2507, "u_double": 4462, "p_slab": 2236, "p_single": 3690, "p_double": 6828}}, "3080": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Stippolyte"], "prices": {"u_slab": 1719, "u_single": 2507, "u_double": 4462, "p_slab": 2236, "p_single": 3690, "p_double": 6828}}}}, {"name": "3/4 Lite Iron Grille (Avignon/Barcelona/Cordoba/Santiago/Sienna/Whitney)", "page": "38", "sizes": {"2868": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Stippolyte"], "prices": {"u_slab": 1591, "u_single": 2310, "u_double": 4103, "p_slab": 2022, "p_single": 3254, "p_double": 5991}}, "3068": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Stippolyte"], "prices": {"u_slab": 1591, "u_single": 2310, "u_double": 4103, "p_slab": 2022, "p_single": 3254, "p_double": 5991}}, "3080": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Stippolyte"], "prices": {"u_slab": 1895, "u_single": 2683, "u_double": 4814, "p_slab": 2412, "p_single": 3866, "p_double": 7180}}}}, {"name": "Full Lite Iron Grille (Avignon/Balfour/Cordoba/Hammond/Santiago/Sienna)", "page": "40", "sizes": {"3068": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Stippolyte"], "prices": {"u_slab": 1677, "u_single": 2396, "u_double": 4275, "p_slab": 2108, "p_single": 3340, "p_double": 6163}}}}], "Knotty Alder Wood": [{"name": "TDL 4 Lite 1 Panel RM", "page": "44", "sizes": {"2680": {"glass": ["Clear Low E"], "prices": {"u_slab": 846, "u_single": 1634, "u_double": 2716, "p_slab": 1363, "p_single": 2817, "p_double": 5082}}, "2880": {"glass": ["Clear Low E"], "prices": {"u_slab": 880, "u_single": 1668, "u_double": 2784, "p_slab": 1397, "p_single": 2851, "p_double": 5150}}, "3080": {"glass": ["Clear Low E"], "prices": {"u_slab": 915, "u_single": 1703, "u_double": 2854, "p_slab": 1432, "p_single": 2886, "p_double": 5220}}}}, {"name": "TDL 6 Lite NRM", "page": "44", "sizes": {"3068": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1242, "u_single": 1961, "u_double": 3405, "p_slab": 1673, "p_single": 2905, "p_double": 5293}}, "3080": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1363, "u_single": 2151, "u_double": 3750, "p_slab": 1880, "p_single": 3334, "p_double": 6116}}}}, {"name": "TDL 6 Lite Arch Top RM (Vendor Frame)", "page": "44", "shaped": true, "sizes": {"3680": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 2226, "u_single": 2721, "u_double": 0, "p_slab": 3347, "p_single": 3842, "p_double": 0}}}}, {"name": "TDL 6 Lite Arch Top Double (Vendor Frame)", "page": "44", "shaped": true, "sizes": {"5080": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 3088, "u_single": 0, "u_double": 3748, "p_slab": 4641, "p_single": 0, "p_double": 5301}}, "6080": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 3174, "u_single": 0, "u_double": 3834, "p_slab": 4727, "p_single": 0, "p_double": 5387}}}}, {"name": "Craftsman TDL", "page": "45", "sizes": {"3068": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 915, "u_single": 1634, "u_double": 2751, "p_slab": 1346, "p_single": 2578, "p_double": 4639}}, "3080": {"glass": ["Clear Bevel Low E"], "prices": {"u_slab": 1363, "u_single": 2151, "u_double": 3750, "p_slab": 1880, "p_single": 3334, "p_double": 6116}}}}, {"name": "3/4 Lite RM Decorative Glass", "page": "48", "sizes": {"3068": {"glass": ["Columbia", "Medina", "Pecos", "San Jacinto"], "prices": {"u_slab": 1415, "u_single": 2134, "u_double": 3751, "p_slab": 1846, "p_single": 3078, "p_double": 5639}}, "2880": {"glass": ["Columbia", "Pecos", "San Jacinto"], "prices": {"u_slab": 1622, "u_single": 2410, "u_double": 4268, "p_slab": 2139, "p_single": 3593, "p_double": 6634}}, "3080": {"glass": ["Columbia", "Pecos", "San Jacinto"], "prices": {"u_slab": 1622, "u_single": 2410, "u_double": 4268, "p_slab": 2139, "p_single": 3593, "p_double": 6634}}}}, {"name": "Arch Top Arch 1/2 Lite Decorative (Vendor Frame)", "page": "49", "shaped": true, "sizes": {"3080": {"glass": ["Bowie Patina", "Kerrville Patina", "Mason Patina"], "prices": {"u_slab": 1812, "u_single": 3202, "u_double": 0, "p_slab": 2329, "p_single": 4185, "p_double": 0}}}}, {"name": "2 Panel Square VG", "page": "50", "speakeasy": true, "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 777, "u_single": 1496, "u_double": 2475, "p_slab": 1208, "p_single": 2440, "p_double": 4363}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 880, "u_single": 1668, "u_double": 2784, "p_slab": 1397, "p_single": 2851, "p_double": 5150}}}}, {"name": "2 Panel Arch VG", "page": "50", "speakeasy": true, "sizes": {"2880": {"glass": ["Solid Panel"], "prices": {"u_slab": 880, "u_single": 1668, "u_double": 2784, "p_slab": 1397, "p_single": 2851, "p_double": 5150}}, "3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 777, "u_single": 1496, "u_double": 2475, "p_slab": 1208, "p_single": 2440, "p_double": 4363}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 880, "u_single": 1668, "u_double": 2784, "p_slab": 1397, "p_single": 2851, "p_double": 5150}}}}, {"name": "Arch Top 2 Panel Arch VG (Vendor Frame)", "page": "52", "shaped": true, "speakeasy": true, "sizes": {"2880": {"glass": ["Solid Panel"], "prices": {"u_slab": 1035, "u_single": 2425, "u_double": 0, "p_slab": 1552, "p_single": 3408, "p_double": 0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 1035, "u_single": 2425, "u_double": 0, "p_slab": 1552, "p_single": 3408, "p_double": 0}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 1260, "u_single": 3046, "u_double": 0, "p_slab": 1864, "p_single": 4168, "p_double": 0}}}}, {"name": "Circle Top 2 Panel VG (Vendor Frame)", "page": "52", "shaped": true, "speakeasy": true, "sizes": {"3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 1277, "u_single": 2856, "u_double": 0, "p_slab": 1794, "p_single": 3839, "p_double": 0}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 1501, "u_single": 3225, "u_double": 0, "p_slab": 2105, "p_single": 4347, "p_double": 0}}}}, {"name": "Circle Panel 2 Panel VG (Vendor Frame)", "page": "52", "shaped": true, "speakeasy": true, "sizes": {"3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 949, "u_single": 1737, "u_double": 2922, "p_slab": 1466, "p_single": 2920, "p_double": 5288}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 1173, "u_single": 2004, "u_double": 3413, "p_slab": 1777, "p_single": 3351, "p_double": 6107}}}}, {"name": "Square Top Plank VG", "page": "53", "sizes": {"3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 828, "u_single": 1616, "u_double": 2680, "p_slab": 1345, "p_single": 2799, "p_double": 5046}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 984, "u_single": 1815, "u_double": 3035, "p_slab": 1588, "p_single": 3162, "p_double": 5729}}}}, {"name": "Arch Top Plank VG (Vendor Frame)", "page": "53", "shaped": true, "sizes": {"3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 984, "u_single": 2374, "u_double": 0, "p_slab": 1501, "p_single": 3357, "p_double": 0}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 1156, "u_single": 2942, "u_double": 0, "p_slab": 1760, "p_single": 4064, "p_double": 0}}}}, {"name": "Circle Top Plank VG (Vendor Frame)", "page": "53", "shaped": true, "sizes": {"3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 1018, "u_single": 2597, "u_double": 0, "p_slab": 1535, "p_single": 3580, "p_double": 0}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 1191, "u_single": 2915, "u_double": 0, "p_slab": 1795, "p_single": 4037, "p_double": 0}}}}, {"name": "3/4 Lite Iron Grille (Avignon/Barcelona/Balfour/Berkley/Cordoba/Hammond/Santiago/Sienna)", "page": "55", "sizes": {"3068": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Stippolyte"], "prices": {"u_slab": 1667, "u_single": 2386, "u_double": 4255, "p_slab": 2098, "p_single": 3330, "p_double": 6143}}, "2880": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Stippolyte"], "prices": {"u_slab": 1946, "u_single": 2734, "u_double": 4916, "p_slab": 2463, "p_single": 3917, "p_double": 7282}}, "3080": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Stippolyte"], "prices": {"u_slab": 1946, "u_single": 2734, "u_double": 4916, "p_slab": 2463, "p_single": 3917, "p_double": 7282}}, "3680": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Stippolyte"], "prices": {"u_slab": 2346, "u_single": 3177, "u_double": 5759, "p_slab": 2950, "p_single": 4524, "p_double": 8453}}}}], "Barn Doors": [{"name": "Half-X Plank", "page": "58", "barn": true, "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 803, "u_single": 0, "u_double": 0, "p_slab": 1234, "p_single": 0, "p_double": 0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 906, "u_single": 0, "u_double": 0, "p_slab": 1423, "p_single": 0, "p_double": 0}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 992, "u_single": 0, "u_double": 0, "p_slab": 1596, "p_single": 0, "p_double": 0}}}}, {"name": "Full-X Plank", "page": "58", "barn": true, "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 803, "u_single": 0, "u_double": 0, "p_slab": 1234, "p_single": 0, "p_double": 0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 906, "u_single": 0, "u_double": 0, "p_slab": 1423, "p_single": 0, "p_double": 0}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 992, "u_single": 0, "u_double": 0, "p_slab": 1596, "p_single": 0, "p_double": 0}}}}, {"name": "Double-X Plank", "page": "58", "barn": true, "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 872, "u_single": 0, "u_double": 0, "p_slab": 1303, "p_single": 0, "p_double": 0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 992, "u_single": 0, "u_double": 0, "p_slab": 1509, "p_single": 0, "p_double": 0}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 1079, "u_single": 0, "u_double": 0, "p_slab": 1683, "p_single": 0, "p_double": 0}}}}, {"name": "Half-Z Plank", "page": "58", "barn": true, "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 759, "u_single": 0, "u_double": 0, "p_slab": 1190, "p_single": 0, "p_double": 0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 872, "u_single": 0, "u_double": 0, "p_slab": 1389, "p_single": 0, "p_double": 0}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 941, "u_single": 0, "u_double": 0, "p_slab": 1545, "p_single": 0, "p_double": 0}}}}, {"name": "Barn Plank", "page": "58", "barn": true, "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 759, "u_single": 0, "u_double": 0, "p_slab": 1190, "p_single": 0, "p_double": 0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 872, "u_single": 0, "u_double": 0, "p_slab": 1389, "p_single": 0, "p_double": 0}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 941, "u_single": 0, "u_double": 0, "p_slab": 1545, "p_single": 0, "p_double": 0}}}}, {"name": "Double-Z Plank", "page": "58", "barn": true, "sizes": {"3068": {"glass": ["Solid Panel"], "prices": {"u_slab": 803, "u_single": 0, "u_double": 0, "p_slab": 1234, "p_single": 0, "p_double": 0}}, "3080": {"glass": ["Solid Panel"], "prices": {"u_slab": 906, "u_single": 0, "u_double": 0, "p_slab": 1423, "p_single": 0, "p_double": 0}}, "3680": {"glass": ["Solid Panel"], "prices": {"u_slab": 992, "u_single": 0, "u_double": 0, "p_slab": 1596, "p_single": 0, "p_double": 0}}}}]}, "wood_sidelites": [{"name": "1268 Full Lite Sidelite", "page": "9", "sizes": {"1268": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Satin"], "prices": {"u_slab": 858, "u_single": 1361, "u_double": 1361, "p_slab": 1160, "p_single": 2022, "p_double": 2022}}}}, {"name": "1280 Full Lite Sidelite", "page": "9", "sizes": {"1280": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Satin"], "prices": {"u_slab": 962, "u_single": 1514, "u_double": 1514, "p_slab": 1324, "p_single": 2342, "p_double": 2342}}}}, {"name": "1068 3/4 Lite Sidelite", "page": "21", "sizes": {"1068": {"glass": ["Clear Low E"], "prices": {"u_slab": 383, "u_single": 886, "u_double": 886, "p_slab": 685, "p_single": 1547, "p_double": 1547}}}}, {"name": "1080 3/4 Lite Sidelite", "page": "21", "sizes": {"1080": {"glass": ["Clear Low E"], "prices": {"u_slab": 423, "u_single": 975, "u_double": 975, "p_slab": 785, "p_single": 1803, "p_double": 1803}}}}, {"name": "3/4 Lite Sidelite Decorative (Columbia/Medina/Pecos/San Jacinto)", "page": "29", "sizes": {"1268": {"glass": ["Columbia", "Medina", "Pecos", "San Jacinto"], "prices": {"u_slab": 946, "u_single": 1449, "u_double": 1449, "p_slab": 1248, "p_single": 2110, "p_double": 2110}}, "1280": {"glass": ["Columbia", "Pecos", "San Jacinto"], "prices": {"u_slab": 1084, "u_single": 1636, "u_double": 1636, "p_slab": 1446, "p_single": 2464, "p_double": 2464}}}}, {"name": "3/4 Lite Sidelite Iron Grille", "page": "38", "sizes": {"1268": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Stippolyte"], "prices": {"u_slab": 1156, "u_single": 1659, "u_double": 1659, "p_slab": 1458, "p_single": 2320, "p_double": 2320}}, "1280": {"glass": ["Clear Low E", "Flemish", "Rain", "Reeded", "Stippolyte"], "prices": {"u_slab": 1308, "u_single": 1860, "u_double": 1860, "p_slab": 1670, "p_single": 2688, "p_double": 2688}}}}], "barn_hardware": [{"name": "Top Mount Strap Kit (Matte Black)", "list": 561}, {"name": "Top Mount Strap Kit (Stainless)", "list": 665}, {"name": "Straight Strap Kit (Matte Black)", "list": 561}, {"name": "Straight Strap Kit (Stainless)", "list": 665}, {"name": "Bent Strap Kit (Matte Black)", "list": 561}, {"name": "Bent Strap Kit (Stainless)", "list": 665}, {"name": "78\" Single Bypass Bracket Kit (Matte Black)", "list": 182}, {"name": "78\" Single Bypass Bracket Kit (Stainless)", "list": 345}, {"name": "96\" Single Bypass Bracket Kit (Matte Black)", "list": 216}, {"name": "96\" Single Bypass Bracket Kit (Stainless)", "list": 414}, {"name": "BD450 Handle Kit (Matte Black)", "list": 26}, {"name": "BD450 Handle Kit (Stainless)", "list": 37}, {"name": "BDH001 Handle Kit (Black)", "list": 28}, {"name": "BDSH001 Handle Kit (Stainless)", "list": 35}, {"name": "BD460 Flush Pull Kit (Matte Black)", "list": 121}, {"name": "Easy Clip Soft Close Kit 44-88 lbs (Matte Black)", "list": 40}, {"name": "Easy Clip Soft Close Kit 88-132 lbs (Matte Black)", "list": 138}, {"name": "BD250 Privacy Latch Kit (Matte Black)", "list": 18}, {"name": "BD250 Privacy Latch Kit (Stainless)", "list": 23}, {"name": "BD750 Single Floor Guide Kit", "list": 4}]};
 
-        const defaultDBJSON = {
-  "fiberglass": {
-    "Mahogany": [
-      {
-        "name": "Contemporary 1 Lite Vertical",
-        "page": "4",
-        "sizes": {
-          "3080": {
-            "glass": [
-              "Clear Low E",
-              "Reeded",
-              "Sandblast",
-              "Satin"
-            ],
-            "prices": {
-              "u_slab": 1728.0,
-              "u_single": 2516.0,
-              "u_double": 4480.0,
-              "p_slab": 2334.0,
-              "p_single": 3828.0,
-              "p_double": 7104.0
-            }
-          }
+        let appSettings = {
+            multiplier: 0.48,
+            labor: { std: 450, sl: 650, dbl: 800 },
+            addons: { maskList: 207, grilleList: 440 },
+            db: defaultDBJSON
+        };
+
+        let quoteItems = [];
+        let currentMaterial = 'fiberglass';
+        let currentCollection = 'Mahogany';
+        let currentlySelectedModel = null;
+        let currentlySelectedSidelite = null;
+
+        function decodeSize(code) {
+            const map = {
+                '1068': { w: 12, h: 80, label: `1'0" x 6'8"` },
+                '1080': { w: 12, h: 96, label: `1'0" x 8'0"` },
+                '1268': { w: 14, h: 80, label: `1'2" x 6'8"` },
+                '1280': { w: 14, h: 96, label: `1'2" x 8'0"` },
+                '2068': { w: 24, h: 80, label: `2'0" x 6'8"` },
+                '2080': { w: 24, h: 96, label: `2'0" x 8'0"` },
+                '2468': { w: 28, h: 80, label: `2'4" x 6'8"` },
+                '2668': { w: 30, h: 80, label: `2'6" x 6'8"` },
+                '2680': { w: 30, h: 96, label: `2'6" x 8'0"` },
+                '2868': { w: 32, h: 80, label: `2'8" x 6'8"` },
+                '2880': { w: 32, h: 96, label: `2'8" x 8'0"` },
+                '21068': { w: 34, h: 80, label: `2'10" x 6'8"` },
+                '21080': { w: 34, h: 96, label: `2'10" x 8'0"` },
+                '3068': { w: 36, h: 80, label: `3'0" x 6'8"` },
+                '3080': { w: 36, h: 96, label: `3'0" x 8'0"` },
+                '3280': { w: 32, h: 96, label: `2'8" x 8'0"` },
+                '3680': { w: 42, h: 96, label: `3'6" x 8'0"` },
+                '5080': { w: 60, h: 96, label: `5'0" x 8'0"` },
+                '5480': { w: 64, h: 96, label: `5'4" x 8'0"` },
+                '6080': { w: 72, h: 96, label: `6'0" x 8'0"` }
+            };
+            return map[code] || { w: 36, h: 80, label: code };
         }
-      },
-      {
-        "name": "Contemporary 3 Lite",
-        "page": "4",
-        "sizes": {
-          "3068": {
-            "glass": [
-              "Clear Low E",
-              "Rain",
-              "Reeded",
-              "Satin"
-            ],
-            "prices": {
-              "u_slab": 1485.0,
-              "u_single": 2204.0,
-              "u_double": 3891.0,
-              "p_slab": 2005.0,
-              "p_single": 3270.0,
-              "p_double": 6023.0
+
+        window.onload = () => {
+            loadSettings();
+            setMaterial('fiberglass');
+            document.getElementById('prop-date').innerText = new Date().toISOString().split('T')[0];
+            updateLaborDropdowns();
+        };
+
+        function loadSettings() {
+            const saved = localStorage.getItem('simplyDoorsPricingDB_2026');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                appSettings.multiplier = parsed.multiplier || 0.48;
+                appSettings.labor = parsed.labor || appSettings.labor;
+                appSettings.addons = parsed.addons || appSettings.addons;
+                if(parsed.db) {
+                    appSettings.db = parsed.db;
+                }
             }
-          },
-          "3080": {
-            "glass": [
-              "Clear Low E",
-              "Flemish",
-              "Rain",
-              "Reeded",
-              "Satin"
-            ],
-            "prices": {
-              "u_slab": 1728.0,
-              "u_single": 2516.0,
-              "u_double": 4480.0,
-              "p_slab": 2334.0,
-              "p_single": 3828.0,
-              "p_double": 7104.0
-            }
-          }
+            renderSettingsUI();
+            populateEditModels(); 
         }
-      },
-      {
-        "name": "Contemporary 4 Lite",
-        "page": "5",
-        "sizes": {
-          "3068": {
-            "glass": [
-              "Clear Low E",
-              "Rain",
-              "Reeded",
-              "Sandblast",
-              "Satin"
-            ],
-            "prices": {
-              "u_slab": 1485.0,
-              "u_single": 2204.0,
-              "u_double": 3891.0,
-              "p_slab": 2005.0,
-              "p_single": 3270.0,
-              "p_double": 6023.0
-            }
-          }
+
+        function saveSettings() {
+            appSettings.multiplier = parseFloat(document.getElementById('set-multiplier').value);
+            appSettings.labor.std = parseFloat(document.getElementById('set-labor-std').value);
+            appSettings.labor.sl = parseFloat(document.getElementById('set-labor-sl').value);
+            appSettings.labor.dbl = parseFloat(document.getElementById('set-labor-dbl').value);
+            appSettings.addons.maskList = parseFloat(document.getElementById('set-addon-mask').value);
+            appSettings.addons.grilleList = parseFloat(document.getElementById('set-addon-grille').value);
+
+            localStorage.setItem('simplyDoorsPricingDB_2026', JSON.stringify({
+                multiplier: appSettings.multiplier,
+                labor: appSettings.labor,
+                addons: appSettings.addons,
+                db: appSettings.db 
+            }));
+            
+            const toast = document.getElementById('toast');
+            toast.classList.remove('opacity-0');
+            setTimeout(() => { toast.classList.add('opacity-0'); }, 3000);
+
+            updateLaborDropdowns();
+            populateOptions(); 
         }
-      },
-      {
-        "name": "Contemporary 5 Lite",
-        "page": "5",
-        "sizes": {
-          "3080": {
-            "glass": [
-              "Clear Low E",
-              "Flemish",
-              "Rain",
-              "Reeded",
-              "Sandblast",
-              "Satin"
-            ],
-            "prices": {
-              "u_slab": 1728.0,
-              "u_single": 2516.0,
-              "u_double": 4480.0,
-              "p_slab": 2334.0,
-              "p_single": 3828.0,
-              "p_double": 7104.0
-            }
-          },
-          "3680": {
-            "glass": [
-              "Clear Low E",
-              "Flemish",
-              "Rain",
-              "Reeded",
-              "Sandblast",
-              "Satin"
-            ],
-            "prices": {
-              "u_slab": 1938.0,
-              "u_single": 2769.0,
-              "u_double": 4943.0,
-              "p_slab": 2633.0,
-              "p_single": 4257.0,
-              "p_double": 7919.0
-            }
-          }
+
+        function renderSettingsUI() {
+            document.getElementById('set-multiplier').value = appSettings.multiplier;
+            document.getElementById('set-labor-std').value = appSettings.labor.std;
+            document.getElementById('set-labor-sl').value = appSettings.labor.sl;
+            document.getElementById('set-labor-dbl').value = appSettings.labor.dbl;
+            document.getElementById('set-addon-mask').value = appSettings.addons.maskList;
+            document.getElementById('set-addon-grille').value = appSettings.addons.grilleList;
         }
-      },
-      {
-        "name": "Contemporary 5 Lite Horizontal",
-        "page": "6",
-        "sizes": {
-          "3068": {
-            "glass": [
-              "Clear Low E",
-              "Rain",
-              "Sandblast",
-              "Satin"
-            ],
-            "prices": {
-              "u_slab": 1485.0,
-              "u_single": 2204.0,
-              "u_double": 3891.0,
-              "p_slab": 2005.0,
-              "p_single": 3270.0,
-              "p_double": 6023.0
-            }
-          }
+
+        function setMaterial(mat) {
+            currentMaterial = mat;
+            document.getElementById('mat-fiberglass').className = mat === 'fiberglass' 
+                ? 'material-btn active p-3 border-2 rounded-lg text-center font-bold text-sm transition-all flex items-center justify-center'
+                : 'material-btn p-3 border-2 border-slate-200 text-slate-700 rounded-lg text-center font-bold text-sm transition-all flex items-center justify-center';
+            
+            document.getElementById('mat-wood').className = mat === 'wood' 
+                ? 'material-btn active p-3 border-2 rounded-lg text-center font-bold text-sm transition-all flex items-center justify-center'
+                : 'material-btn p-3 border-2 border-slate-200 text-slate-700 rounded-lg text-center font-bold text-sm transition-all flex items-center justify-center';
+
+            renderCollectionGrid();
         }
-      },
-      {
-        "name": "Contemporary 6 lite Horiztonal",
-        "page": "6",
-        "sizes": {
-          "3080": {
-            "glass": [
-              "Clear Low E",
-              "Rain",
-              "Sandblast",
-              "Satin"
-            ],
-            "prices": {
-              "u_slab": 1728.0,
-              "u_single": The updated web application for the **SimplyDoors Quoting System - Hoelscher 2026** has been generated and exported to Google Drive.
 
-### Scope & Purpose of Updates
+        function renderCollectionGrid() {
+            const grid = document.getElementById('collection-grid');
+            grid.innerHTML = '';
+            
+            const collections = Object.keys(appSettings.db[currentMaterial]);
+            collections.forEach((col, idx) => {
+                const btn = document.createElement('button');
+                btn.onclick = () => setCollection(col);
+                btn.id = 'col-' + col.replace(/\s+/g, '');
+                btn.className = 'collection-card p-4 border-2 border-slate-200 rounded-lg text-left transition-colors' + (idx === 0 ? ' active' : '');
+                
+                let sub = currentMaterial === 'wood' ? 'Solid Hardwood' : 'Fiberglass Grain';
+                if(col === 'Barn Doors') sub = 'Native Indonesian Hardwood';
+                
+                btn.innerHTML = `
+                    <h4 class="font-bold text-sm mb-1 text-slate-800">${col}</h4>
+                    <p class="text-xs text-slate-500">${sub}</p>
+                `;
+                grid.appendChild(btn);
+            });
 
-1. **Primary Material Toggle (Step 1)**:
-   - Added a top-level toggle allowing sales reps to switch between **Fiberglass Entry Doors** and **Solid Hardwood Doors**.
+            currentCollection = collections[0];
+            populateModelDropdown();
+        }
 
-2. **Hardwood Collections & Species**:
-   - Added **Mahogany Wood**, **Knotty Alder Wood**, and **Barn Doors** alongside existing fiberglass collections.
+        function setCollection(collection) {
+            currentCollection = collection;
+            
+            const collections = Object.keys(appSettings.db[currentMaterial]);
+            collections.forEach(col => {
+                const el = document.getElementById('col-' + col.replace(/\s+/g, ''));
+                if(el) el.classList.remove('active');
+            });
+            const activeEl = document.getElementById('col-' + collection.replace(/\s+/g, ''));
+            if(activeEl) activeEl.classList.add('active');
 
-3. **Complete Wood Pricing & Catalog Database**:
-   - Integrated models, size options, and list prices from the 2026 Hardwood Catalog and Price List across Contemporary, True Divided Lite (TDL), Simulated Divided Lite (SDL), Legacy & Panel doors, Wrought Iron Grilles, and Barn Doors.
+            populateModelDropdown();
+        }
 
-4. **Wood Stain Finishes (Step 3)**:
-   - Integrated Hoelscher stain selections (`Aged Barrel`, `Ebony`, `English Chestnut`, `Jacobean`, `Red Oak`, `Special Walnut`).
+        function populateModelDropdown() {
+            const modelSelect = document.getElementById('doorModel');
+            modelSelect.innerHTML = '';
+            
+            appSettings.db[currentMaterial][currentCollection].forEach((model, index) => {
+                const opt = document.createElement('option');
+                opt.value = index;
+                const pageLabel = model.page ? ` (Pg. ${model.page})` : '';
+                opt.innerText = `${model.name}${pageLabel}`;
+                modelSelect.appendChild(opt);
+            });
 
-5. **Shaped Top Door Handling (Step 2)**:
-   - Arch Top and Circle Top models automatically activate a "Vendor Prehang Required" notice.
+            populateFinishDropdown();
+            populateOptions();
+        }
 
-6. **Prehang Inclusions & Casing Adders (Step 4 & 5)**:
-   - Configured prehang calculations so exterior wood frames up to 6-9/16" are included in the prehang list price.
-   - Added **Interior Casing** and **1x4 Casing** prehang adders under Step 5.
+        function populateFinishDropdown() {
+            const finishSelect = document.getElementById('doorFinish');
+            finishSelect.innerHTML = '';
 
-7. **Barn Door Workflow**:
-   - Selecting Barn Doors automatically locks the system layout to "Slab Only" and enables Barn Door Hardware Kits (Strap Kits, Bypass Bracket Kits, Handles, Flush Pulls, Soft Close Kits, Privacy Latches, Floor Guides).
+            if (currentMaterial === 'wood') {
+                const woodStains = [
+                    "Unfinished (Slab/Prehung)",
+                    "Prefinished - Aged Barrel",
+                    "Prefinished - Ebony",
+                    "Prefinished - English Chestnut",
+                    "Prefinished - Jacobean",
+                    "Prefinished - Red Oak",
+                    "Prefinished - Special Walnut"
+                ];
+                woodStains.forEach(stain => {
+                    const opt = document.createElement('option');
+                    opt.value = stain;
+                    opt.innerText = stain;
+                    finishSelect.appendChild(opt);
+                });
+            } else {
+                const fgFinishes = [
+                    "Unfinished (Slab/Prehung)",
+                    "Prefinished - Midnight (M)",
+                    "Prefinished - Slate (S)",
+                    "Prefinished - Bourbon (B)",
+                    "Prefinished - Fox (F)",
+                    "Black Brushed Smooth (Smooth Only)"
+                ];
+                fgFinishes.forEach(f => {
+                    const opt = document.createElement('option');
+                    opt.value = f;
+                    opt.innerText = f;
+                    finishSelect.appendChild(opt);
+                });
+            }
+        }
 
----
+        function populateOptions() {
+            const modelIndex = document.getElementById('doorModel').value;
+            if (modelIndex === '' || !appSettings.db[currentMaterial][currentCollection]) return;
+            
+            currentlySelectedModel = appSettings.db[currentMaterial][currentCollection][modelIndex];
+            if (!currentlySelectedModel) return;
 
-### Google Drive Links
+            const shapedNotice = document.getElementById('shapedTopNotice');
+            if (currentlySelectedModel.shaped) {
+                shapedNotice.classList.remove('hidden');
+            } else {
+                shapedNotice.classList.add('hidden');
+            }
 
-You can access and download the updated application files directly on Google Drive:
-- [SimplyDoors Quoting System Hoelscher 2026 (HTML File)](https://docs.google.com/document/d/1XMfaTjhu_pI7rCc2qKGor-BFlwckYe-51Pi16X1h7DA/edit?usp=drivesdk&ouid=116137011854013350187)
-- [SimplyDoors Quoting System Hoelscher 2026 (Source Text File)](https://docs.google.com/document/d/1g4PJZRmcj4s-x_V3cJ-lEFLuJn9alMvXJBLmSJohCeM/edit?usp=drivesdk&ouid=116137011854013350187)
+            const isBarn = currentlySelectedModel.barn || currentCollection === 'Barn Doors';
+            const barnContainer = document.getElementById('barnHardwareContainer');
+            
+            if (isBarn) {
+                barnContainer.classList.remove('hidden');
+                document.getElementById('systemLayout').value = 'Slab Only';
+                document.getElementById('systemLayout').disabled = true;
+                populateBarnHardware();
+            } else {
+                barnContainer.classList.add('hidden');
+                document.getElementById('systemLayout').disabled = false;
+            }
+            
+            const sizeSelect = document.getElementById('doorSize');
+            sizeSelect.innerHTML = '';
+            
+            const sizes = Object.keys(currentlySelectedModel.sizes);
+            sizes.forEach(sizeCode => {
+                const opt = document.createElement('option');
+                opt.value = sizeCode;
+                const dims = decodeSize(sizeCode);
+                opt.innerText = `${dims.label} (${dims.w}" x ${dims.h}")`;
+                sizeSelect.appendChild(opt);
+            });
 
-http://googleusercontent.com/action_card_content/7a3f392d-643f-40bc-8655-0489219fdb48
-http://googleusercontent.com/action_card_content/8e456c07-b5e0-4bcf-8d43-472bd8948e4e
+            const addOnContainer = document.getElementById('addOnContainer');
+            const addOnsSelect = document.getElementById('addOns');
+            addOnsSelect.innerHTML = '<option value="0">None</option>';
+            
+            if (currentlySelectedModel.speakeasy || currentlySelectedModel.name.includes("Speakeasy")) {
+                addOnsSelect.innerHTML += `
+                    <option value="maskList">Standard Iron Mask (+$${appSettings.addons.maskList} List)</option>
+                    <option value="maskList">Balfour Iron Mask (+$${appSettings.addons.maskList} List)</option>
+                    <option value="maskWindsor">Windsor Iron Mask (+$242 List)</option>
+                    <option value="speakeasyKit">Speakeasy Glass/Wood Kit (+$345 List)</option>
+                    <option value="clavos">Clavos (+$25 List ea.)</option>
+                    <option value="straps">Straps 14"/17" (+$76 List ea.)</option>
+                `;
+                addOnContainer.style.display = 'block';
+            } else if (currentlySelectedModel.name.includes("3/4 Lite") && currentMaterial === 'fiberglass') {
+                addOnsSelect.innerHTML += `
+                    <option value="grilleList">Full Wrought Iron Grille (+$${appSettings.addons.grilleList} List)</option>
+                `;
+                addOnContainer.style.display = 'block';
+            } else {
+                addOnContainer.style.display = 'none';
+            }
+
+            const casingAdderContainer = document.getElementById('casingAdderContainer');
+            if (currentMaterial === 'wood' && !isBarn) {
+                casingAdderContainer.style.display = 'block';
+            } else {
+                casingAdderContainer.style.display = 'none';
+            }
+
+            handleSizeChange();
+        }
+
+        function populateBarnHardware() {
+            const barnSelect = document.getElementById('barnHardware');
+            barnSelect.innerHTML = '<option value="0">None (Slab Only)</option>';
+            appSettings.db.barn_hardware.forEach((item, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.innerText = `${item.name} (+$${item.list} List)`;
+                barnSelect.appendChild(opt);
+            });
+        }
+
+        function handleSizeChange() {
+            if (!currentlySelectedModel) return;
+            const sizeCode = document.getElementById('doorSize').value;
+            const sizeData = currentlySelectedModel.sizes[sizeCode];
+            if (!sizeData) return;
+            
+            const validGlass = sizeData.glass.filter(g => g !== 'nan' && g !== 'None' && g !== 'Configured');
+            const glassContainer = document.getElementById('glassContainer');
+            const glassSelect = document.getElementById('doorGlass');
+            glassSelect.innerHTML = '';
+
+            if (validGlass.length > 0) {
+                glassContainer.style.display = 'block';
+                validGlass.forEach(g => {
+                    const opt = document.createElement('option');
+                    opt.value = g;
+                    opt.innerText = g;
+                    glassSelect.appendChild(opt);
+                });
+            } else {
+                glassContainer.style.display = 'none';
+                const opt = document.createElement('option');
+                opt.value = 'Solid Panel';
+                opt.innerText = 'Solid Panel';
+                glassSelect.appendChild(opt);
+            }
+
+            runQuoteEngine();
+        }
+
+        function handleLayoutChange() {
+            const layout = document.getElementById('systemLayout').value;
+            const slContainer = document.getElementById('slContainer');
+            
+            if (layout.includes('SL')) {
+                slContainer.classList.remove('hidden');
+                slContainer.classList.add('grid');
+                
+                const slModelSelect = document.getElementById('slModel');
+                slModelSelect.innerHTML = '';
+                const sideliteDb = currentMaterial === 'wood' ? appSettings.db.wood_sidelites : appSettings.db.fiberglass_sidelites;
+                sideliteDb.forEach((sl, index) => {
+                    const opt = document.createElement('option');
+                    opt.value = index;
+                    opt.innerText = sl.name;
+                    slModelSelect.appendChild(opt);
+                });
+                
+                populateSideliteSizes();
+            } else {
+                slContainer.classList.add('hidden');
+                slContainer.classList.remove('grid');
+                currentlySelectedSidelite = null;
+                runQuoteEngine();
+            }
+        }
+
+        function populateSideliteSizes() {
+            const index = document.getElementById('slModel').value;
+            const sideliteDb = currentMaterial === 'wood' ? appSettings.db.wood_sidelites : appSettings.db.fiberglass_sidelites;
+            currentlySelectedSidelite = sideliteDb[index];
+            if(!currentlySelectedSidelite) return;
+
+            const slSizeSelect = document.getElementById('slSize');
+            slSizeSelect.innerHTML = '';
+            
+            const sizes = Object.keys(currentlySelectedSidelite.sizes);
+            sizes.forEach(sizeCode => {
+                const opt = document.createElement('option');
+                opt.value = sizeCode;
+                const dims = decodeSize(sizeCode);
+                opt.innerText = `${dims.label}`;
+                slSizeSelect.appendChild(opt);
+            });
+            
+            populateSideliteGlass();
+        }
+
+        function populateSideliteGlass() {
+            if(!currentlySelectedSidelite) return;
+            const sizeCode = document.getElementById('slSize').value;
+            const sizeData = currentlySelectedSidelite.sizes[sizeCode];
+            if(!sizeData) return;
+
+            const slGlassSelect = document.getElementById('slGlass');
+            slGlassSelect.innerHTML = '';
+            
+            sizeData.glass.forEach(g => {
+                const opt = document.createElement('option');
+                opt.value = g;
+                opt.innerText = g;
+                slGlassSelect.appendChild(opt);
+            });
+
+            runQuoteEngine();
+        }
+
+        function formatDimStr(dim) {
+            let whole = Math.floor(dim);
+            let frac = dim % 1;
+            let fracStr = '';
+            if (frac === 0.5) fracStr = '1/2"';
+            else if (frac === 0.25) fracStr = '1/4"';
+            else if (frac === 0.75) fracStr = '3/4"';
+            else if (frac === 0.125) fracStr = '1/8"';
+            else if (frac === 0.875) fracStr = '7/8"';
+            
+            return fracStr === '' ? `${whole}"` : `${whole} ${fracStr}`;
+        }
+
+        function runQuoteEngine() {
+            if (!currentlySelectedModel) return;
+            
+            const sizeCode = document.getElementById('doorSize').value;
+            const dims = decodeSize(sizeCode);
+            const nomW = dims.w;
+            const nomH = dims.h;
+            
+            const sizeData = currentlySelectedModel.sizes[sizeCode];
+            if (!sizeData) return;
+            const pricingData = sizeData.prices;
+            
+            const finish = document.getElementById('doorFinish').value;
+            const isUnfinished = finish.includes('Unfinished');
+            
+            const layout = document.getElementById('systemLayout').value;
+            const isDouble = layout.includes('Double');
+            const isSlabOnly = layout === 'Slab Only';
+            const isBarn = currentlySelectedModel.barn || currentCollection === 'Barn Doors';
+            
+            const jamb = document.getElementById('jambDepth').value;
+            const margin = parseFloat(document.getElementById('marginSlider').value) / 100;
+
+            let addOnsNet = 0;
+            let addonsDesc = '';
+
+            if (isBarn) {
+                const barnHwSelect = document.getElementById('barnHardware');
+                if (barnHwSelect.value !== "0") {
+                    const hwIdx = parseInt(barnHwSelect.value);
+                    const hwItem = appSettings.db.barn_hardware[hwIdx];
+                    if(hwItem) {
+                        addOnsNet = hwItem.list * appSettings.multiplier;
+                        addonsDesc = hwItem.name;
+                    }
+                }
+            } else {
+                const addOnsSelect = document.getElementById('addOns');
+                if (document.getElementById('addOnContainer').style.display !== 'none' && addOnsSelect.value !== "0") {
+                    let addOnListVal = 0;
+                    if (addOnsSelect.value === 'maskList') addOnListVal = appSettings.addons.maskList;
+                    else if (addOnsSelect.value === 'maskWindsor') addOnListVal = 242;
+                    else if (addOnsSelect.value === 'speakeasyKit') addOnListVal = 345;
+                    else if (addOnsSelect.value === 'clavos') addOnListVal = 25;
+                    else if (addOnsSelect.value === 'straps') addOnListVal = 76;
+                    else if (addOnsSelect.value === 'grilleList') addOnListVal = appSettings.addons.grilleList;
+                    
+                    addOnsNet += (addOnListVal * appSettings.multiplier);
+                    addonsDesc = addOnsSelect.options[addOnsSelect.selectedIndex].text.split(' (+')[0];
+                }
+
+                const casingSelect = document.getElementById('casingAdder');
+                if (currentMaterial === 'wood' && casingSelect.value !== "0") {
+                    let casingListVal = 0;
+                    if (casingSelect.value === 'int_casing') casingListVal = currentlySelectedModel.shaped ? 151 : 83;
+                    else if (casingSelect.value === '1x4_casing') casingListVal = currentlySelectedModel.shaped ? 177 : 135;
+                    
+                    addOnsNet += (casingListVal * appSettings.multiplier);
+                    if(addonsDesc) addonsDesc += `, ${casingSelect.options[casingSelect.selectedIndex].text}`;
+                    else addonsDesc = casingSelect.options[casingSelect.selectedIndex].text;
+                }
+            }
+                            
+            const laborSelect = document.getElementById('installLabor');
+            let laborNet = 0;
+            let laborDesc = '';
+            if(laborSelect.value !== "0") {
+                laborNet = parseFloat(appSettings.labor[laborSelect.value]);
+                laborDesc = laborSelect.options[laborSelect.selectedIndex].text.split(' (+')[0];
+            }
+
+            const alertBox = document.getElementById('prehangAlert');
+            let jambDesc = '';
+            
+            let listPrice = 0;
+            if (isSlabOnly || isBarn) {
+                listPrice = isUnfinished ? pricingData.u_slab : pricingData.p_slab;
+                if(isDouble) listPrice *= 2;
+                alertBox.style.display = 'none';
+                jambDesc = isBarn ? "N/A (Barn Door - Slab Only)" : "N/A (Slab Only - No Frame)";
+                if (!isBarn) document.getElementById('doorHanding').value = "N/A (Slab)";
+            } else if (isDouble) {
+                listPrice = isUnfinished ? pricingData.u_double : pricingData.p_double;
+                alertBox.style.display = 'block';
+                if(currentMaterial === 'wood') {
+                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-emerald-50 border-emerald-200 text-emerald-800";
+                    alertBox.innerHTML = `<strong><i class="fas fa-tree mr-2"></i> HARDWOOD PREHANG INCLUDED</strong><br>Exterior Wood Frame up to 6-9/16" Included in Prehang Price.`;
+                    jambDesc = `Hoelscher Matching Hardwood Frame (${jamb}")`;
+                } else if(isUnfinished) {
+                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-amber-50 border-amber-200 text-amber-800";
+                    alertBox.innerHTML = `<strong><i class="fas fa-tools mr-2"></i> IN-HOUSE BUILD SELECTED</strong><br>Calculated using SimplyDoors Primed White Frame rates.`;
+                    jambDesc = `In-House Primed White (${jamb}")`;
+                } else {
+                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-blue-50 border-blue-200 text-blue-800";
+                    alertBox.innerHTML = `<strong><i class="fas fa-truck mr-2"></i> VENDOR PREHANG</strong><br>Calculated using Vendor Composite Frames.`;
+                    jambDesc = `Vendor Composite Frame (${jamb}")`;
+                }
+            } else {
+                listPrice = isUnfinished ? pricingData.u_single : pricingData.p_single;
+                alertBox.style.display = 'block';
+                if(currentMaterial === 'wood') {
+                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-emerald-50 border-emerald-200 text-emerald-800";
+                    alertBox.innerHTML = `<strong><i class="fas fa-tree mr-2"></i> HARDWOOD PREHANG INCLUDED</strong><br>Exterior Wood Frame up to 6-9/16" Included in Prehang Price.`;
+                    jambDesc = `Hoelscher Matching Hardwood Frame (${jamb}")`;
+                } else if(isUnfinished) {
+                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-amber-50 border-amber-200 text-amber-800";
+                    alertBox.innerHTML = `<strong><i class="fas fa-tools mr-2"></i> IN-HOUSE BUILD SELECTED</strong><br>Calculated using SimplyDoors Primed White Frame rates.`;
+                    jambDesc = `In-House Primed White (${jamb}")`;
+                } else {
+                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-blue-50 border-blue-200 text-blue-800";
+                    alertBox.innerHTML = `<strong><i class="fas fa-truck mr-2"></i> VENDOR PREHANG</strong><br>Calculated using Vendor Composite Frames.`;
+                    jambDesc = `Vendor Composite Frame (${jamb}")`;
+                }
+            }
+            
+            let slabNet = listPrice * appSettings.multiplier;
+            
+            if(currentMaterial === 'fiberglass' && isUnfinished && !isSlabOnly && jamb === '6 9/16') {
+                 slabNet += (10 * appSettings.multiplier);
+            }
+            
+            let sideliteNet = 0;
+            let slDesc = "";
+            let slQty = 0;
+            
+            if (layout.includes('SL') && currentlySelectedSidelite) {
+                const slSizeCode = document.getElementById('slSize').value;
+                const slData = currentlySelectedSidelite.sizes[slSizeCode] ? currentlySelectedSidelite.sizes[slSizeCode].prices : null;
+                if(slData) {
+                    const slGlass = document.getElementById('slGlass').value;
+                    slQty = layout.includes('2 SL') ? 2 : 1;
+                    
+                    let slListPrice = 0;
+                    if(isSlabOnly) {
+                        slListPrice = isUnfinished ? slData.u_slab : slData.p_slab;
+                    } else if (isDouble) {
+                        slListPrice = isUnfinished ? slData.u_double : slData.p_double;
+                    } else {
+                        slListPrice = isUnfinished ? slData.u_single : slData.p_single;
+                    }
+                    
+                    sideliteNet = (slListPrice * slQty) * appSettings.multiplier;
+                    slDesc = `${slQty}x ${currentlySelectedSidelite.name} (${slSizeCode}) - ${slGlass}`;
+                }
+            }
+
+            const totalDealerCost = slabNet + sideliteNet + addOnsNet + laborNet;
+            const retailPrice = totalDealerCost / (1 - margin);
+
+            document.getElementById('marginDisplay').innerText = `${(margin * 100).toFixed(0)}%`;
+            document.getElementById('costSlab').innerText = `$${slabNet.toFixed(2)}`;
+            
+            const slRow = document.getElementById('summary-sidelite-row');
+            if (sideliteNet > 0) {
+                slRow.style.display = 'flex';
+                document.getElementById('costSidelite').innerText = `$${sideliteNet.toFixed(2)}`;
+            } else {
+                slRow.style.display = 'none';
+            }
+            
+            document.getElementById('costPrehang').innerText = `Included in Unit Cost`;
+            
+            const summaryAddonsRow = document.getElementById('summary-addons-row');
+            if (addOnsNet > 0) {
+                summaryAddonsRow.style.display = 'flex';
+                document.getElementById('costAddons').innerText = `$${addOnsNet.toFixed(2)}`;
+            } else {
+                summaryAddonsRow.style.display = 'none';
+            }
+            
+            document.getElementById('costLabor').innerText = `$${laborNet.toFixed(2)}`;
+            document.getElementById('costTotal').innerText = `$${totalDealerCost.toFixed(2)}`;
+            document.getElementById('priceRetail').innerText = `$${retailPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+            let unitStr, roStr;
+
+            if (isSlabOnly || isBarn) {
+                let slabW = nomW - 0.25;
+                let slabH = nomH - 0.75;
+                if (isDouble) slabW = (nomW * 2) - 0.25; 
+                
+                if (slQty > 0) {
+                    const slW = decodeSize(document.getElementById('slSize').value).w - 0.25;
+                    slabW += (slW * slQty);
+                }
+                
+                unitStr = `${formatDimStr(slabW)} x ${formatDimStr(slabH)} (Net Slab Size)`;
+                roStr = isBarn ? "N/A (Barn Door)" : "N/A (Slab Only)";
+            } else {
+                let unitW = nomW + 1.75;
+                let unitH = nomH + 2.75;
+                
+                if (isDouble) unitW = (nomW * 2) + 2.625;
+                if (slQty > 0) {
+                    const slW = decodeSize(document.getElementById('slSize').value).w;
+                    unitW += (slW * slQty) + (1.5 * slQty);
+                }
+
+                const roW = unitW + 1.0;
+                const roH = unitH + 0.75;
+
+                unitStr = `${formatDimStr(unitW)} x ${formatDimStr(unitH)}`;
+                roStr = `${formatDimStr(roW)} x ${formatDimStr(roH)}`;
+            }
+
+            document.getElementById('sumUnitSize').innerText = unitStr;
+            document.getElementById('sumRO').innerText = roStr;
+
+            const glass = document.getElementById('glassContainer').style.display !== 'none' ? document.getElementById('doorGlass').value : 'Solid Panel';
+            const matCode = currentMaterial === 'wood' ? 'WD' : 'FG';
+            const sku = `SD-${matCode}-${currentCollection.substring(0,3).toUpperCase()}-${sizeCode}-${isDouble ? 'DBL' : 'SGL'}`;
+            document.getElementById('sku-display').innerText = `SKU: ${sku}`;
+
+            window.currentQuoteState = {
+                sku, unitStr, roStr, jambDesc, retailPrice, 
+                modelName: currentlySelectedModel.name, 
+                collection: `${currentMaterial === 'wood' ? 'Solid Wood' : 'Fiberglass'} - ${currentCollection}`,
+                layout, glass, finish, addonsDesc, laborDesc, slDesc
+            };
+        }
+
+        function addToQuote() {
+            if (!window.currentQuoteState) return;
+            const item = JSON.parse(JSON.stringify(window.currentQuoteState));
+            quoteItems.push(item);
+            updateCartUI();
+        }
+
+        function removeItem(index) {
+            quoteItems.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartContainer = document.getElementById('cart-container');
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            
+            document.getElementById('cart-count').innerText = quoteItems.length;
+
+            if(quoteItems.length === 0) {
+                cartContainer.classList.add('hidden');
+                document.getElementById('grandTotalRetail').innerText = "$0.00";
+                generateProposal();
+                return;
+            }
+            
+            cartContainer.classList.remove('hidden');
+            cartContainer.classList.add('flex');
+            let grandTotal = 0;
+            
+            quoteItems.forEach((item, index) => {
+                grandTotal += item.retailPrice;
+                cartItems.innerHTML += `
+                    <div class="flex justify-between items-center text-sm bg-slate-800 p-3 rounded shadow-sm border border-slate-700 mb-2">
+                        <div class="truncate pr-2">
+                            <div class="font-bold text-white">${item.sku}</div>
+                            <div class="text-xs text-slate-400 truncate w-48">${item.modelName}</div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="font-mono font-bold text-emerald-400 mr-4">$${item.retailPrice.toFixed(2)}</span>
+                            <button onclick="removeItem(${index})" class="text-slate-500 hover:text-red-400 transition-colors"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('grandTotalRetail').innerText = `$${grandTotal.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+            generateProposal();
+        }
+
+        function generateProposal() {
+            document.getElementById('prop-quote-num').innerText = document.getElementById('quoteNumber').value || 'TBD';
+            document.getElementById('prop-rep').innerText = document.getElementById('salesRep').value;
+            
+            document.getElementById('prop-cust-name').innerText = document.getElementById('custName').value || 'Customer Name';
+            document.getElementById('prop-cust-phone').innerText = document.getElementById('custPhone').value || 'Phone Number';
+            document.getElementById('prop-cust-address').innerText = document.getElementById('custAddress').value || 'Address';
+            
+            const tbody = document.getElementById('prop-tbody');
+            tbody.innerHTML = '';
+
+            let grandTotal = 0;
+
+            if (quoteItems.length === 0) {
+                if(window.currentQuoteState) {
+                    renderProposalRow(window.currentQuoteState, tbody);
+                    grandTotal = window.currentQuoteState.retailPrice;
+                }
+            } else {
+                quoteItems.forEach(item => {
+                    renderProposalRow(item, tbody);
+                    grandTotal += item.retailPrice;
+                });
+            }
+
+            document.getElementById('prop-total').innerText = `$${grandTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        }
+
+        function renderProposalRow(state, tbody) {
+            const tr = document.createElement('tr');
+            tr.className = "border-b border-slate-200";
+            
+            let html = `
+                <td class="py-5 px-3 align-top font-semibold text-slate-800">
+                    Hoelscher Door Unit<br>
+                    <span class="text-xs font-normal text-slate-500">${state.sku}</span>
+                </td>
+                <td class="py-5 px-3 align-top text-slate-600 space-y-1">
+                    <p><strong>Model:</strong> ${state.collection} - ${state.modelName}</p>
+                    <p><strong>Configuration:</strong> ${state.layout}</p>
+            `;
+            
+            if (state.slDesc) {
+                html += `<p><strong>Sidelite:</strong> ${state.slDesc}</p>`;
+            }
+            
+            if (state.glass !== 'Solid Panel') {
+                html += `<p><strong>Glass:</strong> ${state.glass}</p>`;
+            }
+            
+            html += `
+                    <p><strong>Finish:</strong> ${state.finish}</p>
+                    <p><strong>Jamb / Prehang:</strong> ${state.jambDesc}</p>
+            `;
+
+            if (state.addonsDesc) {
+                html += `<p><strong>Add-ons / Hardware:</strong> ${state.addonsDesc}</p>`;
+            }
+            
+            if (state.laborDesc) {
+                html += `<p><strong>Labor:</strong> ${state.laborDesc}</p>`;
+            }
+
+            html += `
+                </td>
+                <td class="py-5 px-3 align-top text-right font-bold text-lg text-slate-900">
+                    $${state.retailPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                </td>
+            `;
+            
+            tr.innerHTML = html;
+            tbody.appendChild(tr);
+        }
+
+        function updateLaborDropdowns() {
+            const laborSelect = document.getElementById('installLabor');
+            laborSelect.innerHTML = `
+                <option value="0">None (Delivery Only)</option>
+                <option value="std">Standard Single Door Install (+$${appSettings.labor.std})</option>
+                <option value="sl">Single + Sidelites Install (+$${appSettings.labor.sl})</option>
+                <option value="dbl">Double Door System Install (+$${appSettings.labor.dbl})</option>
+            `;
+        }
+
+        function populateEditModels() {
+            const val = document.getElementById('editCollection').value;
+            const [mat, col] = val.split(':');
+            const modelSelect = document.getElementById('editModel');
+            modelSelect.innerHTML = '';
+            
+            if (appSettings.db[mat] && appSettings.db[mat][col]) {
+                appSettings.db[mat][col].forEach((model, index) => {
+                    const opt = document.createElement('option');
+                    opt.value = index;
+                    opt.innerText = model.name;
+                    modelSelect.appendChild(opt);
+                });
+            }
+            renderEditTable();
+        }
+
+        function renderEditTable() {
+            const val = document.getElementById('editCollection').value;
+            const [mat, col] = val.split(':');
+            const modelIndex = document.getElementById('editModel').value;
+            
+            if(modelIndex === '' || !appSettings.db[mat] || !appSettings.db[mat][col]) return;
+
+            const model = appSettings.db[mat][col][modelIndex];
+            if(!model) return;
+
+            const tbody = document.getElementById('editTableBody');
+            tbody.innerHTML = '';
+            
+            Object.keys(model.sizes).forEach(sizeCode => {
+                const prices = model.sizes[sizeCode].prices;
+                const tr = document.createElement('tr');
+                
+                tr.innerHTML = `
+                    <td class="p-3 border-r border-slate-200 font-bold text-slate-700 whitespace-nowrap bg-slate-50">${sizeCode}</td>
+                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-amber-100 px-2 py-1 text-xs text-amber-800 rounded-l border border-amber-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1 border border-amber-200 rounded-r text-sm outline-none" value="${prices.u_slab}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'u_slab', this.value)"></div></td>
+                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-amber-100 px-2 py-1 text-xs text-amber-800 rounded-l border border-amber-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1 border border-amber-200 rounded-r text-sm outline-none" value="${prices.u_single}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'u_single', this.value)"></div></td>
+                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-amber-100 px-2 py-1 text-xs text-amber-800 rounded-l border border-amber-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1 border border-amber-200 rounded-r text-sm outline-none" value="${prices.u_double}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'u_double', this.value)"></div></td>
+                    
+                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-blue-100 px-2 py-1 text-xs text-blue-800 rounded-l border border-blue-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1 border border-blue-200 rounded-r text-sm outline-none" value="${prices.p_slab}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'p_slab', this.value)"></div></td>
+                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-blue-100 px-2 py-1 text-xs text-blue-800 rounded-l border border-blue-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1 border border-blue-200 rounded-r text-sm outline-none" value="${prices.p_single}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'p_single', this.value)"></div></td>
+                    <td class="p-2"><div class="flex items-center"><span class="bg-blue-100 px-2 py-1 text-xs text-blue-800 rounded-l border border-blue-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1 border border-blue-200 rounded-r text-sm outline-none" value="${prices.p_double}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'p_double', this.value)"></div></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updatePrice(mat, col, modelIndex, sizeCode, priceKey, newValue) {
+            if (appSettings.db[mat] && appSettings.db[mat][col] && appSettings.db[mat][col][modelIndex]) {
+                appSettings.db[mat][col][modelIndex].sizes[sizeCode].prices[priceKey] = parseFloat(newValue) || 0;
+            }
+        }
+
+        function switchTab(tabId) {
+            if (tabId === 'quote-tab') {
+                document.getElementById('quote-tab').style.display = 'grid';
+                document.getElementById('settings-tab').style.display = 'none';
+                
+                document.getElementById('nav-quote').classList.add('active', 'text-slate-300');
+                document.getElementById('nav-quote').classList.remove('text-slate-400');
+                document.getElementById('nav-settings').classList.remove('active', 'text-slate-300');
+                document.getElementById('nav-settings').classList.add('text-slate-400');
+                
+                runQuoteEngine(); 
+            } else {
+                document.getElementById('quote-tab').style.display = 'none';
+                document.getElementById('settings-tab').style.display = 'block';
+                
+                document.getElementById('nav-settings').classList.add('active', 'text-slate-300');
+                document.getElementById('nav-settings').classList.remove('text-slate-400');
+                document.getElementById('nav-quote').classList.remove('active', 'text-slate-300');
+                document.getElementById('nav-quote').classList.add('text-slate-400');
+                
+                renderSettingsUI();
+                populateEditModels();
+            }
+        }
+
+        function scrollToProposal() {
+            const anchor = document.getElementById('proposal-anchor');
+            anchor.classList.remove('print-only'); 
+            anchor.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
