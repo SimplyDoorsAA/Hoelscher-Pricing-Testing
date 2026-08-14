@@ -880,7 +880,7 @@
                 addOnsSelect.innerHTML += `
                     <option value="maskList_Standard">Standard Iron Mask (+$${appSettings.addons.maskList} List)</option>
                     <option value="maskList_Balfour">Balfour Iron Mask (+$${appSettings.addons.maskList} List)</option>
-                    <option value="maskWindsor">Windsor Iron Mask (+$242 List)</option>
+                    <option value="maskList_Windsor">Windsor Iron Mask (+$242 List)</option>
                     <option value="speakeasyKit">Speakeasy Glass/Wood Kit (+$345 List)</option>
                     <option value="clavos">Clavos (+$25 List ea.)</option>
                     <option value="straps">Straps 14"/17" (+$76 List ea.)</option>
@@ -1256,14 +1256,22 @@
             const addonImgEl = document.getElementById('preview-addon');
             const addonContainerEl = document.getElementById('preview-addon-container');
 
+            // 1. Door Pathing (Now routes to specific grain subfolders)
             const safeDoorName = currentlySelectedModel.name.replace(/[^a-zA-Z0-9]/g, '_');
+            let fgDoorSub = "";
+            if (currentCollection === 'Mahogany') fgDoorSub = "mahogany_grain/";
+            else if (currentCollection === 'Oak') fgDoorSub = "oak_grain/";
+            else if (currentCollection === 'Smooth') fgDoorSub = "smooth/";
+            else if (currentCollection === 'Fir') fgDoorSub = "fir_grain/";
+
             const urlDoor = currentMaterial === 'fiberglass' 
-                ? `${REPO_BASE_URL}images/fiberglass/1_door_slabs/${safeDoorName}.jpg`
+                ? `${REPO_BASE_URL}images/fiberglass/1_door_slabs/${fgDoorSub}${safeDoorName}.jpg`
                 : `${REPO_BASE_URL}images/doors/${safeDoorName}.jpg`;
             
             doorImgEl.src = urlDoor;
             doorImgEl.classList.remove('hidden');
 
+            // 2. Glass Pathing 
             const safeGlassName = glass === 'Solid Panel' ? 'Solid_Panel' : glass.replace(/[^a-zA-Z0-9]/g, '_');
             const urlGlass = currentMaterial === 'fiberglass'
                 ? `${REPO_BASE_URL}images/fiberglass/3_glass_inserts/${safeGlassName}.jpg`
@@ -1272,17 +1280,23 @@
             glassImgEl.src = urlGlass;
             glassImgEl.classList.remove('hidden');
 
+            // 3. Finish Pathing (Now routes to stains or paints subfolders)
             let safeFinishName = 'Unfinished';
             if (!isUnfinished) {
                 safeFinishName = finish.split('-')[1]?.trim().replace(/[^a-zA-Z0-9]/g, '_') || 'Unfinished';
             }
+            
+            let finishSub = "stains/";
+            if (safeFinishName.includes("Paint") || safeFinishName.includes("Smooth")) finishSub = "paints/";
+
             const urlFinish = currentMaterial === 'fiberglass'
-                ? `${REPO_BASE_URL}images/fiberglass/5_finishes/${safeFinishName}.jpg`
+                ? `${REPO_BASE_URL}images/fiberglass/5_finishes/${finishSub}${safeFinishName}.jpg`
                 : `${REPO_BASE_URL}images/finishes/${safeFinishName}.jpg`;
                 
             finishImgEl.src = urlFinish;
             finishImgEl.classList.remove('hidden');
 
+            // 4. Add-on Pathing
             let urlAddon = '';
             const addOnsSelect = document.getElementById('addOns');
             
