@@ -54,7 +54,7 @@
             <div class="flex items-center bg-slate-800 rounded px-3 py-1 border border-slate-700">
                 <i class="fas fa-user-circle text-slate-400 mr-2"></i>
                 <span class="text-xs text-slate-400 mr-2">Rep:</span>
-                <select id="salesRep" class="bg-transparent text-sm font-semibold outline-none cursor-pointer text-white" onchange="generateProposal()">
+                <select id="salesRep" class="bg-transparent text-sm font-semibold outline-none cursor-pointer text-white" onchange="updateCartUI()">
                     <option value="Adem Atis">Adem Atis</option>
                     <option value="Cory Broyles">Cory Broyles</option>
                     <option value="House Account">House Account</option>
@@ -80,19 +80,19 @@
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div class="md:col-span-1">
                         <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Customer Name</label>
-                        <input type="text" id="custName" value="John Doe" oninput="generateProposal()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        <input type="text" id="custName" value="John Doe" oninput="updateCartUI()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
                     </div>
                     <div class="md:col-span-1">
                         <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Phone Number</label>
-                        <input type="text" id="custPhone" value="(210) 555-0199" oninput="generateProposal()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        <input type="text" id="custPhone" value="(210) 555-0199" oninput="updateCartUI()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
                     </div>
                     <div class="md:col-span-1">
                         <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Installation Address</label>
-                        <input type="text" id="custAddress" value="1234 Alamo Heights Blvd, San Antonio, TX" oninput="generateProposal()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        <input type="text" id="custAddress" value="1234 Alamo Heights Blvd, San Antonio, TX" oninput="updateCartUI()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
                     </div>
                     <div class="md:col-span-1">
                         <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Quote / Job #</label>
-                        <input type="text" id="quoteNumber" value="SD-2026-0789" oninput="generateProposal()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        <input type="text" id="quoteNumber" value="SD-2026-0789" oninput="updateCartUI()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
                     </div>
                 </div>
             </section>
@@ -191,7 +191,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 mb-1">Handing & Swing</label>
-                        <select id="doorHanding" onchange="generateProposal()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        <select id="doorHanding" onchange="updateCartUI()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
                             <option value="Left Hand (LH) Inswing">Left Hand (LH) Inswing</option>
                             <option value="Right Hand (RH) Inswing">Right Hand (RH) Inswing</option>
                             <option value="Left Hand (LH) Outswing">Left Hand (LH) Outswing</option>
@@ -250,8 +250,8 @@
                 </div>
 
                 <!-- Standard Add-ons & Speakeasy Options -->
-                <div id="standardAddonsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                    <div id="addOnContainer" style="display: none;">
+                <div id="standardAddonsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                    <div id="addOnContainer" style="display: none;" class="md:col-span-2">
                         <label class="block text-xs font-semibold text-slate-500 mb-1">Decorative Grille / Speakeasy Mask</label>
                         <select id="addOns" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
                             <option value="0">None</option>
@@ -259,7 +259,7 @@
                     </div>
 
                     <!-- Wood Casing Adders -->
-                    <div id="casingAdderContainer" style="display: none;">
+                    <div id="casingAdderContainer" style="display: none;" class="md:col-span-1">
                         <label class="block text-xs font-semibold text-slate-500 mb-1">Prehang Interior Casing Adders</label>
                         <select id="casingAdder" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
                             <option value="0">None (Standard Frame)</option>
@@ -270,15 +270,19 @@
                 </div>
 
                 <!-- Installation Labor -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100 mt-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Installation & Removal Labor</label>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Standard Installation Labor</label>
                         <select id="installLabor" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
                             <option value="0">None (Delivery Only)</option>
                             <option value="std">Standard Single Door Install</option>
                             <option value="sl">Single + Sidelites Install</option>
                             <option value="dbl">Double Door System Install</option>
                         </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Custom / Additional Labor ($)</label>
+                        <div class="flex items-center"><span class="bg-slate-200 px-3 py-2 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600">$</span><input type="number" id="customLabor" value="0" oninput="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded-r focus:border-blue-500 outline-none text-sm"></div>
                     </div>
                 </div>
             </section>
@@ -373,7 +377,7 @@
                     </div>
                 </div>
 
-                <!-- CART LIST -->
+                <!-- CART LIST & TOTALS -->
                 <div id="cart-container" class="hidden flex-col flex-1 overflow-hidden">
                     <div class="p-3 bg-slate-800 text-xs font-bold text-slate-400 border-t border-b border-slate-700">
                         QUOTE ITEMS (<span id="cart-count">0</span>)
@@ -382,7 +386,40 @@
                         <!-- Populated by JS -->
                     </div>
                     <div class="p-4 bg-slate-900 border-t border-slate-700 mt-auto">
-                        <div class="flex justify-between items-center mb-4">
+                        
+                        <!-- QUOTE SETTINGS (Discount, Tax, CC) -->
+                        <div class="space-y-3 mb-4 text-sm bg-slate-800/50 p-3 rounded border border-slate-700">
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <select id="discountType" onchange="updateCartUI()" class="bg-slate-800 text-slate-300 border border-slate-600 rounded p-1 text-xs outline-none cursor-pointer">
+                                        <option value="none">No Discount</option>
+                                        <option value="percent">Discount (%)</option>
+                                        <option value="dollar">Discount ($)</option>
+                                    </select>
+                                    <input type="number" id="discountValue" value="0" oninput="updateCartUI()" class="bg-slate-900 text-white border border-slate-600 rounded p-1 text-xs w-16 outline-none hidden">
+                                </div>
+                                <span id="display-discount" class="text-red-400 font-mono font-semibold">-$0.00</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between border-t border-slate-700 pt-3">
+                                <label class="flex items-center text-slate-300 text-xs cursor-pointer font-bold">
+                                    <input type="checkbox" id="applyTax" checked onchange="updateCartUI()" class="mr-2 rounded bg-slate-800 border-slate-600 text-blue-500 cursor-pointer h-4 w-4"> 
+                                    Apply Tax (<span id="taxRateLabel">8.25</span>%)
+                                </label>
+                                <span id="display-tax" class="text-slate-300 font-mono font-semibold">+$0.00</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between border-t border-slate-700 pt-3">
+                                <label class="flex items-center text-slate-300 text-xs cursor-pointer font-bold">
+                                    <input type="checkbox" id="applyCC" onchange="updateCartUI()" class="mr-2 rounded bg-slate-800 border-slate-600 text-blue-500 cursor-pointer h-4 w-4"> 
+                                    Add CC Fee (<input type="number" id="ccRateInput" value="3.0" oninput="updateCartUI()" class="bg-slate-900 text-white border border-slate-600 rounded px-1 w-12 outline-none h-6 ml-1 font-mono">%)
+                                </label>
+                                <span id="display-cc" class="text-slate-300 font-mono font-semibold">+$0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center mb-4 pt-2 border-t border-slate-700">
                             <span class="text-sm font-bold text-slate-400 uppercase tracking-widest">Grand Total</span>
                             <span class="text-3xl font-black text-white" id="grandTotalRetail">$0.00</span>
                         </div>
@@ -412,12 +449,20 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
                 <!-- Global Variables -->
                 <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                    <h3 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-globe text-blue-500 mr-2"></i> Global Multipliers</h3>
+                    <h3 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-globe text-blue-500 mr-2"></i> Global Multipliers & Rates</h3>
                     <div class="space-y-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Vendor Net Multiplier</label>
                             <input type="number" step="0.01" id="set-multiplier" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none font-mono text-slate-800">
                             <p class="text-xs text-slate-500 mt-1">Applied to catalog list prices (Default: 0.48)</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Sales Tax Rate (%)</label>
+                            <div class="flex items-center"><input type="number" step="0.01" id="set-tax-rate" class="w-full p-2 border border-slate-300 rounded-l focus:border-blue-500 outline-none font-mono text-slate-800"><span class="bg-slate-200 px-3 py-2 border border-l-0 border-slate-300 rounded-r text-sm text-slate-600">%</span></div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Default CC Fee (%)</label>
+                            <div class="flex items-center"><input type="number" step="0.01" id="set-cc-rate" class="w-full p-2 border border-slate-300 rounded-l focus:border-blue-500 outline-none font-mono text-slate-800"><span class="bg-slate-200 px-3 py-2 border border-l-0 border-slate-300 rounded-r text-sm text-slate-600">%</span></div>
                         </div>
                     </div>
                 </div>
@@ -566,13 +611,23 @@
             </table>
 
             <div class="flex justify-between items-end">
-                <div class="w-2/3 pr-8 text-xs text-slate-500 space-y-2">
+                <div class="w-2/3 pr-12 text-xs text-slate-500 space-y-2">
                     <p><strong>Warranty Summary:</strong> Hoelscher Limited Warranty on Door Slabs & Prefinished Stains; 2-Year Insulated Glass Seal Warranty.</p>
                     <p><strong>Deposit Requirement:</strong> 50% deposit required upon order approval. Remaining balance due upon installation completion.</p>
                 </div>
-                <div class="w-1/3 text-right">
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">TOTAL PRICE</p>
-                    <p class="text-3xl font-black text-slate-900" id="prop-total">$0.00</p>
+                <div class="w-1/3 text-right space-y-1">
+                    <!-- Dynamic Totals Block -->
+                    <div class="flex justify-between text-sm text-slate-600"><span class="font-bold">Materials:</span> <span id="prop-mat-total">$0.00</span></div>
+                    <div class="flex justify-between text-sm text-slate-600"><span class="font-bold">Installation Labor:</span> <span id="prop-lab-total">$0.00</span></div>
+                    <div class="flex justify-between text-sm text-red-500" id="prop-disc-row"><span class="font-bold">Discount:</span> <span id="prop-disc-total">-$0.00</span></div>
+                    <div class="flex justify-between text-sm text-slate-600" id="prop-tax-row"><span class="font-bold">Sales Tax (<span id="prop-tax-rate">8.25</span>%):</span> <span id="prop-tax-total">$0.00</span></div>
+                    <div class="flex justify-between text-sm text-slate-600" id="prop-cc-row"><span class="font-bold">CC Fee (<span id="prop-cc-rate">3.0</span>%):</span> <span id="prop-cc-total">$0.00</span></div>
+                    
+                    <div class="border-t border-slate-300 mt-2 pt-2"></div>
+                    <div class="flex justify-between items-end mt-2">
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">TOTAL PRICE</span>
+                        <span class="text-2xl font-black text-slate-900" id="prop-grand-total">$0.00</span>
+                    </div>
                 </div>
             </div>
 
@@ -586,6 +641,8 @@
 
         let appSettings = {
             multiplier: 0.48,
+            taxRate: 8.25,
+            ccRate: 3.0,
             labor: { std: 450, sl: 650, dbl: 800 },
             addons: { maskList: 207, grilleList: 440 },
             db: defaultDBJSON
@@ -636,6 +693,8 @@
             if (saved) {
                 const parsed = JSON.parse(saved);
                 appSettings.multiplier = parsed.multiplier || 0.48;
+                appSettings.taxRate = parsed.taxRate || 8.25;
+                appSettings.ccRate = parsed.ccRate || 3.0;
                 appSettings.labor = parsed.labor || appSettings.labor;
                 appSettings.addons = parsed.addons || appSettings.addons;
                 
@@ -653,6 +712,8 @@
 
         function saveSettings() {
             appSettings.multiplier = parseFloat(document.getElementById('set-multiplier').value);
+            appSettings.taxRate = parseFloat(document.getElementById('set-tax-rate').value);
+            appSettings.ccRate = parseFloat(document.getElementById('set-cc-rate').value);
             appSettings.labor.std = parseFloat(document.getElementById('set-labor-std').value);
             appSettings.labor.sl = parseFloat(document.getElementById('set-labor-sl').value);
             appSettings.labor.dbl = parseFloat(document.getElementById('set-labor-dbl').value);
@@ -661,6 +722,8 @@
 
             localStorage.setItem('simplyDoorsPricingDB_v2', JSON.stringify({
                 multiplier: appSettings.multiplier,
+                taxRate: appSettings.taxRate,
+                ccRate: appSettings.ccRate,
                 labor: appSettings.labor,
                 addons: appSettings.addons,
                 db: appSettings.db 
@@ -671,16 +734,29 @@
             setTimeout(() => { toast.classList.add('opacity-0'); }, 3000);
 
             updateLaborDropdowns();
+            
+            document.getElementById('taxRateLabel').innerText = appSettings.taxRate;
+            document.getElementById('prop-tax-rate').innerText = appSettings.taxRate;
+            document.getElementById('ccRateInput').value = appSettings.ccRate;
+            document.getElementById('prop-cc-rate').innerText = appSettings.ccRate;
+            
             populateOptions(); 
         }
 
         function renderSettingsUI() {
             document.getElementById('set-multiplier').value = appSettings.multiplier;
+            document.getElementById('set-tax-rate').value = appSettings.taxRate;
+            document.getElementById('set-cc-rate').value = appSettings.ccRate;
             document.getElementById('set-labor-std').value = appSettings.labor.std;
             document.getElementById('set-labor-sl').value = appSettings.labor.sl;
             document.getElementById('set-labor-dbl').value = appSettings.labor.dbl;
             document.getElementById('set-addon-mask').value = appSettings.addons.maskList;
             document.getElementById('set-addon-grille').value = appSettings.addons.grilleList;
+            
+            document.getElementById('taxRateLabel').innerText = appSettings.taxRate;
+            document.getElementById('prop-tax-rate').innerText = appSettings.taxRate;
+            document.getElementById('ccRateInput').value = appSettings.ccRate;
+            document.getElementById('prop-cc-rate').innerText = appSettings.ccRate;
         }
 
         function setMaterial(mat) {
@@ -1100,11 +1176,14 @@
             }
                             
             const laborSelect = document.getElementById('installLabor');
-            let laborNet = 0;
-            let laborDesc = '';
+            let customLabor = parseFloat(document.getElementById('customLabor').value) || 0;
+            let laborNet = customLabor;
+            let laborDesc = customLabor > 0 ? `Custom Labor ($${customLabor.toFixed(2)})` : '';
+            
             if(laborSelect.value !== "0") {
-                laborNet = parseFloat(appSettings.labor[laborSelect.value]);
-                laborDesc = laborSelect.options[laborSelect.selectedIndex].text.split(' (+')[0];
+                laborNet += parseFloat(appSettings.labor[laborSelect.value]);
+                const baseLaborText = laborSelect.options[laborSelect.selectedIndex].text.split(' (+')[0];
+                laborDesc = customLabor > 0 ? `${baseLaborText} + Custom ($${customLabor.toFixed(2)})` : baseLaborText;
             }
 
             const alertBox = document.getElementById('prehangAlert');
@@ -1182,8 +1261,11 @@
                 }
             }
 
-            const totalDealerCost = slabNet + sideliteNet + addOnsNet + laborNet;
-            const retailPrice = totalDealerCost / (1 - margin);
+            const materialsDealerCost = slabNet + sideliteNet + addOnsNet;
+            const materialsRetail = materialsDealerCost / (1 - margin);
+            const laborRetail = laborNet / (1 - margin);
+            const totalDealerCost = materialsDealerCost + laborNet;
+            const retailPrice = materialsRetail + laborRetail;
 
             document.getElementById('marginDisplay').innerText = `${(margin * 100).toFixed(0)}%`;
             document.getElementById('costSlab').innerText = `$${slabNet.toFixed(2)}`;
@@ -1256,7 +1338,6 @@
             const addonImgEl = document.getElementById('preview-addon');
             const addonContainerEl = document.getElementById('preview-addon-container');
 
-            // 1. Door Pathing (Now routes to specific grain subfolders)
             const safeDoorName = currentlySelectedModel.name.replace(/[^a-zA-Z0-9]/g, '_');
             let fgDoorSub = "";
             if (currentCollection === 'Mahogany') fgDoorSub = "mahogany_grain/";
@@ -1271,7 +1352,6 @@
             doorImgEl.src = urlDoor;
             doorImgEl.classList.remove('hidden');
 
-            // 2. Glass Pathing 
             const safeGlassName = glass === 'Solid Panel' ? 'Solid_Panel' : glass.replace(/[^a-zA-Z0-9]/g, '_');
             const urlGlass = currentMaterial === 'fiberglass'
                 ? `${REPO_BASE_URL}images/fiberglass/3_glass_inserts/${safeGlassName}.jpg`
@@ -1280,7 +1360,6 @@
             glassImgEl.src = urlGlass;
             glassImgEl.classList.remove('hidden');
 
-            // 3. Finish Pathing (Now routes to stains or paints subfolders)
             let safeFinishName = 'Unfinished';
             if (!isUnfinished) {
                 safeFinishName = finish.split('-')[1]?.trim().replace(/[^a-zA-Z0-9]/g, '_') || 'Unfinished';
@@ -1296,9 +1375,7 @@
             finishImgEl.src = urlFinish;
             finishImgEl.classList.remove('hidden');
 
-            // 4. Add-on Pathing
             let urlAddon = '';
-            const addOnsSelect = document.getElementById('addOns');
             
             if (addOnsSelect.value !== "0" && addOnsSelect.value.startsWith('grilleList_')) {
                 const grilleName = addOnsSelect.value.split('_')[1];
@@ -1317,12 +1394,16 @@
             }
 
             window.currentQuoteState = {
-                sku, unitStr, roStr, jambDesc, retailPrice, 
+                sku, unitStr, roStr, jambDesc, retailPrice, materialsRetail, laborRetail,
                 modelName: currentlySelectedModel.name, 
                 collection: `${currentMaterial === 'wood' ? 'Solid Wood' : 'Fiberglass'} - ${currentCollection}`,
                 layout, glass, finish, addonsDesc, laborDesc, slDesc,
                 urlDoor, urlGlass, urlFinish, urlAddon
             };
+            
+            if (quoteItems.length === 0) {
+                updateCartUI(); 
+            }
         }
 
         function addToQuote() {
@@ -1344,38 +1425,82 @@
             
             document.getElementById('cart-count').innerText = quoteItems.length;
 
-            if(quoteItems.length === 0) {
+            if(quoteItems.length === 0 && !window.currentQuoteState) {
                 cartContainer.classList.add('hidden');
                 document.getElementById('grandTotalRetail').innerText = "$0.00";
-                generateProposal();
                 return;
             }
             
             cartContainer.classList.remove('hidden');
             cartContainer.classList.add('flex');
-            let grandTotal = 0;
             
-            quoteItems.forEach((item, index) => {
-                grandTotal += item.retailPrice;
-                cartItems.innerHTML += `
-                    <div class="flex justify-between items-center text-sm bg-slate-800 p-3 rounded shadow-sm border border-slate-700 mb-2">
-                        <div class="truncate pr-2">
-                            <div class="font-bold text-white">${item.sku}</div>
-                            <div class="text-xs text-slate-400 truncate w-48">${item.modelName}</div>
+            let totalMaterials = 0;
+            let totalLabor = 0;
+            
+            let itemsToCalc = quoteItems.length > 0 ? quoteItems : [window.currentQuoteState];
+
+            if (quoteItems.length > 0) {
+                quoteItems.forEach((item, index) => {
+                    cartItems.innerHTML += `
+                        <div class="flex justify-between items-center text-sm bg-slate-800 p-3 rounded shadow-sm border border-slate-700 mb-2">
+                            <div class="truncate pr-2">
+                                <div class="font-bold text-white">${item.sku}</div>
+                                <div class="text-xs text-slate-400 truncate w-48">${item.modelName}</div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="font-mono font-bold text-emerald-400 mr-4">$${item.retailPrice.toFixed(2)}</span>
+                                <button onclick="removeItem(${index})" class="text-slate-500 hover:text-red-400 transition-colors"><i class="fas fa-trash-alt"></i></button>
+                            </div>
                         </div>
-                        <div class="flex items-center">
-                            <span class="font-mono font-bold text-emerald-400 mr-4">$${item.retailPrice.toFixed(2)}</span>
-                            <button onclick="removeItem(${index})" class="text-slate-500 hover:text-red-400 transition-colors"><i class="fas fa-trash-alt"></i></button>
-                        </div>
-                    </div>
-                `;
+                    `;
+                });
+            } else {
+                 cartItems.innerHTML = `<div class="p-3 text-slate-500 text-xs text-center italic">Items added to quote will appear here. Proposal below reflects current active configuration.</div>`;
+            }
+
+            itemsToCalc.forEach(item => {
+                totalMaterials += item.materialsRetail;
+                totalLabor += item.laborRetail;
             });
             
+            // Discount Logic
+            const discountType = document.getElementById('discountType').value;
+            const discountInput = document.getElementById('discountValue');
+            let discountAmount = 0;
+            
+            if (discountType === 'none') {
+                discountInput.classList.add('hidden');
+            } else {
+                discountInput.classList.remove('hidden');
+                const val = parseFloat(discountInput.value) || 0;
+                if (discountType === 'percent') discountAmount = totalMaterials * (val / 100);
+                if (discountType === 'dollar') discountAmount = val;
+            }
+            if(discountAmount > totalMaterials) discountAmount = totalMaterials; 
+            
+            document.getElementById('display-discount').innerText = `-$${discountAmount.toFixed(2)}`;
+            
+            // Tax Logic
+            const applyTax = document.getElementById('applyTax').checked;
+            const taxableAmount = totalMaterials - discountAmount;
+            const taxAmount = applyTax ? taxableAmount * (appSettings.taxRate / 100) : 0;
+            document.getElementById('display-tax').innerText = `+$${taxAmount.toFixed(2)}`;
+            
+            // CC Logic
+            const applyCC = document.getElementById('applyCC').checked;
+            document.getElementById('ccRateInput').disabled = !applyCC;
+            const ccRate = parseFloat(document.getElementById('ccRateInput').value) || 0;
+            const preCCTotal = taxableAmount + taxAmount + totalLabor;
+            const ccAmount = applyCC ? preCCTotal * (ccRate / 100) : 0;
+            document.getElementById('display-cc').innerText = `+$${ccAmount.toFixed(2)}`;
+            
+            const grandTotal = preCCTotal + ccAmount;
             document.getElementById('grandTotalRetail').innerText = `$${grandTotal.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
-            generateProposal();
+            
+            generateProposal(totalMaterials, totalLabor, discountAmount, taxAmount, ccAmount, grandTotal, applyTax, applyCC, itemsToCalc);
         }
 
-        function generateProposal() {
+        function generateProposal(totalMaterials, totalLabor, discountAmount, taxAmount, ccAmount, grandTotal, applyTax, applyCC, itemsToCalc) {
             document.getElementById('prop-quote-num').innerText = document.getElementById('quoteNumber').value || 'TBD';
             document.getElementById('prop-rep').innerText = document.getElementById('salesRep').value;
             
@@ -1386,21 +1511,40 @@
             const tbody = document.getElementById('prop-tbody');
             tbody.innerHTML = '';
 
-            let grandTotal = 0;
+            itemsToCalc.forEach(item => {
+                renderProposalRow(item, tbody);
+            });
 
-            if (quoteItems.length === 0) {
-                if(window.currentQuoteState) {
-                    renderProposalRow(window.currentQuoteState, tbody);
-                    grandTotal = window.currentQuoteState.retailPrice;
-                }
+            document.getElementById('prop-mat-total').innerText = `$${totalMaterials.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('prop-lab-total').innerText = `$${totalLabor.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            
+            const discRow = document.getElementById('prop-disc-row');
+            if (discountAmount > 0) {
+                discRow.style.display = 'flex';
+                document.getElementById('prop-disc-total').innerText = `-$${discountAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
             } else {
-                quoteItems.forEach(item => {
-                    renderProposalRow(item, tbody);
-                    grandTotal += item.retailPrice;
-                });
+                discRow.style.display = 'none';
+            }
+            
+            const taxRow = document.getElementById('prop-tax-row');
+            if (applyTax && taxAmount > 0) {
+                taxRow.style.display = 'flex';
+                document.getElementById('prop-tax-rate').innerText = appSettings.taxRate;
+                document.getElementById('prop-tax-total').innerText = `$${taxAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            } else {
+                taxRow.style.display = 'none';
+            }
+            
+            const ccRow = document.getElementById('prop-cc-row');
+            if (applyCC && ccAmount > 0) {
+                ccRow.style.display = 'flex';
+                document.getElementById('prop-cc-rate').innerText = document.getElementById('ccRateInput').value;
+                document.getElementById('prop-cc-total').innerText = `$${ccAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            } else {
+                ccRow.style.display = 'none';
             }
 
-            document.getElementById('prop-total').innerText = `$${grandTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('prop-grand-total').innerText = `$${grandTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
         }
 
         function renderProposalRow(state, tbody) {
