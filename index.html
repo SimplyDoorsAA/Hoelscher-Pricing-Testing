@@ -1134,6 +1134,7 @@
             
             const jamb = document.getElementById('jambDepth').value;
             const margin = parseFloat(document.getElementById('marginSlider').value) / 100;
+            const addOnsSelect = document.getElementById('addOns');
 
             let addOnsNet = 0;
             let addonsDesc = '';
@@ -1149,7 +1150,6 @@
                     }
                 }
             } else {
-                const addOnsSelect = document.getElementById('addOns');
                 if (document.getElementById('addOnContainer').style.display !== 'none' && addOnsSelect.value !== "0") {
                     let addOnListVal = 0;
                     if (addOnsSelect.value.startsWith('maskList')) addOnListVal = appSettings.addons.maskList;
@@ -1377,13 +1377,13 @@
 
             let urlAddon = '';
             
-            if (addOnsSelect.value !== "0" && addOnsSelect.value.startsWith('grilleList_')) {
+            if (addOnsSelect && addOnsSelect.value !== "0" && addOnsSelect.value.startsWith('grilleList_')) {
                 const grilleName = addOnsSelect.value.split('_')[1];
                 urlAddon = `${REPO_BASE_URL}images/fiberglass/4_iron_accents/grilles/${grilleName}.jpg`;
                 addonImgEl.src = urlAddon;
                 addonImgEl.classList.remove('hidden');
                 addonContainerEl.style.display = 'flex';
-            } else if (addOnsSelect.value !== "0" && addOnsSelect.value.startsWith('maskList_')) {
+            } else if (addOnsSelect && addOnsSelect.value !== "0" && addOnsSelect.value.startsWith('maskList_')) {
                 const maskName = addOnsSelect.value.split('_')[1];
                 urlAddon = `${REPO_BASE_URL}images/fiberglass/4_iron_accents/masks/${maskName}_Iron_Mask.jpg`;
                 addonImgEl.src = urlAddon;
