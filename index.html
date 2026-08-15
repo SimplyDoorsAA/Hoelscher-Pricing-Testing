@@ -1191,11 +1191,11 @@
                             
             const laborSelect = document.getElementById('installLabor');
             let customLabor = parseFloat(document.getElementById('customLabor').value) || 0;
-            let laborNet = 0;
+            let laborNet = customLabor;
             let laborDesc = customLabor > 0 ? `Custom Labor ($${customLabor.toFixed(2)})` : '';
             
             if(laborSelect.value !== "0") {
-                laborNet = parseFloat(appSettings.labor[laborSelect.value]);
+                laborNet += parseFloat(appSettings.labor[laborSelect.value]);
                 const baseLaborText = laborSelect.options[laborSelect.selectedIndex].text.split(' (+')[0];
                 laborDesc = customLabor > 0 ? `${baseLaborText} + Custom ($${customLabor.toFixed(2)})` : baseLaborText;
             }
@@ -1277,8 +1277,8 @@
 
             const materialsDealerCost = slabNet + sideliteNet + addOnsNet;
             const materialsRetail = materialsDealerCost / (1 - margin);
-            const laborRetail = (laborNet / (1 - margin)) + customLabor; 
-            const totalDealerCost = materialsDealerCost + laborNet + customLabor; 
+            const laborRetail = (laborNet / (1 - margin)); 
+            const totalDealerCost = materialsDealerCost + laborNet; 
             const retailPrice = materialsRetail + laborRetail;
 
             document.getElementById('marginDisplay').innerText = `${(margin * 100).toFixed(0)}%`;
@@ -1302,7 +1302,7 @@
                 summaryAddonsRow.style.display = 'none';
             }
             
-            document.getElementById('costLabor').innerText = `$${(laborNet + customLabor).toFixed(2)}`;
+            document.getElementById('costLabor').innerText = `$${laborNet.toFixed(2)}`;
             document.getElementById('costTotal').innerText = `$${totalDealerCost.toFixed(2)}`;
             document.getElementById('priceRetail').innerText = `$${retailPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
@@ -1366,13 +1366,17 @@
             doorImgEl.src = urlDoor;
             doorImgEl.classList.remove('hidden');
 
-            const safeGlassName = glass === 'Solid Panel' ? 'Solid_Panel' : sanitizeName(glass);
-            const urlGlass = currentMaterial === 'fiberglass'
-                ? `${REPO_BASE_URL}images/fiberglass/3_glass_inserts/${safeGlassName}.jpg`
-                : `${REPO_BASE_URL}images/wood/glass/${safeGlassName}.jpg`;
-                
-            glassImgEl.src = urlGlass;
-            glassImgEl.classList.remove('hidden');
+            if (glass === 'Solid Panel') {
+                glassImgEl.classList.add('hidden');
+            } else {
+                const safeGlassName = sanitizeName(glass);
+                const urlGlass = currentMaterial === 'fiberglass'
+                    ? `${REPO_BASE_URL}images/fiberglass/3_glass_inserts/${safeGlassName}.jpg`
+                    : `${REPO_BASE_URL}images/wood/glass/${safeGlassName}.jpg`;
+                    
+                glassImgEl.src = urlGlass;
+                glassImgEl.classList.remove('hidden');
+            }
 
             let safeFinishName = 'Unfinished';
             if (!isUnfinished) {
@@ -1380,7 +1384,11 @@
             }
             
             let finishSub = "stains/";
-            if (safeFinishName.includes("Paint") || safeFinishName.includes("Smooth")) finishSub = "paints/";
+            if (safeFinishName.includes("Paint") || safeFinishName.includes("Smooth")) {
+                finishSub = "paints/";
+            } else if (safeFinishName === 'Unfinished') {
+                finishSub = ""; 
+            }
 
             const urlFinish = currentMaterial === 'fiberglass'
                 ? `${REPO_BASE_URL}images/fiberglass/5_finishes/${finishSub}${safeFinishName}.jpg`
