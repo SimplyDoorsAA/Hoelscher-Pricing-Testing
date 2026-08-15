@@ -519,7 +519,7 @@
                 </div>
                 
                 <div class="overflow-x-auto border border-slate-200 rounded-lg">
-                    <table class="w-full text-sm text-left border-collapse">
+                    <table class="w-full text-sm text-left border-collapse min-w-[640px]">
                         <thead class="bg-slate-100 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
                             <tr>
                                 <th class="p-3 border-r border-slate-200">Size Code</th>
@@ -596,7 +596,7 @@
                 </div>
             </div>
 
-            <table class="w-full text-sm border-collapse mb-8">
+            <table class="w-full text-sm border-collapse mb-8 min-w-[640px]">
                 <thead>
                     <tr class="bg-[#0f172a] text-white">
                         <th class="py-2 px-3 text-left w-2/5">SKU / Item Description</th>
@@ -1178,11 +1178,11 @@
                             
             const laborSelect = document.getElementById('installLabor');
             let customLabor = parseFloat(document.getElementById('customLabor').value) || 0;
-            let laborNet = customLabor;
+            let laborNet = 0;
             let laborDesc = customLabor > 0 ? `Custom Labor ($${customLabor.toFixed(2)})` : '';
             
             if(laborSelect.value !== "0") {
-                laborNet += parseFloat(appSettings.labor[laborSelect.value]);
+                laborNet = parseFloat(appSettings.labor[laborSelect.value]);
                 const baseLaborText = laborSelect.options[laborSelect.selectedIndex].text.split(' (+')[0];
                 laborDesc = customLabor > 0 ? `${baseLaborText} + Custom ($${customLabor.toFixed(2)})` : baseLaborText;
             }
@@ -1264,8 +1264,8 @@
 
             const materialsDealerCost = slabNet + sideliteNet + addOnsNet;
             const materialsRetail = materialsDealerCost / (1 - margin);
-            const laborRetail = laborNet / (1 - margin);
-            const totalDealerCost = materialsDealerCost + laborNet;
+            const laborRetail = (laborNet / (1 - margin)) + customLabor; 
+            const totalDealerCost = materialsDealerCost + laborNet + customLabor; 
             const retailPrice = materialsRetail + laborRetail;
 
             document.getElementById('marginDisplay').innerText = `${(margin * 100).toFixed(0)}%`;
@@ -1289,7 +1289,7 @@
                 summaryAddonsRow.style.display = 'none';
             }
             
-            document.getElementById('costLabor').innerText = `$${laborNet.toFixed(2)}`;
+            document.getElementById('costLabor').innerText = `$${(laborNet + customLabor).toFixed(2)}`;
             document.getElementById('costTotal').innerText = `$${totalDealerCost.toFixed(2)}`;
             document.getElementById('priceRetail').innerText = `$${retailPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
@@ -1464,35 +1464,43 @@
                 totalLabor += item.laborRetail;
             });
             
-            // Discount Logic
             const discountType = document.getElementById('discountType').value;
             const discountInput = document.getElementById('discountValue');
             let discountAmount = 0;
+            const subtotalGross = totalMaterials + totalLabor;
             
             if (discountType === 'none') {
                 discountInput.classList.add('hidden');
             } else {
                 discountInput.classList.remove('hidden');
                 const val = parseFloat(discountInput.value) || 0;
-                if (discountType === 'percent') discountAmount = totalMaterials * (val / 100);
+                if (discountType === 'percent') discountAmount = subtotalGross * (val / 100);
                 if (discountType === 'dollar') discountAmount = val;
             }
-            if(discountAmount > totalMaterials) discountAmount = totalMaterials; 
+            
+            if(discountAmount > subtotalGross) discountAmount = subtotalGross; 
             
             document.getElementById('display-discount').innerText = `-$${discountAmount.toFixed(2)}`;
             
-            // Tax Logic
             const applyTax = document.getElementById('applyTax').checked;
-            const taxableAmount = totalMaterials - discountAmount;
+            const matRatio = subtotalGross > 0 ? (totalMaterials / subtotalGross) : 0;
+            
+            let taxableAmount = totalMaterials - (discountAmount * matRatio);
+            if(taxableAmount < 0) taxableAmount = 0;
+
             const taxAmount = applyTax ? taxableAmount * (appSettings.taxRate / 100) : 0;
             document.getElementById('display-tax').innerText = `+$${taxAmount.toFixed(2)}`;
             
-            // CC Logic
             const applyCC = document.getElementById('applyCC').checked;
             document.getElementById('ccRateInput').disabled = !applyCC;
             const ccRate = parseFloat(document.getElementById('ccRateInput').value) || 0;
-            const preCCTotal = taxableAmount + taxAmount + totalLabor;
-            const ccAmount = applyCC ? preCCTotal * (ccRate / 100) : 0;
+            
+            const preCCTotal = subtotalGross - discountAmount + taxAmount;
+            let ccAmount = 0;
+            if (applyCC && ccRate > 0 && ccRate < 100) {
+                ccAmount = (preCCTotal / (1 - (ccRate / 100))) - preCCTotal;
+            }
+            
             document.getElementById('display-cc').innerText = `+$${ccAmount.toFixed(2)}`;
             
             const grandTotal = preCCTotal + ccAmount;
