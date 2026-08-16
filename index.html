@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SimplyDoors Quoting System - Hoelscher 2026</title>
+    <!-- Note: Tailwind CDN is intentionally used to maintain strict single-file architecture -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -35,18 +36,20 @@
         /* Image Placeholder Wireframes */
         .img-placeholder {
             height: 6rem;
-            width: 4rem;
+            width: 4.5rem;
             border: 2px dashed #475569;
-            border-radius: 0.25rem;
+            border-radius: 0.375rem;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             font-size: 0.65rem;
             font-weight: bold;
             text-transform: uppercase;
-            color: #64748b;
+            color: #94a3b8;
             background-color: #1e293b;
             text-align: center;
+            padding: 0.25rem;
         }
 
         @media print {
@@ -54,7 +57,7 @@
             .no-print { display: none !important; }
             .print-only { display: block !important; }
             #proposal-tab { display: block !important; }
-            .proposal-card { border: none !important; box-shadow: none !important; margin: 0 !important; padding: 0 !important;}
+            .proposal-card { border: none !important; box-shadow: none !important; margin: 0 !important; padding: 0 !important; }
             .overflow-x-auto { overflow: visible !important; }
         }
         .print-only { display: none; }
@@ -144,12 +147,12 @@
                             <label class="block text-xs font-semibold text-slate-500">Door Model Family</label>
                             <button id="viewCatalogBtn" onclick="openCatalogModal()" class="text-xs text-blue-600 hover:text-blue-800 font-bold hidden items-center transition-colors bg-blue-50 px-2 py-0.5 rounded border border-blue-200 shadow-sm"><i class="fas fa-book-open mr-1"></i> View in Catalog</button>
                         </div>
-                        <select id="doorModel" onchange="populateOptions()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        <select id="doorModel" onchange="populateOptions()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 mb-1">Nominal Door Size (W x H)</label>
-                        <select id="doorSize" onchange="handleSizeChange()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        <select id="doorSize" onchange="handleSizeChange()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
                         </select>
                     </div>
                 </div>
@@ -172,13 +175,13 @@
                 <div class="grid grid-cols-2 gap-6">
                     <div id="glassContainer" style="display: none;">
                         <label class="block text-xs font-semibold text-slate-500 mb-1">Glass / Glazing Type</label>
-                        <select id="doorGlass" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        <select id="doorGlass" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
                         </select>
                     </div>
                     
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 mb-1">Finish / Stain Color</label>
-                        <select id="doorFinish" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        <select id="doorFinish" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
                         </select>
                     </div>
                 </div>
@@ -193,8 +196,8 @@
                 <div class="grid grid-cols-3 gap-4 mb-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 mb-1">System Layout</label>
-                        <select id="systemLayout" onchange="handleLayoutChange()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
-                            <option value="Single">Single Door System</option>
+                        <select id="systemLayout" onchange="handleLayoutChange()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
+                            <option value="Single" selected>Single Door System</option>
                             <option value="Single + 1 SL">Single w/ 1 Sidelite</option>
                             <option value="Single + 2 SL">Single w/ 2 Sidelites</option>
                             <option value="Double">Double Door System</option>
@@ -203,9 +206,8 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 mb-1">Handing & Swing</label>
-                        <select id="doorHanding" onchange="updateCartUI()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
-                            <option value="" disabled selected>Select Handing...</option>
-                            <option value="Left Hand (LH) Inswing">Left Hand (LH) Inswing</option>
+                        <select id="doorHanding" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
+                            <option value="Left Hand (LH) Inswing" selected>Left Hand (LH) Inswing</option>
                             <option value="Right Hand (RH) Inswing">Right Hand (RH) Inswing</option>
                             <option value="Left Hand (LH) Outswing">Left Hand (LH) Outswing</option>
                             <option value="Right Hand (RH) Outswing">Right Hand (RH) Outswing</option>
@@ -214,8 +216,8 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 mb-1">Jamb Depth</label>
-                        <select id="jambDepth" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
-                            <option value="4 9/16">4-9/16" Standard Jamb</option>
+                        <select id="jambDepth" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
+                            <option value="4 9/16" selected>4-9/16" Standard Jamb</option>
                             <option value="6 9/16">6-9/16" Wide Jamb</option>
                         </select>
                     </div>
@@ -225,15 +227,15 @@
                     <div class="grid grid-cols-3 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 mb-1">Sidelite Model</label>
-                            <select id="slModel" onchange="populateSideliteSizes()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm"></select>
+                            <select id="slModel" onchange="populateSideliteSizes()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium"></select>
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 mb-1">Sidelite Size</label>
-                            <select id="slSize" onchange="populateSideliteGlass()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm"></select>
+                            <select id="slSize" onchange="populateSideliteGlass()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium"></select>
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 mb-1">Sidelite Glass</label>
-                            <select id="slGlass" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm"></select>
+                            <select id="slGlass" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium"></select>
                         </div>
                     </div>
                 </div>
@@ -311,11 +313,23 @@
                     </div>
 
                     <!-- IMAGE PREVIEW PANE (PLACEHOLDERS) -->
-                    <div class="p-4 border-b border-slate-700 bg-slate-800/80 flex flex-wrap justify-center gap-3 min-h-[100px]">
-                        <div class="img-placeholder">Door<br>Preview</div>
-                        <div class="img-placeholder" id="preview-glass" style="display:none;">Glass<br>Preview</div>
-                        <div class="img-placeholder" id="preview-finish" style="display:none;">Finish<br>Preview</div>
-                        <div class="img-placeholder" id="preview-addon" style="display:none;">Add-on<br>Preview</div>
+                    <div class="p-4 border-b border-slate-700 bg-slate-800/80 flex justify-center gap-3 min-h-[105px]">
+                        <div class="img-placeholder">
+                            <i class="fas fa-door-closed text-base mb-1 text-blue-400"></i>
+                            <span>Door</span>
+                        </div>
+                        <div class="img-placeholder" id="preview-glass" style="display:none;">
+                            <i class="fas fa-border-all text-base mb-1 text-emerald-400"></i>
+                            <span>Glass</span>
+                        </div>
+                        <div class="img-placeholder" id="preview-finish">
+                            <i class="fas fa-paint-roller text-base mb-1 text-amber-400"></i>
+                            <span>Finish</span>
+                        </div>
+                        <div class="img-placeholder" id="preview-addon" style="display:none;">
+                            <i class="fas fa-shield-alt text-base mb-1 text-purple-400"></i>
+                            <span>Accent</span>
+                        </div>
                     </div>
                     
                     <div class="p-4 border-b border-slate-700 bg-slate-800/50">
@@ -369,7 +383,7 @@
                             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Current Item Price</p>
                             <p class="text-2xl font-black text-white" id="priceRetail">$0.00</p>
                         </div>
-                        <button id="addToQuoteBtn" onclick="addToQuote()" disabled class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded text-sm font-bold transition-colors shadow-lg opacity-50 cursor-not-allowed">
+                        <button id="addToQuoteBtn" onclick="addToQuote()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded text-sm font-bold transition-colors shadow-lg opacity-50 cursor-not-allowed" disabled>
                             <i class="fas fa-plus mr-1"></i> Add to Quote
                         </button>
                     </div>
@@ -442,7 +456,7 @@
             <div class="grid grid-cols-4 gap-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Customer Name</label>
-                    <input type="text" id="custName" placeholder="John Doe" oninput="updateCartUI()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                    <input type="text" id="custName" placeholder="e.g. John Doe" oninput="updateCartUI()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Phone Number</label>
@@ -469,7 +483,7 @@
                     <p class="text-xs text-slate-500">Sales Order & Installation Quote</p>
                 </div>
                 <div class="text-right text-xs text-slate-600 space-y-1">
-                    <p><strong>Quote #:</strong> <span id="prop-quote-num"></span></p>
+                    <p><strong>Quote #:</strong> <span id="prop-quote-num">TBD</span></p>
                     <p><strong>Date:</strong> <span id="prop-date"></span></p>
                     <p><strong>Sales Rep:</strong> <span id="prop-rep"></span></p>
                 </div>
@@ -478,9 +492,9 @@
             <div class="grid grid-cols-2 gap-8 mb-8 text-sm">
                 <div>
                     <h4 class="font-bold text-slate-800 mb-2">CUSTOMER INFORMATION</h4>
-                    <p class="font-semibold text-slate-700" id="prop-cust-name"></p>
-                    <p class="text-slate-600" id="prop-cust-phone"></p>
-                    <p class="text-slate-600" id="prop-cust-address"></p>
+                    <p class="font-semibold text-slate-700" id="prop-cust-name">TBD</p>
+                    <p class="text-slate-600" id="prop-cust-phone">TBD</p>
+                    <p class="text-slate-600" id="prop-cust-address">TBD</p>
                 </div>
                 <div>
                     <h4 class="font-bold text-slate-800 mb-2">TERMS</h4>
@@ -758,7 +772,7 @@
             document.getElementById('prop-date').innerText = new Date().toISOString().split('T')[0];
             updateLaborDropdowns();
             closeCatalogModal();
-            runQuoteEngine(); // Ensure empty state initializes properly
+            runQuoteEngine();
         };
 
         function loadSettings() {
@@ -949,10 +963,11 @@
 
         function populateFinishDropdown() {
             const finishSelect = document.getElementById('doorFinish');
-            finishSelect.innerHTML = '<option value="" disabled selected>Select Stain/Finish...</option>';
+            finishSelect.innerHTML = '';
 
+            let list = [];
             if (currentMaterial === 'wood') {
-                const woodStains = [
+                list = [
                     "Unfinished (Slab/Prehung)",
                     "Prefinished - Aged Barrel",
                     "Prefinished - Ebony",
@@ -961,39 +976,35 @@
                     "Prefinished - Red Oak",
                     "Prefinished - Special Walnut"
                 ];
-                woodStains.forEach(stain => {
-                    const opt = document.createElement('option');
-                    opt.value = stain;
-                    opt.innerText = stain;
-                    finishSelect.appendChild(opt);
-                });
             } else {
-                const fgFinishes = [
+                list = [
                     "Unfinished (Slab/Prehung)",
                     "Prefinished - Midnight (M)",
                     "Prefinished - Slate (S)",
                     "Prefinished - Bourbon (B)",
                     "Prefinished - Fox (F)"
                 ];
-                
                 if (currentCollection === 'Smooth') {
-                    fgFinishes.push("Black Brushed Smooth (Smooth Only)");
+                    list.push("Black Brushed Smooth (Smooth Only)");
                 }
-                
-                fgFinishes.forEach(f => {
-                    const opt = document.createElement('option');
-                    opt.value = f;
-                    opt.innerText = f;
-                    finishSelect.appendChild(opt);
-                });
             }
+
+            let firstFinish = null;
+            list.forEach((item, idx) => {
+                const opt = document.createElement('option');
+                opt.value = item;
+                opt.innerText = item;
+                finishSelect.appendChild(opt);
+                if (idx === 0) firstFinish = item;
+            });
+            finishSelect.value = firstFinish; // Explicit assignment
         }
 
         function populateOptions() {
             const modelIndex = document.getElementById('doorModel').value;
             const sizeSelect = document.getElementById('doorSize');
             
-            if (!modelIndex || modelIndex === '') {
+            if (modelIndex === '' || modelIndex === null || !appSettings.db[currentMaterial][currentCollection]) {
                 currentlySelectedModel = null;
                 sizeSelect.innerHTML = '<option value="" disabled selected>Select a Model first...</option>';
                 runQuoteEngine();
@@ -1026,22 +1037,30 @@
                 barnContainer.classList.remove('hidden');
                 document.getElementById('systemLayout').value = 'Slab Only';
                 document.getElementById('systemLayout').disabled = true;
+                document.getElementById('doorHanding').value = 'N/A (Slab)';
                 populateBarnHardware();
             } else {
                 barnContainer.classList.add('hidden');
                 document.getElementById('systemLayout').disabled = false;
+                if (document.getElementById('doorHanding').value === 'N/A (Slab)' && document.getElementById('systemLayout').value !== 'Slab Only') {
+                    document.getElementById('doorHanding').value = 'Left Hand (LH) Inswing';
+                }
             }
             
-            sizeSelect.innerHTML = '<option value="" disabled selected>Select Nominal Size...</option>';
-            
+            sizeSelect.innerHTML = '';
             const sizes = Object.keys(currentlySelectedModel.sizes);
-            sizes.forEach(sizeCode => {
+            let firstSize = null;
+            
+            sizes.forEach((sizeCode, idx) => {
                 const opt = document.createElement('option');
                 opt.value = sizeCode;
                 const dims = decodeSize(sizeCode);
                 opt.innerText = `${dims.label} (${dims.w}" x ${dims.h}")`;
                 sizeSelect.appendChild(opt);
+                if (idx === 0) firstSize = sizeCode;
             });
+            
+            sizeSelect.value = firstSize; // Explicit assignment
 
             const addOnContainer = document.getElementById('addOnContainer');
             const addOnsSelect = document.getElementById('addOns');
@@ -1114,19 +1133,22 @@
 
             if (validGlass.length > 0) {
                 glassContainer.style.display = 'block';
-                glassSelect.innerHTML = '<option value="" disabled selected>Select Glass Type...</option>';
-                validGlass.forEach(g => {
+                let firstGlass = null;
+                validGlass.forEach((g, idx) => {
                     const opt = document.createElement('option');
                     opt.value = g;
                     opt.innerText = g;
                     glassSelect.appendChild(opt);
+                    if (idx === 0) firstGlass = g;
                 });
+                glassSelect.value = firstGlass; // Explicit assignment
             } else {
                 glassContainer.style.display = 'none';
                 const opt = document.createElement('option');
                 opt.value = 'Solid Panel';
                 opt.innerText = 'Solid Panel';
                 glassSelect.appendChild(opt);
+                glassSelect.value = 'Solid Panel';
             }
 
             runQuoteEngine();
@@ -1135,23 +1157,33 @@
         function handleLayoutChange() {
             const layout = document.getElementById('systemLayout').value;
             const slContainer = document.getElementById('slContainer');
+            const handingSelect = document.getElementById('doorHanding');
+
+            if (layout === 'Slab Only') {
+                handingSelect.value = 'N/A (Slab)';
+            } else if (handingSelect.value === 'N/A (Slab)') {
+                handingSelect.value = 'Left Hand (LH) Inswing';
+            }
             
             if (layout.includes('SL')) {
                 slContainer.classList.remove('hidden');
                 slContainer.classList.add('grid');
                 
                 const slModelSelect = document.getElementById('slModel');
-                slModelSelect.innerHTML = '<option value="" disabled selected>Select Model...</option>';
+                slModelSelect.innerHTML = '';
                 const sideliteDb = currentMaterial === 'wood' ? appSettings.db.wood_sidelites : appSettings.db.fiberglass_sidelites;
+                
+                let firstSL = null;
                 sideliteDb.forEach((sl, index) => {
                     const opt = document.createElement('option');
                     opt.value = index;
                     opt.innerText = sl.name;
                     slModelSelect.appendChild(opt);
+                    if(index === 0) firstSL = index;
                 });
+                slModelSelect.value = firstSL;
                 
-                document.getElementById('slSize').innerHTML = '<option value="" disabled selected>Select Size...</option>';
-                document.getElementById('slGlass').innerHTML = '<option value="" disabled selected>Select Glass...</option>';
+                populateSideliteSizes();
             } else {
                 slContainer.classList.add('hidden');
                 slContainer.classList.remove('grid');
@@ -1167,19 +1199,21 @@
             if(!currentlySelectedSidelite) return;
 
             const slSizeSelect = document.getElementById('slSize');
-            slSizeSelect.innerHTML = '<option value="" disabled selected>Select Size...</option>';
+            slSizeSelect.innerHTML = '';
             
             const sizes = Object.keys(currentlySelectedSidelite.sizes);
-            sizes.forEach(sizeCode => {
+            let firstSize = null;
+            sizes.forEach((sizeCode, idx) => {
                 const opt = document.createElement('option');
                 opt.value = sizeCode;
                 const dims = decodeSize(sizeCode);
                 opt.innerText = `${dims.label}`;
                 slSizeSelect.appendChild(opt);
+                if (idx === 0) firstSize = sizeCode;
             });
+            slSizeSelect.value = firstSize;
             
-            document.getElementById('slGlass').innerHTML = '<option value="" disabled selected>Select Glass...</option>';
-            runQuoteEngine();
+            populateSideliteGlass();
         }
 
         function populateSideliteGlass() {
@@ -1189,14 +1223,17 @@
             if(!sizeData) return;
 
             const slGlassSelect = document.getElementById('slGlass');
-            slGlassSelect.innerHTML = '<option value="" disabled selected>Select Glass...</option>';
+            slGlassSelect.innerHTML = '';
             
-            sizeData.glass.forEach(g => {
+            let firstGlass = null;
+            sizeData.glass.forEach((g, idx) => {
                 const opt = document.createElement('option');
                 opt.value = g;
                 opt.innerText = g;
                 slGlassSelect.appendChild(opt);
+                if (idx === 0) firstGlass = g;
             });
+            slGlassSelect.value = firstGlass;
 
             runQuoteEngine();
         }
@@ -1217,27 +1254,9 @@
         function runQuoteEngine() {
             const addBtn = document.getElementById('addToQuoteBtn');
             const doorSize = document.getElementById('doorSize').value;
-            const doorFinish = document.getElementById('doorFinish').value;
-            const doorHanding = document.getElementById('doorHanding').value;
             
-            // Layout conditional checks
-            const layout = document.getElementById('systemLayout').value;
-            let sideliteValid = true;
-            if (layout.includes('SL')) {
-                const slModel = document.getElementById('slModel').value;
-                const slSize = document.getElementById('slSize').value;
-                const slGlass = document.getElementById('slGlass').value;
-                if (!slModel || !slSize || !slGlass) sideliteValid = false;
-            }
-
-            // Glass conditional checks
-            const glassContainerVisible = document.getElementById('glassContainer').style.display !== 'none';
-            const doorGlass = document.getElementById('doorGlass').value;
-            const glassValid = !glassContainerVisible || (glassContainerVisible && doorGlass !== "");
-
-            // Validation Gate
-            if (!currentlySelectedModel || !doorSize || !doorFinish || !doorHanding || !glassValid || !sideliteValid) {
-                // Empty State Protocol
+            // Core Empty State Gate - Only require Model Selection
+            if (!currentlySelectedModel || !doorSize) {
                 document.getElementById('priceRetail').innerText = "$0.00";
                 document.getElementById('costTotal').innerText = "$0.00";
                 document.getElementById('costSlab').innerText = "$0.00";
@@ -1257,7 +1276,7 @@
                 return;
             }
 
-            // Valid selections met. Proceed with calculation.
+            // Valid core selections met. Proceed with calculation.
             addBtn.disabled = false;
             addBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
@@ -1269,18 +1288,21 @@
             const sizeData = currentlySelectedModel.sizes[sizeCode];
             const pricingData = sizeData.prices;
             
+            const doorFinish = document.getElementById('doorFinish').value || 'Unfinished (Slab/Prehung)';
+            const doorHanding = document.getElementById('doorHanding').value || 'Left Hand (LH) Inswing';
+            
             const finish = doorFinish;
             const isUnfinished = finish.includes('Unfinished');
             
+            const layout = document.getElementById('systemLayout').value || 'Single Door System';
             const isDouble = layout.includes('Double');
             const isSlabOnly = layout === 'Slab Only';
             const isBarn = currentlySelectedModel.barn || currentCollection === 'Barn Doors';
             
-            const jamb = document.getElementById('jambDepth').value;
+            const jamb = document.getElementById('jambDepth').value || '4 9/16';
             const margin = parseFloat(document.getElementById('marginSlider').value) / 100;
 
             const addOnsSelect = document.getElementById('addOns');
-
             let addOnsNet = 0;
             let addonsDesc = '';
 
@@ -1325,7 +1347,7 @@
             let laborNet = customLabor;
             let laborDesc = customLabor > 0 ? `Custom Labor ($${customLabor.toFixed(2)})` : '';
             
-            if(laborSelect.value !== "0") {
+            if(laborSelect && laborSelect.value !== "0") {
                 laborNet += parseFloat(appSettings.labor[laborSelect.value]);
                 const baseLaborText = laborSelect.options[laborSelect.selectedIndex].text.split(' (+')[0];
                 laborDesc = customLabor > 0 ? `${baseLaborText} + Custom ($${customLabor.toFixed(2)})` : baseLaborText;
@@ -1333,8 +1355,8 @@
 
             const alertBox = document.getElementById('prehangAlert');
             let jambDesc = '';
-            
             let listPrice = 0;
+
             if (isSlabOnly || isBarn) {
                 listPrice = isUnfinished ? pricingData.u_slab : pricingData.p_slab;
                 if(isDouble) listPrice *= 2;
@@ -1388,7 +1410,7 @@
                 const slSizeCode = document.getElementById('slSize').value;
                 const slData = currentlySelectedSidelite.sizes[slSizeCode] ? currentlySelectedSidelite.sizes[slSizeCode].prices : null;
                 if(slData) {
-                    const slGlass = document.getElementById('slGlass').value;
+                    const slGlass = document.getElementById('slGlass').value || 'Standard';
                     slQty = layout.includes('2 SL') ? 2 : 1;
                     
                     let slListPrice = 0;
@@ -1470,7 +1492,13 @@
             document.getElementById('sumUnitSize').innerText = unitStr;
             document.getElementById('sumRO').innerText = roStr;
 
+            const glassContainerVisible = document.getElementById('glassContainer').style.display !== 'none';
             const glass = glassContainerVisible ? document.getElementById('doorGlass').value : 'Solid Panel';
+            
+            // Toggle Placeholder Visibility
+            document.getElementById('preview-glass').style.display = glassContainerVisible ? 'flex' : 'none';
+            document.getElementById('preview-addon').style.display = addOnsNet > 0 ? 'flex' : 'none';
+
             const matCode = currentMaterial === 'wood' ? 'WD' : 'FG';
             const sku = `SD-${matCode}-${currentCollection.substring(0,3).toUpperCase()}-${sizeCode}-${isDouble ? 'DBL' : 'SGL'}`;
             document.getElementById('sku-display').innerText = `SKU: ${sku}`;
@@ -1491,6 +1519,13 @@
             if (!window.currentQuoteState) return;
             const item = JSON.parse(JSON.stringify(window.currentQuoteState));
             quoteItems.push(item);
+            
+            // Visual feedback
+            const toast = document.getElementById('toast');
+            toast.innerHTML = `<i class="fas fa-check-circle text-emerald-400 mr-2"></i> Added ${item.sku} to Quote!`;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => { toast.classList.add('opacity-0'); }, 2000);
+            
             updateCartUI();
         }
 
@@ -1509,6 +1544,7 @@
             if(quoteItems.length === 0 && !window.currentQuoteState) {
                 cartContainer.classList.add('hidden');
                 document.getElementById('grandTotalRetail').innerText = "$0.00";
+                generateProposal(0, 0, 0, 0, 0, 0, false, false, []);
                 return;
             }
             
@@ -1517,8 +1553,7 @@
             
             let totalMaterials = 0;
             let totalLabor = 0;
-            
-            let itemsToCalc = quoteItems.length > 0 ? quoteItems : [window.currentQuoteState];
+            let itemsToCalc = quoteItems.length > 0 ? quoteItems : (window.currentQuoteState ? [window.currentQuoteState] : []);
 
             if (quoteItems.length > 0) {
                 quoteItems.forEach((item, index) => {
@@ -1536,7 +1571,7 @@
                     `;
                 });
             } else {
-                 cartItems.innerHTML = `<div class="p-3 text-slate-500 text-xs text-center italic">Items added to quote will appear here. Proposal below reflects current active configuration.</div>`;
+                 cartItems.innerHTML = `<div class="p-3 text-slate-500 text-xs text-center italic">Items added to quote will appear here. Proposal tab reflects current active configuration.</div>`;
             }
 
             itemsToCalc.forEach(item => {
@@ -1563,7 +1598,6 @@
             }
             
             if(discountAmount > subtotalGross) discountAmount = subtotalGross; 
-            
             document.getElementById('display-discount').innerText = `-$${discountAmount.toFixed(2)}`;
             
             const applyTax = document.getElementById('applyTax').checked;
@@ -1602,12 +1636,12 @@
         }
 
         function generateProposal(totalMaterials, totalLabor, discountAmount, taxAmount, ccAmount, grandTotal, applyTax, applyCC, itemsToCalc) {
-            document.getElementById('prop-quote-num').innerText = document.getElementById('quoteNumber').value || 'TBD';
+            document.getElementById('prop-quote-num').innerText = document.getElementById('quoteNumber').value || 'SD-2026-001';
             document.getElementById('prop-rep').innerText = document.getElementById('salesRep').value;
             
-            document.getElementById('prop-cust-name').innerText = document.getElementById('custName').value || 'TBD';
-            document.getElementById('prop-cust-phone').innerText = document.getElementById('custPhone').value || 'TBD';
-            document.getElementById('prop-cust-address').innerText = document.getElementById('custAddress').value || 'TBD';
+            document.getElementById('prop-cust-name').innerText = document.getElementById('custName').value || 'Customer Name';
+            document.getElementById('prop-cust-phone').innerText = document.getElementById('custPhone').value || 'Phone Number';
+            document.getElementById('prop-cust-address').innerText = document.getElementById('custAddress').value || 'Installation Address';
             
             const tbody = document.getElementById('prop-tbody');
             tbody.innerHTML = '';
@@ -1657,12 +1691,15 @@
                     Hoelscher Door Unit<br>
                     <span class="text-xs font-normal text-slate-500">${state.sku}</span>
                 </td>
-                <td class="py-5 px-3 align-top text-center text-slate-300">
-                    <i class="fas fa-door-closed text-4xl mb-2 block"></i>
-                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Preview<br>Placeholder</span>
+                <td class="py-5 px-3 align-top text-center text-slate-400">
+                    <div class="inline-flex items-center justify-center p-3 bg-slate-100 border border-dashed border-slate-300 rounded">
+                        <i class="fas fa-door-closed text-2xl mr-2 text-slate-500"></i>
+                        <span class="text-xs font-bold text-slate-600">Door Slab</span>
+                    </div>
                 </td>
                 <td class="py-5 px-3 align-top text-slate-600 space-y-1 text-xs">
                     <p><strong>Model:</strong> ${state.collection} - ${state.modelName}</p>
+                    <p><strong>Dimensions:</strong> ${state.unitStr}</p>
                     <p><strong>Configuration:</strong> ${state.layout}</p>
             `;
             
