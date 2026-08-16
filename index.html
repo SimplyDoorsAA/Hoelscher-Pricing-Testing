@@ -670,7 +670,7 @@
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-6 py-3 rounded shadow-xl font-semibold transition-opacity duration-300 opacity-0 pointer-events-none z-50 text-sm">
+    <div id="toast" class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded shadow-xl font-semibold transition-opacity duration-300 opacity-0 pointer-events-none z-[150] text-sm">
         <i class="fas fa-check-circle text-emerald-400 mr-2"></i> Settings Saved Successfully!
     </div>
 
@@ -840,6 +840,7 @@
             document.getElementById('prop-cc-rate').innerText = appSettings.ccRate;
             
             runQuoteEngine();
+            updateCartUI(); // Force instant re-calculation of cart and proposal using new tax/cc rates
         }
 
         function renderSettingsUI() {
@@ -1147,6 +1148,7 @@
                 const opt = document.createElement('option');
                 opt.value = 'Solid Panel';
                 opt.innerText = 'Solid Panel';
+                opt.selected = true;
                 glassSelect.appendChild(opt);
                 glassSelect.value = 'Solid Panel';
             }
@@ -1429,7 +1431,10 @@
 
             const materialsDealerCost = slabNet + sideliteNet + addOnsNet;
             const materialsRetail = materialsDealerCost / (1 - margin);
-            const laborRetail = (laborNet / (1 - margin)); 
+            
+            // Labor is now separated and passed through at exactly net cost without product margin markup
+            const laborRetail = laborNet; 
+            
             const totalDealerCost = materialsDealerCost + laborNet; 
             const retailPrice = materialsRetail + laborRetail;
 
