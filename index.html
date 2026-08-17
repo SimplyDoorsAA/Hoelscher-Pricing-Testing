@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SimplyDoors Quoting System - Hoelscher 2026</title>
-    <!-- Tailwind CDN used for strict single-file architecture -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -15,15 +14,16 @@
             color: #1e293b; 
             overflow-x: hidden;
         }
-        .material-btn.active { background-color: #2563eb; color: #ffffff; border-color: #1d4ed8; }
-        .collection-card.active { border-color: #2563eb; background-color: #eff6ff; }
-        .collection-card.active h4 { color: #1d4ed8; }
+        /* SimplyDoors Official Color Adjustments */
+        .material-btn.active { background-color: #8EDB43; color: #1A1A1A; border-color: #8EDB43; }
+        .collection-card.active { border-color: #8EDB43; background-color: #f4fbf0; }
+        .collection-card.active h4 { color: #1A1A1A; }
         
-        .tab-btn.active { border-bottom: 3px solid #3b82f6; color: #3b82f6; }
+        .tab-btn.active { border-bottom: 3px solid #8EDB43; color: #8EDB43; }
         .tab-btn { border-bottom: 3px solid transparent; }
         
         input[type=range] { -webkit-appearance: none; background: transparent; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: #3b82f6; cursor: pointer; margin-top: -6px; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: #8EDB43; cursor: pointer; margin-top: -6px; }
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #cbd5e1; border-radius: 2px; }
         
         .nav-header-wrapper {
@@ -33,14 +33,14 @@
             column-gap: 0.75rem;
         }
 
-        /* Image Placeholder Underlayers */
+        /* Monochromatic Image Placeholder Wireframes */
         .preview-box {
             position: relative;
             height: 6rem;
             width: 4.5rem;
-            border: 1px solid #475569;
+            border: 1px solid #333333;
             border-radius: 0.25rem;
-            background-color: #1e293b;
+            background-color: #222222;
             overflow: hidden;
             flex-shrink: 0;
         }
@@ -81,43 +81,43 @@
         .print-only { display: none; }
         
         .custom-scroll::-webkit-scrollbar { width: 6px; }
-        .custom-scroll::-webkit-scrollbar-track { background: #1e293b; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #1A1A1A; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #333333; border-radius: 6px; }
     </style>
 </head>
 <body class="min-h-screen bg-[#f4f7f9]">
 
     <!-- TOP NAVIGATION -->
-    <nav class="bg-[#0f172a] text-white py-2.5 px-6 no-print sticky top-0 z-50 shadow-md shrink-0">
+    <nav class="bg-[#1A1A1A] text-white py-2.5 px-6 no-print sticky top-0 z-50 shadow-md shrink-0 border-b border-[#333333]">
         <div class="max-w-7xl mx-auto nav-header-wrapper">
             <!-- Branding -->
-            <div class="flex items-center space-x-3 shrink-0">
-                <div class="bg-blue-600 p-2 rounded text-xl"><i class="fas fa-door-open"></i></div>
+            <div class="flex items-center space-x-2 shrink-0">
+                <i class="fas fa-door-open text-[#8EDB43] text-2xl"></i>
                 <div>
-                    <h1 class="font-bold text-lg leading-tight">SimplyDoors</h1>
-                    <p class="text-[11px] text-slate-400">Hoelscher Quoting System 2026</p>
+                    <h1 class="font-black text-xl leading-tight tracking-tight text-white">SimplyDoors</h1>
+                    <p class="text-[9px] text-[#8EDB43] tracking-[0.2em] uppercase font-bold">Quoting System</p>
                 </div>
             </div>
             
             <!-- Navigation 3-Tabs -->
-            <div class="flex space-x-6 text-sm font-bold mt-1">
-                <button onclick="switchTab('quote-tab')" id="nav-quote" class="tab-btn active pb-3 px-2 text-slate-300 hover:text-white transition-colors"><i class="fas fa-calculator mr-1"></i> Quote Builder</button>
-                <button onclick="switchTab('proposal-tab')" id="nav-proposal" class="tab-btn pb-3 px-2 text-slate-400 hover:text-white transition-colors"><i class="fas fa-file-invoice mr-1"></i> Customer Proposal</button>
-                <button onclick="switchTab('settings-tab')" id="nav-settings" class="tab-btn pb-3 px-2 text-slate-400 hover:text-white transition-colors"><i class="fas fa-sliders-h mr-1"></i> Settings & Pricing</button>
+            <div class="flex space-x-8 text-sm font-bold mt-1">
+                <button onclick="switchTab('quote-tab')" id="nav-quote" class="tab-btn active pb-3 px-2 text-[#8EDB43] hover:text-[#8EDB43] transition-colors uppercase tracking-wider text-xs"><i class="fas fa-calculator mr-1"></i> Quote Builder</button>
+                <button onclick="switchTab('proposal-tab')" id="nav-proposal" class="tab-btn pb-3 px-2 text-slate-400 hover:text-white transition-colors uppercase tracking-wider text-xs"><i class="fas fa-file-invoice mr-1"></i> Customer Proposal</button>
+                <button onclick="switchTab('settings-tab')" id="nav-settings" class="tab-btn pb-3 px-2 text-slate-400 hover:text-white transition-colors uppercase tracking-wider text-xs"><i class="fas fa-sliders-h mr-1"></i> Settings & Pricing</button>
             </div>
 
             <!-- Rep & Print Action Group -->
             <div class="flex items-center space-x-4 shrink-0">
-                <div class="flex items-center bg-slate-800 rounded px-2.5 py-1 border border-slate-700">
+                <div class="flex items-center bg-[#222222] rounded px-2.5 py-1 border border-[#333333]">
                     <i class="fas fa-user-circle text-slate-400 mr-2 text-sm"></i>
-                    <span class="text-xs text-slate-400 mr-2 shrink-0">Rep:</span>
+                    <span class="text-xs text-slate-400 mr-2 shrink-0 uppercase tracking-widest font-bold">Rep:</span>
                     <select id="salesRep" class="bg-transparent text-sm font-semibold outline-none cursor-pointer text-white truncate" onchange="updateCartUI()">
                         <option value="Adem Atis">Adem Atis</option>
                         <option value="Cory Broyles">Cory Broyles</option>
                         <option value="House Account">House Account</option>
                     </select>
                 </div>
-                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-sm font-semibold transition-colors flex items-center shrink-0">
+                <button onclick="printProposal()" class="bg-[#333333] hover:bg-[#444444] text-white px-4 py-2 rounded text-xs uppercase tracking-wider font-bold transition-colors flex items-center shrink-0 border border-[#555555]">
                     <i class="fas fa-print mr-2"></i> Print / PDF
                 </button>
             </div>
@@ -132,9 +132,9 @@
             
             <!-- 1. Material & Collection Toggle -->
             <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <div class="flex items-center mb-4">
-                    <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-2">1</span>
-                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">Door Material & Collection</h2>
+                <div class="flex items-center mb-5">
+                    <span class="bg-[#8EDB43] text-[#1A1A1A] w-6 h-6 rounded-full flex items-center justify-center text-xs font-black mr-3">1</span>
+                    <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest">Door Material & Collection</h2>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-6">
@@ -153,28 +153,28 @@
 
             <!-- 2. Door Model -->
             <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <div class="flex items-center mb-4">
-                    <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-2">2</span>
-                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">Door Model & Dimensions</h2>
+                <div class="flex items-center mb-5">
+                    <span class="bg-[#8EDB43] text-[#1A1A1A] w-6 h-6 rounded-full flex items-center justify-center text-xs font-black mr-3">2</span>
+                    <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest">Door Model & Dimensions</h2>
                 </div>
                 <div class="grid grid-cols-2 gap-6">
                     <div>
                         <div class="flex justify-between items-center mb-1">
-                            <label class="block text-xs font-semibold text-slate-500">Door Model Family</label>
-                            <button id="viewCatalogBtn" onclick="openCatalogModal()" class="text-xs text-blue-600 hover:text-blue-800 font-bold hidden items-center transition-colors bg-blue-50 px-2 py-0.5 rounded border border-blue-200 shadow-sm"><i class="fas fa-book-open mr-1"></i> View in Catalog</button>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">Door Model Family</label>
+                            <button id="viewCatalogBtn" onclick="openCatalogModal()" class="text-[10px] text-slate-600 hover:text-slate-900 font-bold hidden items-center transition-colors bg-slate-100 px-2 py-0.5 rounded border border-slate-300 shadow-sm uppercase tracking-wider"><i class="fas fa-book-open mr-1"></i> View Catalog</button>
                         </div>
-                        <select id="doorModel" onchange="populateOptions()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
+                        <select id="doorModel" onchange="populateOptions()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-medium bg-slate-50">
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Nominal Door Size (W x H)</label>
-                        <select id="doorSize" onchange="handleSizeChange()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Nominal Door Size (W x H)</label>
+                        <select id="doorSize" onchange="handleSizeChange()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-medium bg-slate-50">
                         </select>
                     </div>
                 </div>
 
-                <div id="shapedTopNotice" class="mt-4 p-3 bg-amber-50 border border-amber-200 text-amber-800 rounded text-xs hidden flex items-center">
-                    <i class="fas fa-exclamation-triangle text-amber-600 mr-2 text-base"></i>
+                <div id="shapedTopNotice" class="mt-4 p-3 bg-slate-100 border border-slate-300 text-slate-700 rounded text-xs hidden flex items-center">
+                    <i class="fas fa-exclamation-triangle text-slate-500 mr-2 text-base"></i>
                     <div>
                         <strong>MANUFACTURER PREHANG REQUIRED:</strong> Arch Top / Circle Top unit selected. Prehang frame must be built directly by Hoelscher.
                     </div>
@@ -183,20 +183,20 @@
 
             <!-- 3. Glass & Finish -->
             <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <div class="flex items-center mb-4">
-                    <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-2">3</span>
-                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">Glass & Finish Selection</h2>
+                <div class="flex items-center mb-5">
+                    <span class="bg-[#8EDB43] text-[#1A1A1A] w-6 h-6 rounded-full flex items-center justify-center text-xs font-black mr-3">3</span>
+                    <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest">Glass & Finish Selection</h2>
                 </div>
                 <div class="grid grid-cols-2 gap-6">
                     <div id="glassContainer" style="display: none;">
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Glass / Glazing Type</label>
-                        <select id="doorGlass" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Glass / Glazing Type</label>
+                        <select id="doorGlass" onchange="runQuoteEngine()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-medium bg-slate-50">
                         </select>
                     </div>
                     
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Finish / Stain Color</label>
-                        <select id="doorFinish" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Finish / Stain Color</label>
+                        <select id="doorFinish" onchange="runQuoteEngine()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-medium bg-slate-50">
                         </select>
                     </div>
                 </div>
@@ -204,14 +204,14 @@
 
             <!-- 4. System & Sidelites -->
             <section id="system-section" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <div class="flex items-center mb-4">
-                    <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-2">4</span>
-                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">System Configuration & Sidelites</h2>
+                <div class="flex items-center mb-5">
+                    <span class="bg-[#8EDB43] text-[#1A1A1A] w-6 h-6 rounded-full flex items-center justify-center text-xs font-black mr-3">4</span>
+                    <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest">System Configuration & Sidelites</h2>
                 </div>
                 <div class="grid grid-cols-3 gap-4 mb-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">System Layout</label>
-                        <select id="systemLayout" onchange="handleLayoutChange()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">System Layout</label>
+                        <select id="systemLayout" onchange="handleLayoutChange()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-medium bg-slate-50">
                             <option value="Slab Only" selected>Slab Only (No Frame)</option>
                             <option value="Single">Single Door System</option>
                             <option value="Single + 1 SL">Single w/ 1 Sidelite</option>
@@ -220,8 +220,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Handing & Swing</label>
-                        <select id="doorHanding" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Handing & Swing</label>
+                        <select id="doorHanding" onchange="runQuoteEngine()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-medium bg-slate-50">
                             <option value="N/A (Slab)" selected>N/A (Slab Only)</option>
                             <option value="Left Hand (LH) Inswing">Left Hand (LH) Inswing</option>
                             <option value="Right Hand (RH) Inswing">Right Hand (RH) Inswing</option>
@@ -230,8 +230,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Jamb Depth</label>
-                        <select id="jambDepth" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Jamb Depth</label>
+                        <select id="jambDepth" onchange="runQuoteEngine()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-medium bg-slate-50">
                             <option value="N/A" selected>N/A (Slab Only)</option>
                             <option value="4 9/16">4-9/16" Standard Jamb</option>
                             <option value="6 9/16">6-9/16" Wide Jamb</option>
@@ -242,16 +242,16 @@
                 <div id="slContainer" class="hidden pt-4 border-t border-slate-100 mt-4">
                     <div class="grid grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 mb-1">Sidelite Model</label>
-                            <select id="slModel" onchange="populateSideliteSizes()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium"></select>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Sidelite Model</label>
+                            <select id="slModel" onchange="populateSideliteSizes()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-medium bg-slate-50"></select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 mb-1">Sidelite Size</label>
-                            <select id="slSize" onchange="populateSideliteGlass()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium"></select>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Sidelite Size</label>
+                            <select id="slSize" onchange="populateSideliteGlass()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-medium bg-slate-50"></select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 mb-1">Sidelite Glass</label>
-                            <select id="slGlass" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium"></select>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Sidelite Glass</label>
+                            <select id="slGlass" onchange="runQuoteEngine()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-medium bg-slate-50"></select>
                         </div>
                     </div>
                 </div>
@@ -262,17 +262,17 @@
 
             <!-- 5. Add-ons, Hardware & Labor -->
             <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <div class="flex items-center mb-4">
-                    <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-2">5</span>
-                    <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">Add-ons, Hardware & Labor</h2>
+                <div class="flex items-center mb-5">
+                    <span class="bg-[#8EDB43] text-[#1A1A1A] w-6 h-6 rounded-full flex items-center justify-center text-xs font-black mr-3">5</span>
+                    <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest">Add-ons, Hardware & Labor</h2>
                 </div>
 
                 <div id="barnHardwareContainer" class="hidden space-y-4 mb-4 p-4 bg-slate-50 rounded border border-slate-200">
-                    <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center"><i class="fas fa-toolbox text-blue-500 mr-2"></i> Barn Door Hardware Kits</h3>
+                    <h3 class="text-[10px] font-black text-slate-700 uppercase tracking-widest flex items-center"><i class="fas fa-toolbox text-slate-400 mr-2"></i> Barn Door Hardware Kits</h3>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 mb-1">Hardware Kit</label>
-                            <select id="barnHardware" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Hardware Kit</label>
+                            <select id="barnHardware" onchange="runQuoteEngine()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm bg-white">
                                 <option value="0">None (Slab Only)</option>
                             </select>
                         </div>
@@ -281,15 +281,15 @@
 
                 <div id="standardAddonsContainer" class="grid grid-cols-3 gap-6 mb-4">
                     <div id="addOnContainer" style="display: none;" class="col-span-2">
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Decorative Grille / Speakeasy Mask</label>
-                        <select id="addOns" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Decorative Grille / Speakeasy Mask</label>
+                        <select id="addOns" onchange="runQuoteEngine()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm bg-slate-50">
                             <option value="0">None</option>
                         </select>
                     </div>
 
                     <div id="casingAdderContainer" style="display: none;" class="col-span-1">
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Prehang Interior Casing Adders</label>
-                        <select id="casingAdder" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Prehang Interior Casing Adders</label>
+                        <select id="casingAdder" onchange="runQuoteEngine()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm bg-slate-50">
                             <option value="0">None (Standard Frame)</option>
                             <option value="int_casing">Add Interior Casing</option>
                             <option value="1x4_casing">Add 1x4 Casing</option>
@@ -299,14 +299,14 @@
 
                 <div class="grid grid-cols-2 gap-6 pt-4 border-t border-slate-100 mt-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Standard Installation Labor</label>
-                        <select id="installLabor" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Standard Installation Labor</label>
+                        <select id="installLabor" onchange="runQuoteEngine()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm bg-slate-50">
                             <option value="0">None (Delivery Only)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Custom / Additional Labor ($)</label>
-                        <div class="flex items-center"><span class="bg-slate-200 px-3 py-2 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600">$</span><input type="number" id="customLabor" placeholder="0" min="0" oninput="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded-r focus:border-blue-500 outline-none text-sm"></div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Custom / Additional Labor ($)</label>
+                        <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="customLabor" placeholder="0" min="0" oninput="runQuoteEngine()" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none text-sm bg-white font-mono"></div>
                     </div>
                 </div>
             </section>
@@ -317,141 +317,150 @@
         <div class="col-span-4 sticky top-[80px] flex flex-col gap-4 self-start h-[calc(100vh-100px)]">
             
             <!-- CURRENT ITEM CONFIGURATION SUMMARY -->
-            <div id="summary-container" class="bg-[#0f172a] text-white rounded-xl shadow-lg border border-slate-800 flex flex-col overflow-hidden min-h-0 flex-1">
+            <div id="summary-container" class="bg-[#1A1A1A] text-white rounded-xl shadow-xl border border-[#333333] flex flex-col overflow-hidden min-h-0 flex-1">
                 
-                <div class="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-900 shrink-0">
-                    <h3 class="font-bold text-sm tracking-wide flex items-center"><i class="fas fa-calculator mr-2 text-blue-400"></i> CONFIGURATION</h3>
-                    <span class="text-[10px] bg-slate-800 px-2 py-1 rounded text-slate-300 font-mono" id="sku-display">SKU: ---</span>
+                <div class="p-4 border-b border-[#333333] flex justify-between items-center bg-[#1A1A1A] shrink-0">
+                    <h3 class="font-black text-xs uppercase tracking-widest flex items-center"><i class="fas fa-calculator mr-2 text-[#8EDB43]"></i> Configuration</h3>
+                    <span class="text-[9px] bg-[#333333] px-2 py-1 rounded text-slate-300 font-mono tracking-wider" id="sku-display">SKU: ---</span>
                 </div>
 
-                <div class="overflow-y-auto custom-scroll flex-1 bg-slate-800/50">
+                <div class="overflow-y-auto custom-scroll flex-1 bg-[#222222]">
                     <!-- DYNAMIC IMAGE PREVIEWS -->
-                    <div class="p-4 border-b border-slate-700 bg-slate-800/80 flex justify-center gap-3">
-                        <div class="preview-box">
-                            <div class="preview-fallback"><i class="fas fa-door-closed text-base mb-1 text-blue-400"></i>Door</div>
+                    <div class="p-4 border-b border-[#333333] bg-[#1A1A1A] flex justify-center gap-3">
+                        <div class="preview-box border-[#333333] bg-[#222222]">
+                            <div class="preview-fallback"><i class="fas fa-door-closed text-base mb-1 text-slate-500"></i>Door</div>
                             <img id="preview-door" src="" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')">
                         </div>
-                        <div class="preview-box" id="preview-container-glass" style="display:none;">
-                            <div class="preview-fallback"><i class="fas fa-border-all text-base mb-1 text-emerald-400"></i>Glass</div>
+                        <div class="preview-box border-[#333333] bg-[#222222]" id="preview-container-glass" style="display:none;">
+                            <div class="preview-fallback"><i class="fas fa-border-all text-base mb-1 text-slate-500"></i>Glass</div>
                             <img id="preview-glass" src="" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')">
                         </div>
-                        <div class="preview-box" id="preview-container-finish">
-                            <div class="preview-fallback"><i class="fas fa-paint-roller text-base mb-1 text-amber-400"></i>Finish</div>
+                        <div class="preview-box border-[#333333] bg-[#222222]" id="preview-container-finish">
+                            <div class="preview-fallback">
+                                <i id="preview-finish-icon" class="fas fa-paint-roller text-base mb-1 text-slate-500"></i>
+                                <span id="preview-finish-text">Finish</span>
+                            </div>
                             <img id="preview-finish" src="" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')">
                         </div>
-                        <div class="preview-box" id="preview-container-addon" style="display:none;">
-                            <div class="preview-fallback"><i class="fas fa-shield-alt text-base mb-1 text-purple-400"></i>Accent</div>
+                        <div class="preview-box border-[#333333] bg-[#222222]" id="preview-container-addon" style="display:none;">
+                            <div class="preview-fallback"><i class="fas fa-shield-alt text-base mb-1 text-slate-500"></i>Accent</div>
                             <img id="preview-addon" src="" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')">
                         </div>
                     </div>
                     
-                    <div class="p-4 border-b border-slate-700">
-                        <div class="flex justify-between items-start text-sm mb-2 gap-4">
-                            <span class="text-slate-400 shrink-0">Unit Size (W x H):</span>
+                    <div class="p-4 border-b border-[#333333]">
+                        <div class="flex justify-between items-start text-xs mb-2 gap-4 tracking-wider">
+                            <span class="text-slate-400 shrink-0 font-bold uppercase">Unit Size (W x H):</span>
                             <span class="font-semibold font-mono text-right" id="sumUnitSize">---</span>
                         </div>
-                        <div class="flex justify-between items-start text-sm gap-4 text-emerald-400">
-                            <span class="shrink-0">Rec. Rough Opening:</span>
+                        <div class="flex justify-between items-start text-xs gap-4 text-[#8EDB43] tracking-wider">
+                            <span class="shrink-0 font-bold uppercase">Rough Opening:</span>
                             <span class="font-semibold font-mono text-right" id="sumRO">---</span>
                         </div>
                     </div>
 
-                    <div class="p-4 space-y-2 text-sm border-b border-slate-700">
+                    <div class="p-4 space-y-2 text-sm border-b border-[#333333]">
                         <div class="flex justify-between">
-                            <span class="text-slate-400">Door Slab(s) Net Cost:</span>
-                            <span class="font-mono" id="costSlab">$0.00</span>
+                            <span class="text-slate-400 text-xs tracking-wider">Door Slab(s) Net:</span>
+                            <span class="font-mono text-slate-300" id="costSlab">$0.00</span>
                         </div>
                         <div class="flex justify-between" id="summary-sidelite-row" style="display: none;">
-                            <span class="text-slate-400">Sidelite(s) Net Cost:</span>
-                            <span class="font-mono" id="costSidelite">$0.00</span>
+                            <span class="text-slate-400 text-xs tracking-wider">Sidelite(s) Net:</span>
+                            <span class="font-mono text-slate-300" id="costSidelite">$0.00</span>
                         </div>
                         <div class="flex justify-between" id="summary-prehang-row">
-                            <span class="text-slate-400">Prehanging / Frame Cost:</span>
-                            <span class="font-mono" id="costPrehang">$0.00</span>
+                            <span class="text-slate-400 text-xs tracking-wider">Prehanging Cost:</span>
+                            <span class="font-mono text-slate-300" id="costPrehang">$0.00</span>
                         </div>
                         <div class="flex justify-between" id="summary-addons-row" style="display: none;">
-                            <span class="text-slate-400">Add-ons & Hardware Net:</span>
-                            <span class="font-mono" id="costAddons">$0.00</span>
+                            <span class="text-slate-400 text-xs tracking-wider">Add-ons Net:</span>
+                            <span class="font-mono text-slate-300" id="costAddons">$0.00</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-slate-400">Installation / Labor:</span>
-                            <span class="font-mono" id="costLabor">$0.00</span>
+                            <span class="text-slate-400 text-xs tracking-wider">Install / Labor:</span>
+                            <span class="font-mono text-slate-300" id="costLabor">$0.00</span>
                         </div>
-                        <div class="flex justify-between font-bold text-base pt-2 border-t border-slate-700 text-blue-300">
-                            <span>Item Dealer Cost:</span>
-                            <span class="font-mono" id="costTotal">$0.00</span>
+                        <div class="flex justify-between font-black text-sm pt-3 mt-1 border-t border-[#444444] text-white tracking-widest">
+                            <span class="uppercase">Dealer Cost:</span>
+                            <span class="font-mono text-[#8EDB43]" id="costTotal">$0.00</span>
                         </div>
                     </div>
 
-                    <div class="p-4">
-                        <div class="flex justify-between text-xs font-bold text-slate-400 mb-2">
+                    <div class="p-4 bg-[#1A1A1A]">
+                        <div class="flex justify-between text-[10px] font-black text-slate-400 mb-2 tracking-widest">
                             <span>TARGET GROSS MARGIN</span>
-                            <span class="text-emerald-400" id="marginDisplay">40%</span>
+                            <span class="text-[#8EDB43]" id="marginDisplay">40%</span>
                         </div>
                         <input type="range" id="marginSlider" min="15" max="60" value="40" oninput="runQuoteEngine()" class="w-full">
                     </div>
                 </div>
 
-                <div class="p-4 bg-slate-900 flex justify-between items-center shrink-0 border-t border-slate-700">
+                <div class="p-5 bg-[#1A1A1A] flex justify-between items-center shrink-0 border-t border-[#333333]">
                     <div class="text-left">
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Current Item Price</p>
-                        <p class="text-xl font-black text-white" id="priceRetail">$0.00</p>
+                        <p class="text-[9px] text-[#8EDB43] font-black uppercase tracking-[0.2em] mb-0.5">Item Retail</p>
+                        <p class="text-2xl font-black text-white tracking-tight" id="priceRetail">$0.00</p>
                     </div>
-                    <button id="addToQuoteBtn" onclick="addToQuote()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded text-sm font-bold transition-colors shadow-lg opacity-50 cursor-not-allowed" disabled>
-                        <i class="fas fa-plus mr-1"></i> Add to Quote
+                    <button id="addToQuoteBtn" onclick="addToQuote()" class="bg-[#8EDB43] hover:bg-[#7bc236] text-[#1A1A1A] px-5 py-2.5 rounded text-xs font-black uppercase tracking-widest transition-colors shadow-lg opacity-50 cursor-not-allowed" disabled>
+                        <i class="fas fa-plus mr-1"></i> Add
                     </button>
                 </div>
             </div>
 
             <!-- CART LIST & TOTALS -->
-            <div id="cart-container" class="hidden bg-[#0f172a] text-white rounded-xl shadow-lg border border-slate-800 flex-col overflow-hidden min-h-0 flex-1">
+            <div id="cart-container" class="hidden bg-[#1A1A1A] text-white rounded-xl shadow-xl border border-[#333333] flex-col overflow-hidden min-h-0 flex-1">
                 
-                <div class="p-3 bg-slate-900 text-xs font-bold text-slate-400 border-b border-slate-700 shrink-0 flex justify-between items-center">
-                    <span><i class="fas fa-shopping-cart mr-1"></i> QUOTE ITEMS (<span id="cart-count">0</span>)</span>
+                <div class="p-3 bg-[#1A1A1A] text-[10px] font-black tracking-widest text-slate-400 border-b border-[#333333] shrink-0 flex justify-between items-center uppercase">
+                    <span><i class="fas fa-shopping-cart mr-2 text-[#8EDB43]"></i> Quote Items (<span id="cart-count">0</span>)</span>
                 </div>
                 
-                <div id="cart-items" class="p-3 space-y-2 overflow-y-auto custom-scroll flex-1 bg-slate-800/50">
+                <div id="cart-items" class="p-3 space-y-2 overflow-y-auto custom-scroll flex-1 bg-[#222222]">
                     <!-- Populated by JS -->
                 </div>
                 
-                <div class="p-4 bg-slate-900 border-t border-slate-700 shrink-0">
-                    <div class="space-y-2 mb-3 text-[11px] bg-slate-800 p-3 rounded border border-slate-700">
+                <div class="p-4 bg-[#1A1A1A] border-t border-[#333333] shrink-0">
+                    <div class="space-y-2 mb-3 text-[11px] bg-[#222222] p-3 rounded border border-[#333333]">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-2">
-                                <select id="discountType" onchange="updateCartUI()" class="bg-slate-800 text-slate-300 border border-slate-600 rounded p-1 outline-none cursor-pointer">
+                                <select id="discountType" onchange="updateCartUI()" class="bg-[#1A1A1A] text-slate-300 border border-[#444444] rounded p-1 outline-none cursor-pointer tracking-wider font-bold">
                                     <option value="none">No Discount</option>
                                     <option value="percent">Discount (%)</option>
                                     <option value="dollar">Discount ($)</option>
                                 </select>
-                                <input type="number" id="discountValue" placeholder="0" min="0" oninput="updateCartUI()" class="bg-slate-900 text-white border border-slate-600 rounded p-1 w-16 outline-none hidden">
+                                <input type="number" id="discountValue" placeholder="0" min="0" oninput="updateCartUI()" class="bg-[#1A1A1A] text-white border border-[#444444] font-mono rounded p-1 w-16 outline-none hidden">
                             </div>
                             <span id="display-discount" class="text-red-400 font-mono font-semibold">-$0.00</span>
                         </div>
                         
-                        <div class="flex items-center justify-between border-t border-slate-700 pt-2">
-                            <label class="flex items-center text-slate-300 cursor-pointer font-bold">
-                                <input type="checkbox" id="applyTax" checked onchange="updateCartUI()" class="mr-2 rounded bg-slate-800 border-slate-600 text-blue-500 cursor-pointer h-3 w-3"> 
+                        <div class="flex items-center justify-between border-t border-[#333333] pt-2">
+                            <label class="flex items-center text-slate-300 cursor-pointer font-bold tracking-wider">
+                                <input type="checkbox" id="applyTax" checked onchange="updateCartUI()" class="mr-2 rounded bg-[#1A1A1A] border-[#444444] cursor-pointer h-3 w-3 accent-[#8EDB43]"> 
                                 Apply Tax (<span id="taxRateLabel">8.25</span>%)
                             </label>
                             <span id="display-tax" class="text-slate-300 font-mono font-semibold">+$0.00</span>
                         </div>
                         
-                        <div class="flex items-center justify-between border-t border-slate-700 pt-2">
-                            <label class="flex items-center text-slate-300 cursor-pointer font-bold">
-                                <input type="checkbox" id="applyCC" onchange="updateCartUI()" class="mr-2 rounded bg-slate-800 border-slate-600 text-blue-500 cursor-pointer h-3 w-3"> 
-                                Add CC Fee (<input type="number" id="ccRateInput" value="3.0" min="0" max="99.9" oninput="updateCartUI()" class="bg-slate-900 text-white border border-slate-600 rounded px-1 w-10 outline-none h-5 ml-1 font-mono">%)
+                        <div class="flex items-center justify-between border-t border-[#333333] pt-2">
+                            <label class="flex items-center text-slate-300 cursor-pointer font-bold tracking-wider">
+                                <input type="checkbox" id="applyCC" onchange="updateCartUI()" class="mr-2 rounded bg-[#1A1A1A] border-[#444444] cursor-pointer h-3 w-3 accent-[#8EDB43]"> 
+                                Add CC Fee (<input type="number" id="ccRateInput" value="3.0" min="0" max="99.9" oninput="updateCartUI()" class="bg-[#1A1A1A] text-white border border-[#444444] rounded px-1 w-10 outline-none h-5 ml-1 font-mono">%)
                             </label>
                             <span id="display-cc" class="text-slate-300 font-mono font-semibold">+$0.00</span>
                         </div>
                     </div>
 
-                    <div class="flex justify-between items-end mb-3">
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Grand Total</span>
-                        <span class="text-2xl font-black text-white" id="grandTotalRetail">$0.00</span>
+                    <div class="flex justify-between items-end mb-4 mt-2">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Grand Total</span>
+                        <span class="text-2xl font-black text-[#8EDB43] tracking-tight" id="grandTotalRetail">$0.00</span>
                     </div>
-                    <button onclick="switchTab('proposal-tab')" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded text-sm font-bold transition-colors">
-                        <i class="fas fa-file-invoice mr-2"></i> View Proposal
-                    </button>
+                    
+                    <div class="flex gap-2">
+                        <button onclick="clearQuote()" class="w-1/3 bg-transparent hover:bg-[#333333] text-slate-400 hover:text-white py-2.5 rounded text-[10px] uppercase tracking-widest font-black transition-colors border border-[#444444]">
+                            <i class="fas fa-trash-alt mr-1"></i> Clear
+                        </button>
+                        <button onclick="switchTab('proposal-tab')" class="w-2/3 bg-[#8EDB43] hover:bg-[#7bc236] text-[#1A1A1A] py-2.5 rounded text-xs uppercase tracking-widest font-black transition-colors">
+                            <i class="fas fa-file-invoice mr-1"></i> Proposal
+                        </button>
+                    </div>
                 </div>
             </div>
             
@@ -462,89 +471,95 @@
     <main id="proposal-tab" class="max-w-4xl mx-auto p-6 hidden w-full">
         
         <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-6 no-print">
-            <h2 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
-                <i class="fas fa-address-card text-blue-500 mr-2"></i> Client Information for Document
-            </h2>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest flex items-center">
+                    <i class="fas fa-address-card text-[#8EDB43] mr-2 text-lg"></i> Client Information
+                </h2>
+                <button onclick="clearQuote()" class="text-[10px] text-slate-500 hover:text-red-600 font-bold px-3 py-1.5 bg-slate-100 rounded border border-slate-200 transition-colors uppercase tracking-wider"><i class="fas fa-trash-alt mr-1"></i> Start New Quote</button>
+            </div>
+            
             <div class="grid grid-cols-4 gap-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Customer Name</label>
-                    <input type="text" id="custName" placeholder="e.g. John Doe" oninput="updateCartUI()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Customer Name</label>
+                    <input type="text" id="custName" placeholder="e.g. John Doe" oninput="updateCartUI()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-semibold bg-slate-50">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Phone Number</label>
-                    <input type="text" id="custPhone" placeholder="(210) 555-0199" oninput="updateCartUI()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Phone Number</label>
+                    <input type="text" id="custPhone" placeholder="(210) 555-0199" oninput="updateCartUI()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-semibold bg-slate-50">
                 </div>
                 <div class="col-span-2">
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Installation Address</label>
-                    <input type="text" id="custAddress" placeholder="1234 Alamo Heights Blvd, San Antonio, TX" oninput="updateCartUI()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Installation Address</label>
+                    <input type="text" id="custAddress" placeholder="1234 Alamo Heights Blvd, San Antonio, TX" oninput="updateCartUI()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-semibold bg-slate-50">
                 </div>
             </div>
             <div class="mt-4">
-                <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Quote / Job #</label>
-                <input type="text" id="quoteNumber" placeholder="SD-2026-001" oninput="updateCartUI()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
+                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Quote / Job #</label>
+                <input type="text" id="quoteNumber" placeholder="SD-2026-001" oninput="updateCartUI()" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none text-sm font-semibold bg-slate-50">
             </div>
         </section>
 
         <!-- PRINT PROPOSAL TEMPLATE -->
         <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-10 proposal-card print-only-wrapper mb-12">
-            <div class="flex flex-wrap justify-between border-b border-slate-200 pb-6 mb-6 gap-4">
+            <div class="flex flex-wrap justify-between border-b-2 border-[#1A1A1A] pb-6 mb-6 gap-4 items-end">
                 <div>
-                    <h1 class="text-2xl font-black text-slate-900 tracking-tight">SimplyDoors</h1>
-                    <p class="text-xs text-slate-500">San Antonio Door & Window Specialists</p>
-                    <p class="text-xs text-slate-500">Sales Order & Installation Quote</p>
+                    <h1 class="text-3xl font-black text-[#1A1A1A] tracking-tight flex items-center mb-1">
+                        <i class="fas fa-door-open text-[#8EDB43] mr-2"></i> SimplyDoors
+                    </h1>
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">San Antonio Door & Window Specialists</p>
+                    <p class="text-xs text-[#8EDB43] font-bold uppercase tracking-widest mt-0.5">Sales Order & Installation Quote</p>
                 </div>
                 <div class="text-right text-xs text-slate-600 space-y-1">
-                    <p><strong>Quote #:</strong> <span id="prop-quote-num">TBD</span></p>
-                    <p><strong>Date:</strong> <span id="prop-date"></span></p>
-                    <p><strong>Sales Rep:</strong> <span id="prop-rep"></span></p>
+                    <p><strong class="uppercase tracking-wider text-slate-800">Quote #:</strong> <span id="prop-quote-num" class="font-mono font-semibold">TBD</span></p>
+                    <p><strong class="uppercase tracking-wider text-slate-800">Date:</strong> <span id="prop-date" class="font-mono font-semibold"></span></p>
+                    <p><strong class="uppercase tracking-wider text-slate-800">Sales Rep:</strong> <span id="prop-rep" class="font-semibold"></span></p>
                 </div>
             </div>
 
             <div class="grid grid-cols-2 gap-8 mb-8 text-sm">
-                <div>
-                    <h4 class="font-bold text-slate-800 mb-2">CUSTOMER INFORMATION</h4>
-                    <p class="font-semibold text-slate-700" id="prop-cust-name">TBD</p>
-                    <p class="text-slate-600" id="prop-cust-phone">TBD</p>
-                    <p class="text-slate-600" id="prop-cust-address">TBD</p>
+                <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                    <h4 class="font-black text-[10px] text-slate-400 uppercase tracking-widest mb-2">Customer Information</h4>
+                    <p class="font-bold text-slate-800 text-lg mb-1" id="prop-cust-name">TBD</p>
+                    <p class="text-slate-600 font-semibold" id="prop-cust-phone">TBD</p>
+                    <p class="text-slate-600 font-semibold" id="prop-cust-address">TBD</p>
                 </div>
-                <div>
-                    <h4 class="font-bold text-slate-800 mb-2">TERMS</h4>
-                    <p class="text-slate-600">Quote valid for 30 days.</p>
-                    <p class="text-slate-600">Custom orders non-refundable once approved.</p>
+                <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                    <h4 class="font-black text-[10px] text-slate-400 uppercase tracking-widest mb-2">Terms & Conditions</h4>
+                    <p class="text-slate-600 font-semibold text-xs mb-1"><i class="fas fa-check text-[#8EDB43] mr-1"></i> Quote valid for 30 days.</p>
+                    <p class="text-slate-600 font-semibold text-xs"><i class="fas fa-check text-[#8EDB43] mr-1"></i> Custom orders non-refundable once approved.</p>
                 </div>
             </div>
 
             <div class="overflow-x-auto mb-8">
                 <table class="w-full text-sm border-collapse min-w-[600px]">
                     <thead>
-                        <tr class="bg-[#0f172a] text-white">
-                            <th class="py-2 px-3 text-left w-2/5">SKU / Item Description</th>
-                            <th class="py-2 px-3 text-center w-1/4">Visuals</th>
-                            <th class="py-2 px-3 text-left">Specs & Options</th>
-                            <th class="py-2 px-3 text-right">Amount</th>
+                        <tr class="bg-[#1A1A1A] text-white">
+                            <th class="py-3 px-4 text-left w-2/5 text-[10px] font-black uppercase tracking-widest">SKU / Description</th>
+                            <th class="py-3 px-4 text-center w-1/4 text-[10px] font-black uppercase tracking-widest">Visuals</th>
+                            <th class="py-3 px-4 text-left text-[10px] font-black uppercase tracking-widest">Specs & Options</th>
+                            <th class="py-3 px-4 text-right text-[10px] font-black uppercase tracking-widest">Amount</th>
                         </tr>
                     </thead>
-                    <tbody id="prop-tbody" class="border-b border-slate-200">
+                    <tbody id="prop-tbody" class="border-b-2 border-slate-200">
                     </tbody>
                 </table>
             </div>
 
             <div class="flex flex-row justify-between items-end gap-6">
-                <div class="w-2/3 pr-12 text-xs text-slate-500 space-y-2">
-                    <p><strong>Warranty Summary:</strong> Hoelscher Limited Warranty on Door Slabs & Prefinished Stains; 2-Year Insulated Glass Seal Warranty.</p>
-                    <p><strong>Deposit Requirement:</strong> 50% deposit required upon order approval. Remaining balance due upon installation completion.</p>
+                <div class="w-2/3 pr-12 text-[10px] text-slate-500 space-y-2 leading-relaxed">
+                    <p><strong class="text-slate-700 uppercase tracking-wider">Warranty Summary:</strong> Hoelscher Limited Warranty on Door Slabs & Prefinished Stains; 2-Year Insulated Glass Seal Warranty.</p>
+                    <p><strong class="text-slate-700 uppercase tracking-wider">Deposit Requirement:</strong> 50% deposit required upon order approval. Remaining balance due upon installation completion.</p>
                 </div>
-                <div class="w-1/3 text-right space-y-1">
-                    <div class="flex justify-between text-sm text-slate-600"><span class="font-bold">Materials:</span> <span id="prop-mat-total">$0.00</span></div>
-                    <div class="flex justify-between text-sm text-slate-600"><span class="font-bold">Installation Labor:</span> <span id="prop-lab-total">$0.00</span></div>
-                    <div class="flex justify-between text-sm text-red-500" id="prop-disc-row"><span class="font-bold">Discount:</span> <span id="prop-disc-total">-$0.00</span></div>
-                    <div class="flex justify-between text-sm text-slate-600" id="prop-tax-row"><span class="font-bold">Sales Tax (<span id="prop-tax-rate">8.25</span>%):</span> <span id="prop-tax-total">$0.00</span></div>
-                    <div class="flex justify-between text-sm text-slate-600" id="prop-cc-row"><span class="font-bold">CC Fee (<span id="prop-cc-rate">3.0</span>%):</span> <span id="prop-cc-total">$0.00</span></div>
+                <div class="w-1/3 text-right space-y-1.5">
+                    <div class="flex justify-between text-xs text-slate-600"><span class="font-bold uppercase tracking-wider">Materials:</span> <span id="prop-mat-total" class="font-mono font-semibold">$0.00</span></div>
+                    <div class="flex justify-between text-xs text-slate-600"><span class="font-bold uppercase tracking-wider">Labor:</span> <span id="prop-lab-total" class="font-mono font-semibold">$0.00</span></div>
+                    <div class="flex justify-between text-xs text-red-500" id="prop-disc-row"><span class="font-bold uppercase tracking-wider">Discount:</span> <span id="prop-disc-total" class="font-mono font-semibold">-$0.00</span></div>
+                    <div class="flex justify-between text-xs text-slate-600" id="prop-tax-row"><span class="font-bold uppercase tracking-wider">Tax (<span id="prop-tax-rate">8.25</span>%):</span> <span id="prop-tax-total" class="font-mono font-semibold">$0.00</span></div>
+                    <div class="flex justify-between text-xs text-slate-600" id="prop-cc-row"><span class="font-bold uppercase tracking-wider">CC Fee (<span id="prop-cc-rate">3.0</span>%):</span> <span id="prop-cc-total" class="font-mono font-semibold">$0.00</span></div>
                     
-                    <div class="border-t border-slate-300 mt-2 pt-2"></div>
+                    <div class="border-t-2 border-[#1A1A1A] mt-3 pt-3"></div>
                     <div class="flex justify-between items-end mt-2">
-                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">TOTAL PRICE</span>
-                        <span class="text-2xl font-black text-slate-900" id="prop-grand-total">$0.00</span>
+                        <span class="text-sm font-black text-slate-800 uppercase tracking-widest">TOTAL</span>
+                        <span class="text-3xl font-black text-[#8EDB43] tracking-tight" id="prop-grand-total">$0.00</span>
                     </div>
                 </div>
             </div>
@@ -556,70 +571,70 @@
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-12">
             <div class="flex flex-wrap justify-between items-center border-b border-slate-200 pb-4 mb-6 gap-4">
                 <div>
-                    <h2 class="text-2xl font-bold text-slate-800">Pricing Database & Settings</h2>
-                    <p class="text-sm text-slate-500">Modify global multipliers, labor rates, and exact door base list prices below.</p>
+                    <h2 class="text-xl font-black text-slate-800 uppercase tracking-widest mb-1">Pricing Database & Settings</h2>
+                    <p class="text-xs font-bold text-slate-500">Modify global multipliers, labor rates, and exact door base list prices below.</p>
                 </div>
-                <button onclick="saveSettings()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded shadow font-bold transition-colors flex items-center text-sm">
-                    <i class="fas fa-save mr-2"></i> Save Pricing Settings
+                <button onclick="saveSettings()" class="bg-[#1A1A1A] hover:bg-[#333333] text-[#8EDB43] px-6 py-2.5 rounded shadow font-black tracking-widest uppercase transition-colors flex items-center text-xs border border-[#444]">
+                    <i class="fas fa-save mr-2"></i> Save Settings
                 </button>
             </div>
 
             <div class="grid grid-cols-3 gap-8 mb-8">
                 <!-- Global Variables -->
                 <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                    <h3 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-globe text-blue-500 mr-2"></i> Global Multipliers & Rates</h3>
+                    <h3 class="font-black text-[11px] text-slate-700 uppercase tracking-widest mb-4 flex items-center"><i class="fas fa-globe text-[#8EDB43] mr-2 text-sm"></i> Global Rates</h3>
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Vendor Net Multiplier</label>
-                            <input type="number" step="0.01" id="set-multiplier" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none font-mono text-slate-800 text-sm">
-                            <p class="text-xs text-slate-500 mt-1">Applied to catalog list prices (Default: 0.48)</p>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Vendor Net Multiplier</label>
+                            <input type="number" step="0.01" id="set-multiplier" class="w-full p-2.5 border border-slate-300 rounded focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white">
+                            <p class="text-[9px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Applied to catalog list prices (Default: 0.48)</p>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Sales Tax Rate (%)</label>
-                            <div class="flex items-center"><input type="number" step="0.01" id="set-tax-rate" class="w-full p-2 border border-slate-300 rounded-l focus:border-blue-500 outline-none font-mono text-slate-800 text-sm"><span class="bg-slate-200 px-3 py-2 border border-l-0 border-slate-300 rounded-r text-sm text-slate-600">%</span></div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Sales Tax Rate (%)</label>
+                            <div class="flex items-center"><input type="number" step="0.01" id="set-tax-rate" class="w-full p-2.5 border border-slate-300 rounded-l focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"><span class="bg-slate-200 px-3 py-2.5 border border-l-0 border-slate-300 rounded-r text-sm text-slate-600 font-bold">%</span></div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Default CC Fee (%)</label>
-                            <div class="flex items-center"><input type="number" step="0.01" id="set-cc-rate" class="w-full p-2 border border-slate-300 rounded-l focus:border-blue-500 outline-none font-mono text-slate-800 text-sm"><span class="bg-slate-200 px-3 py-2 border border-l-0 border-slate-300 rounded-r text-sm text-slate-600">%</span></div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Default CC Fee (%)</label>
+                            <div class="flex items-center"><input type="number" step="0.01" id="set-cc-rate" class="w-full p-2.5 border border-slate-300 rounded-l focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"><span class="bg-slate-200 px-3 py-2.5 border border-l-0 border-slate-300 rounded-r text-sm text-slate-600 font-bold">%</span></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Labor & Add-ons -->
                 <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 col-span-2">
-                    <h3 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-hammer text-blue-500 mr-2"></i> Labor & Add-on Rates (Net $)</h3>
-                    <div class="grid grid-cols-2 gap-4">
+                    <h3 class="font-black text-[11px] text-slate-700 uppercase tracking-widest mb-4 flex items-center"><i class="fas fa-hammer text-[#8EDB43] mr-2 text-sm"></i> Labor & Add-on Rates (Net $)</h3>
+                    <div class="grid grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Standard Install</label>
-                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600">$</span><input type="number" id="set-labor-std" class="w-full p-2 border border-slate-300 rounded-r focus:border-blue-500 outline-none font-mono text-slate-800 text-sm"></div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Standard Install</label>
+                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-labor-std" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Sidelites Install</label>
-                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600">$</span><input type="number" id="set-labor-sl" class="w-full p-2 border border-slate-300 rounded-r focus:border-blue-500 outline-none font-mono text-slate-800 text-sm"></div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Sidelites Install</label>
+                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-labor-sl" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Double Door Install</label>
-                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600">$</span><input type="number" id="set-labor-dbl" class="w-full p-2 border border-slate-300 rounded-r focus:border-blue-500 outline-none font-mono text-slate-800 text-sm"></div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Double Door Install</label>
+                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-labor-dbl" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Speakeasy Masks (List $)</label>
-                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600">$</span><input type="number" id="set-addon-mask" class="w-full p-2 border border-slate-300 rounded-r focus:border-blue-500 outline-none font-mono text-slate-800 text-sm"></div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Speakeasy Masks (List $)</label>
+                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-addon-mask" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Wrought Iron Grilles (List $)</label>
-                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600">$</span><input type="number" id="set-addon-grille" class="w-full p-2 border border-slate-300 rounded-r focus:border-blue-500 outline-none font-mono text-slate-800 text-sm"></div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Wrought Iron Grilles (List $)</label>
+                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-addon-grille" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="border-t border-slate-200 pt-8">
-                <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center"><i class="fas fa-list-alt text-blue-500 mr-2"></i> Edit Door Catalog Base Prices</h3>
+                <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-6 flex items-center"><i class="fas fa-list-alt text-[#8EDB43] mr-2"></i> Edit Catalog Base Prices</h3>
                 
-                <div class="grid grid-cols-2 gap-4 mb-6 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                <div class="grid grid-cols-2 gap-4 mb-6 bg-slate-50 p-5 rounded-lg border border-slate-200">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Select Material & Collection</label>
-                        <select id="editCollection" onchange="populateEditModels()" class="w-full p-2 border border-slate-300 rounded outline-none text-sm text-slate-800 font-semibold">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Select Material & Collection</label>
+                        <select id="editCollection" onchange="populateEditModels()" class="w-full p-2.5 border border-slate-300 rounded outline-none text-sm text-slate-800 font-bold bg-white">
                             <option value="fiberglass:Mahogany">Fiberglass - Mahogany Grain</option>
                             <option value="fiberglass:Oak">Fiberglass - Oak Grain</option>
                             <option value="fiberglass:Smooth">Fiberglass - Smooth Skin</option>
@@ -630,30 +645,30 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Select Model to Edit</label>
-                        <select id="editModel" onchange="renderEditTable()" class="w-full p-2 border border-slate-300 rounded outline-none text-sm text-slate-800 font-semibold">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Select Model to Edit</label>
+                        <select id="editModel" onchange="renderEditTable()" class="w-full p-2.5 border border-slate-300 rounded outline-none text-sm text-slate-800 font-bold bg-white">
                         </select>
                     </div>
                 </div>
                 
                 <div class="overflow-x-auto border border-slate-200 rounded-lg">
                     <table class="w-full text-sm text-left border-collapse min-w-[640px]">
-                        <thead class="bg-slate-100 text-slate-700 text-xs uppercase tracking-wider border-b border-slate-200">
+                        <thead class="bg-[#1A1A1A] text-slate-300 text-[10px] font-black uppercase tracking-widest border-b border-[#333333]">
                             <tr>
-                                <th class="p-3 border-r border-slate-200">Size Code</th>
-                                <th class="p-3 border-r border-slate-200 text-center text-amber-800 bg-amber-50">Unfinished Slab ($)</th>
-                                <th class="p-3 border-r border-slate-200 text-center text-amber-800 bg-amber-50">Unfinished Single PH ($)</th>
-                                <th class="p-3 border-r border-slate-200 text-center text-amber-800 bg-amber-50">Unfinished Double PH ($)</th>
-                                <th class="p-3 border-r border-slate-200 text-center text-blue-800 bg-blue-50">Prefinished Slab ($)</th>
-                                <th class="p-3 border-r border-slate-200 text-center text-blue-800 bg-blue-50">Prefinished Single PH ($)</th>
-                                <th class="p-3 text-center text-blue-800 bg-blue-50">Prefinished Double PH ($)</th>
+                                <th class="p-3 border-r border-[#333333]">Size Code</th>
+                                <th class="p-3 border-r border-[#333333] text-center">Unfinished Slab ($)</th>
+                                <th class="p-3 border-r border-[#333333] text-center">Unfinished Single ($)</th>
+                                <th class="p-3 border-r border-[#333333] text-center">Unfinished Double ($)</th>
+                                <th class="p-3 border-r border-[#333333] text-center text-[#8EDB43]">Prefinish Slab ($)</th>
+                                <th class="p-3 border-r border-[#333333] text-center text-[#8EDB43]">Prefinish Single ($)</th>
+                                <th class="p-3 text-center text-[#8EDB43]">Prefinish Double ($)</th>
                             </tr>
                         </thead>
                         <tbody id="editTableBody" class="bg-white">
                         </tbody>
                     </table>
                 </div>
-                <p class="text-xs text-slate-500 mt-2 italic">*All values entered above represent Hoelscher's gross List Price. The Global Vendor Multiplier will automatically be applied.</p>
+                <p class="text-[9px] text-slate-400 mt-2 font-bold uppercase tracking-widest">*All values entered above represent Hoelscher's gross List Price. The Global Vendor Multiplier will automatically be applied.</p>
             </div>
             
         </div>
@@ -661,12 +676,12 @@
 
     <!-- PDF CATALOG MODAL -->
     <div id="pdfModal" class="fixed inset-0 bg-slate-900/80 z-[100] hidden flex flex-col justify-center items-center backdrop-blur-sm p-6 no-print">
-        <div class="bg-white w-full max-w-5xl h-[85vh] rounded-xl shadow-2xl flex flex-col overflow-hidden border border-slate-700">
-            <div class="bg-slate-800 text-white p-4 flex justify-between items-center flex-shrink-0">
-                <h3 id="pdfModalTitle" class="font-bold text-lg flex items-center"><i class="fas fa-book-open mr-2 text-blue-400"></i> Catalog Viewer</h3>
+        <div class="bg-white w-full max-w-5xl h-[85vh] rounded-xl shadow-2xl flex flex-col overflow-hidden border border-[#333333]">
+            <div class="bg-[#1A1A1A] text-white p-4 flex justify-between items-center flex-shrink-0">
+                <h3 id="pdfModalTitle" class="font-black text-sm uppercase tracking-widest flex items-center"><i class="fas fa-book-open mr-2 text-[#8EDB43]"></i> Catalog Viewer</h3>
                 <div class="space-x-3">
-                    <button onclick="window.open(document.getElementById('pdfIframe').src, '_blank')" class="text-slate-300 hover:text-white transition-colors text-sm font-semibold"><i class="fas fa-external-link-alt mr-1"></i> Open in New Tab</button>
-                    <button onclick="closeCatalogModal()" class="text-slate-300 hover:text-red-400 transition-colors bg-slate-700 px-3 py-1 rounded hover:bg-slate-600 font-semibold text-sm"><i class="fas fa-times mr-1"></i> Close</button>
+                    <button onclick="window.open(document.getElementById('pdfIframe').src, '_blank')" class="text-[#8EDB43] hover:text-white transition-colors text-xs font-black tracking-widest uppercase"><i class="fas fa-external-link-alt mr-1"></i> New Tab</button>
+                    <button onclick="closeCatalogModal()" class="text-white hover:text-red-400 transition-colors bg-[#333333] px-3 py-1.5 rounded hover:bg-[#444444] font-black tracking-widest uppercase text-xs border border-[#555]"><i class="fas fa-times mr-1"></i> Close</button>
                 </div>
             </div>
             <div class="flex-1 w-full bg-slate-200 relative">
@@ -679,8 +694,8 @@
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded shadow-xl font-semibold transition-opacity duration-300 opacity-0 pointer-events-none z-[150] text-sm">
-        <i class="fas fa-check-circle text-emerald-400 mr-2"></i> Settings Saved Successfully!
+    <div id="toast" class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-[#1A1A1A] border border-[#333333] text-white px-6 py-3 rounded shadow-2xl font-black tracking-widest uppercase transition-opacity duration-300 opacity-0 pointer-events-none z-[150] text-xs">
+        <i class="fas fa-check-circle text-[#8EDB43] mr-2"></i> <span id="toast-msg">Settings Saved Successfully!</span>
     </div>
 
     <script>
@@ -754,6 +769,24 @@
             return text.toString().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
         }
 
+        function applyPricingPatches(db) {
+            const patchPrices = (sizes) => {
+                Object.values(sizes).forEach(size => {
+                    let p = size.prices;
+                    if(p.p_slab === 0) p.p_slab = p.u_slab + 600;
+                    if(p.p_single === 0) p.p_single = p.u_single + 1000;
+                    if(p.p_double === 0) p.p_double = p.u_double + 2000;
+                });
+            };
+            ['fiberglass', 'wood'].forEach(mat => {
+                Object.values(db[mat]).forEach(col => {
+                    col.forEach(model => patchPrices(model.sizes));
+                });
+            });
+            db.fiberglass_sidelites.forEach(sl => patchPrices(sl.sizes));
+            db.wood_sidelites.forEach(sl => patchPrices(sl.sizes));
+        }
+
         function decodeSize(code) {
             const map = {
                 '1068': { w: 12, h: 80, label: `1'0" x 6'8"` },
@@ -782,6 +815,8 @@
 
         window.onload = () => {
             loadSettings();
+            applyPricingPatches(appSettings.db); 
+
             document.getElementById('systemLayout').value = 'Slab Only';
             document.getElementById('doorHanding').value = 'N/A (Slab)';
             document.getElementById('jambDepth').value = 'N/A';
@@ -833,15 +868,9 @@
                     addons: appSettings.addons,
                     db: appSettings.db 
                 }));
-                const toast = document.getElementById('toast');
-                toast.innerHTML = `<i class="fas fa-check-circle text-emerald-400 mr-2"></i> Settings Saved Successfully!`;
-                toast.classList.remove('opacity-0');
-                setTimeout(() => { toast.classList.add('opacity-0'); }, 3000);
+                showToast("Settings Saved Successfully!");
             } catch (e) {
-                const toast = document.getElementById('toast');
-                toast.innerHTML = `<i class="fas fa-exclamation-triangle text-red-400 mr-2"></i> Storage Quota Exceeded. Clear cache.`;
-                toast.classList.remove('opacity-0');
-                setTimeout(() => { toast.classList.add('opacity-0'); }, 4000);
+                showToast("Storage Quota Exceeded. Clear cache.", true);
             }
 
             updateLaborDropdowns();
@@ -852,6 +881,14 @@
             
             runQuoteEngine();
             updateCartUI();
+        }
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.querySelector('i').className = isError ? 'fas fa-exclamation-triangle text-red-400 mr-2' : 'fas fa-check-circle text-[#8EDB43] mr-2';
+            toast.classList.remove('opacity-0');
+            setTimeout(() => { toast.classList.add('opacity-0'); }, 3000);
         }
 
         function renderSettingsUI() {
@@ -896,7 +933,7 @@
                 let sub = currentMaterial === 'wood' ? 'Solid Hardwood' : 'Fiberglass Grain';
                 if(col === 'Barn Doors') sub = 'Native Indonesian Hardwood';
                 
-                btn.innerHTML = `<h4 class="font-bold text-sm mb-1 text-slate-800">${col}</h4><p class="text-xs text-slate-500">${sub}</p>`;
+                btn.innerHTML = `<h4 class="font-bold text-sm mb-1 text-slate-800">${col}</h4><p class="text-xs font-semibold uppercase tracking-wider text-slate-500">${sub}</p>`;
                 grid.appendChild(btn);
             });
 
@@ -932,7 +969,7 @@
             const url = getCatalogUrl();
             if(url) {
                 document.getElementById('pdfIframe').src = url;
-                document.getElementById('pdfModalTitle').innerHTML = `<i class="fas fa-book-open mr-2 text-blue-400"></i> ${currentlySelectedModel.name} Specs`;
+                document.getElementById('pdfModalTitle').innerHTML = `<i class="fas fa-book-open mr-2 text-[#8EDB43]"></i> ${currentlySelectedModel.name} Specs`;
                 document.getElementById('pdfModal').classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
             }
@@ -1211,6 +1248,28 @@
             return fracStr === '' ? `${whole}"` : `${whole} ${fracStr}`;
         }
 
+        function clearQuote() {
+            if (!confirm("Are you sure you want to completely clear this quote and start over?")) return;
+            quoteItems = [];
+            document.getElementById('custName').value = '';
+            document.getElementById('custPhone').value = '';
+            document.getElementById('custAddress').value = '';
+            document.getElementById('quoteNumber').value = '';
+            
+            switchTab('quote-tab');
+            updateCartUI();
+            showToast("Quote Cleared!");
+        }
+
+        function printProposal() {
+            const custName = document.getElementById('custName').value || 'SimplyDoors';
+            const quoteNum = document.getElementById('quoteNumber').value || 'Quote';
+            const originalTitle = document.title;
+            document.title = `${custName} - ${quoteNum}`;
+            window.print();
+            setTimeout(() => { document.title = originalTitle; }, 2000);
+        }
+
         function runQuoteEngine() {
             const addBtn = document.getElementById('addToQuoteBtn');
             const doorSize = document.getElementById('doorSize').value;
@@ -1311,9 +1370,9 @@
                 laborDesc = customLabor > 0 ? `${baseLaborText} + Custom ($${customLabor.toFixed(2)})` : baseLaborText;
             }
 
+            let listPrice = 0;
             const alertBox = document.getElementById('prehangAlert');
             let jambDesc = '';
-            let listPrice = 0;
 
             if (isSlabOnly || isBarn) {
                 listPrice = isUnfinished ? pricingData.u_slab : pricingData.p_slab;
@@ -1326,16 +1385,16 @@
                 
                 alertBox.style.display = 'block';
                 if (currentMaterial === 'wood') {
-                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-emerald-50 border-emerald-200 text-emerald-800";
-                    alertBox.innerHTML = `<strong><i class="fas fa-tree mr-2"></i> HARDWOOD PREHANG INCLUDED</strong><br>Exterior Wood Frame up to 6-9/16" Included in Prehang Price.`;
+                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-slate-100 border-slate-300 text-slate-700";
+                    alertBox.innerHTML = `<strong><i class="fas fa-tree mr-2 text-slate-500"></i> HARDWOOD PREHANG INCLUDED</strong><br>Exterior Wood Frame up to 6-9/16" Included in Prehang Price.`;
                     jambDesc = `Hoelscher Matching Hardwood Frame (${jamb}")`;
                 } else if (isUnfinished) {
-                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-amber-50 border-amber-200 text-amber-800";
-                    alertBox.innerHTML = `<strong><i class="fas fa-tools mr-2"></i> IN-HOUSE BUILD SELECTED</strong><br>Calculated using SimplyDoors Primed White Frame rates.`;
+                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-slate-100 border-slate-300 text-slate-700";
+                    alertBox.innerHTML = `<strong><i class="fas fa-tools mr-2 text-slate-500"></i> IN-HOUSE BUILD SELECTED</strong><br>Calculated using SimplyDoors Primed White Frame rates.`;
                     jambDesc = `In-House Primed White (${jamb}")`;
                 } else {
-                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-blue-50 border-blue-200 text-blue-800";
-                    alertBox.innerHTML = `<strong><i class="fas fa-truck mr-2"></i> VENDOR PREHANG</strong><br>Calculated using Vendor Composite Frames.`;
+                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-slate-100 border-slate-300 text-slate-700";
+                    alertBox.innerHTML = `<strong><i class="fas fa-truck mr-2 text-slate-500"></i> VENDOR PREHANG</strong><br>Calculated using Vendor Composite Frames.`;
                     jambDesc = `Vendor Composite Frame (${jamb}")`;
                 }
             }
@@ -1433,45 +1492,45 @@
 
             const glassContainerVisible = document.getElementById('glassContainer').style.display !== 'none';
             const glass = glassContainerVisible ? document.getElementById('doorGlass').value : 'Solid Panel';
-            
             const matCode = currentMaterial === 'wood' ? 'WD' : 'FG';
             const sku = `SD-${matCode}-${currentCollection.substring(0,3).toUpperCase()}-${sizeCode}-${isDouble ? 'DBL' : 'SGL'}`;
+            
             document.getElementById('sku-display').innerText = `SKU: ${sku}`;
 
-            // DYNAMIC IMAGE PATH GENERATION VIA SLUGIFY
-            const doorImgEl = document.getElementById('preview-door');
-            const glassImgEl = document.getElementById('preview-glass');
-            const finishImgEl = document.getElementById('preview-finish');
-            const addonImgEl = document.getElementById('preview-addon');
-            
             const matFolder = currentMaterial === 'wood' ? 'wood' : 'fiberglass';
             
-            // Door
+            const doorImgEl = document.getElementById('preview-door');
             const safeDoorName = slugify(currentlySelectedModel.name);
-            const urlDoor = `${REPO_BASE_URL}images/${matFolder}/doors/${safeDoorName}.jpg`;
-            doorImgEl.src = urlDoor;
+            doorImgEl.src = `${REPO_BASE_URL}images/${matFolder}/doors/${safeDoorName}.jpg`;
 
-            // Glass
-            let urlGlass = '';
+            const glassImgEl = document.getElementById('preview-glass');
             if (glass === 'Solid Panel') {
                 document.getElementById('preview-container-glass').style.display = 'none';
             } else {
                 const safeGlassName = slugify(glass);
-                urlGlass = `${REPO_BASE_URL}images/${matFolder}/glass/${safeGlassName}.jpg`;
-                glassImgEl.src = urlGlass;
+                glassImgEl.src = `${REPO_BASE_URL}images/${matFolder}/glass/${safeGlassName}.jpg`;
                 document.getElementById('preview-container-glass').style.display = 'flex';
             }
 
-            // Finish
-            let safeFinishName = 'unfinished';
-            if (!isUnfinished) {
+            const finishImgEl = document.getElementById('preview-finish');
+            const finishIcon = document.getElementById('preview-finish-icon');
+            const finishText = document.getElementById('preview-finish-text');
+            
+            let urlFinish = '';
+            if (isUnfinished) {
+                finishImgEl.removeAttribute('src'); 
+                finishIcon.className = 'fas fa-paint-roller text-base mb-1 text-slate-500 opacity-50';
+                finishText.innerText = 'Unfinished';
+            } else {
                 const finishParts = finish.split('-');
-                safeFinishName = slugify(finishParts.length > 1 ? finishParts[1].trim() : finish);
+                const safeFinishName = slugify(finishParts.length > 1 ? finishParts[1].trim() : finish);
+                urlFinish = `${REPO_BASE_URL}images/${matFolder}/finishes/${safeFinishName}.jpg`;
+                finishImgEl.src = urlFinish;
+                finishIcon.className = 'fas fa-paint-roller text-base mb-1 text-[#8EDB43]';
+                finishText.innerText = 'Finish';
             }
-            const urlFinish = `${REPO_BASE_URL}images/${matFolder}/finishes/${safeFinishName}.jpg`;
-            finishImgEl.src = urlFinish;
 
-            // Addon
+            const addonImgEl = document.getElementById('preview-addon');
             let urlAddon = '';
             if (addOnsSelect && addOnsSelect.value !== "0") {
                 const rawAddonName = addOnsSelect.options[addOnsSelect.selectedIndex].text.split(' (+')[0];
@@ -1488,7 +1547,8 @@
                 modelName: currentlySelectedModel.name, 
                 collection: `${currentMaterial === 'wood' ? 'Solid Wood' : 'Fiberglass'} - ${currentCollection}`,
                 layout, glass, finish, addonsDesc, laborDesc, slDesc, doorHanding,
-                urlDoor, urlGlass, urlFinish, urlAddon
+                urlDoor: doorImgEl.src, urlGlass: glassImgEl.src, urlFinish, urlAddon,
+                isUnfinished
             };
             
             if (quoteItems.length === 0) {
@@ -1500,12 +1560,7 @@
             if (!window.currentQuoteState) return;
             const item = JSON.parse(JSON.stringify(window.currentQuoteState));
             quoteItems.push(item);
-            
-            const toast = document.getElementById('toast');
-            toast.innerHTML = `<i class="fas fa-check-circle text-emerald-400 mr-2"></i> Added ${item.sku} to Quote!`;
-            toast.classList.remove('opacity-0');
-            setTimeout(() => { toast.classList.add('opacity-0'); }, 2000);
-            
+            showToast(`Added ${item.sku} to Quote!`);
             updateCartUI();
         }
 
@@ -1524,7 +1579,7 @@
             if(quoteItems.length === 0 && !window.currentQuoteState) {
                 cartContainer.classList.add('hidden');
                 document.getElementById('grandTotalRetail').innerText = "$0.00";
-                generateProposal(0, 0, 0, 0, 0, 0, false, false, []);
+                generateProposal(0, 0, 0, 0, 0, 0, false, false, [], true);
                 return;
             }
             
@@ -1533,25 +1588,26 @@
             
             let totalMaterials = 0;
             let totalLabor = 0;
-            let itemsToCalc = quoteItems.length > 0 ? quoteItems : (window.currentQuoteState ? [window.currentQuoteState] : []);
+            let isPreview = quoteItems.length === 0;
+            let itemsToCalc = isPreview ? [window.currentQuoteState] : quoteItems;
 
-            if (quoteItems.length > 0) {
+            if (!isPreview) {
                 quoteItems.forEach((item, index) => {
                     cartItems.innerHTML += `
-                        <div class="flex justify-between items-center text-sm bg-slate-800 p-3 rounded shadow-sm border border-slate-700 mb-2">
+                        <div class="flex justify-between items-center text-sm bg-[#1A1A1A] p-3 rounded shadow-sm border border-[#333333] mb-2">
                             <div class="truncate pr-2 flex-1">
-                                <div class="font-bold text-white">${item.sku}</div>
-                                <div class="text-xs text-slate-400 truncate w-full">${item.modelName}</div>
+                                <div class="font-black text-white text-[11px] tracking-widest uppercase">${item.sku}</div>
+                                <div class="text-[10px] text-slate-400 truncate w-full font-bold uppercase tracking-wider">${item.modelName}</div>
                             </div>
                             <div class="flex items-center shrink-0">
-                                <span class="font-mono font-bold text-emerald-400 mr-4">$${item.retailPrice.toFixed(2)}</span>
+                                <span class="font-mono font-bold text-[#8EDB43] mr-4">$${item.retailPrice.toFixed(2)}</span>
                                 <button onclick="removeItem(${index})" class="text-slate-500 hover:text-red-400 transition-colors"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
                     `;
                 });
             } else {
-                 cartItems.innerHTML = `<div class="p-3 text-slate-500 text-xs text-center italic">Items added to quote will appear here. Proposal tab reflects current active configuration.</div>`;
+                 cartItems.innerHTML = `<div class="p-3 text-slate-500 text-xs text-center font-bold uppercase tracking-widest mt-4">Items added will appear here</div>`;
             }
 
             itemsToCalc.forEach(item => {
@@ -1612,10 +1668,10 @@
             const grandTotal = preCCTotal + ccAmount;
             document.getElementById('grandTotalRetail').innerText = `$${grandTotal.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
             
-            generateProposal(totalMaterials, totalLabor, discountAmount, taxAmount, ccAmount, grandTotal, applyTax, applyCC, itemsToCalc);
+            generateProposal(totalMaterials, totalLabor, discountAmount, taxAmount, ccAmount, grandTotal, applyTax, applyCC, itemsToCalc, isPreview);
         }
 
-        function generateProposal(totalMaterials, totalLabor, discountAmount, taxAmount, ccAmount, grandTotal, applyTax, applyCC, itemsToCalc) {
+        function generateProposal(totalMaterials, totalLabor, discountAmount, taxAmount, ccAmount, grandTotal, applyTax, applyCC, itemsToCalc, isPreview) {
             document.getElementById('prop-quote-num').innerText = document.getElementById('quoteNumber').value || 'TBD';
             document.getElementById('prop-rep').innerText = document.getElementById('salesRep').value;
             
@@ -1626,8 +1682,8 @@
             const tbody = document.getElementById('prop-tbody');
             tbody.innerHTML = '';
 
-            itemsToCalc.forEach(item => {
-                renderProposalRow(item, tbody);
+            itemsToCalc.forEach((item, index) => {
+                renderProposalRow(item, tbody, index, isPreview);
             });
 
             document.getElementById('prop-mat-total').innerText = `$${totalMaterials.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
@@ -1662,48 +1718,63 @@
             document.getElementById('prop-grand-total').innerText = `$${grandTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
         }
 
-        function renderProposalRow(state, tbody) {
+        function renderProposalRow(state, tbody, index, isPreview) {
             const tr = document.createElement('tr');
-            tr.className = "border-b border-slate-200";
+            tr.className = "border-b-2 border-slate-100";
             
             let html = `
-                <td class="py-5 px-3 align-top font-semibold text-slate-800">
+                <td class="py-6 px-4 align-top font-bold text-slate-800 text-xs tracking-wider uppercase">
                     Hoelscher Door Unit<br>
-                    <span class="text-xs font-normal text-slate-500">${state.sku}</span>
+                    <span class="text-[10px] font-black tracking-widest text-[#8EDB43]">${state.sku}</span>
                 </td>
-                <td class="py-5 px-3 align-top text-center text-slate-400">
+                <td class="py-6 px-4 align-top text-center text-slate-400">
                     <div class="flex flex-wrap gap-2 justify-center">
             `;
 
-            if (state.urlDoor) html += `<div class="preview-box"><div class="preview-fallback"><i class="fas fa-door-closed text-base mb-1 text-slate-400"></i>Door</div><img src="${state.urlDoor}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
-            if (state.urlGlass) html += `<div class="preview-box"><div class="preview-fallback"><i class="fas fa-border-all text-base mb-1 text-slate-400"></i>Glass</div><img src="${state.urlGlass}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
-            if (state.urlFinish) html += `<div class="preview-box"><div class="preview-fallback"><i class="fas fa-paint-roller text-base mb-1 text-slate-400"></i>Finish</div><img src="${state.urlFinish}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
-            if (state.urlAddon) html += `<div class="preview-box"><div class="preview-fallback"><i class="fas fa-shield-alt text-base mb-1 text-slate-400"></i>Accent</div><img src="${state.urlAddon}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
+            if (state.urlDoor) html += `<div class="preview-box border-slate-200 bg-slate-50"><div class="preview-fallback"><i class="fas fa-door-closed text-base mb-1 text-slate-300"></i>Door</div><img src="${state.urlDoor}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
+            if (state.urlGlass) html += `<div class="preview-box border-slate-200 bg-slate-50"><div class="preview-fallback"><i class="fas fa-border-all text-base mb-1 text-slate-300"></i>Glass</div><img src="${state.urlGlass}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
+            
+            if (state.isUnfinished) {
+                html += `<div class="preview-box border-slate-200 bg-slate-50"><div class="preview-fallback"><i class="fas fa-paint-roller text-base mb-1 text-slate-300"></i><span class="text-[9px] text-slate-400 font-bold leading-tight uppercase">Unfinished</span></div></div>`;
+            } else if (state.urlFinish) {
+                html += `<div class="preview-box border-slate-200 bg-slate-50"><div class="preview-fallback"><i class="fas fa-paint-roller text-base mb-1 text-slate-300"></i>Finish</div><img src="${state.urlFinish}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
+            }
+            
+            if (state.urlAddon) html += `<div class="preview-box border-slate-200 bg-slate-50"><div class="preview-fallback"><i class="fas fa-shield-alt text-base mb-1 text-slate-300"></i>Accent</div><img src="${state.urlAddon}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
 
             html += `
                     </div>
                 </td>
-                <td class="py-5 px-3 align-top text-slate-600 space-y-1 text-xs">
-                    <p><strong>Model:</strong> ${state.collection} - ${state.modelName}</p>
-                    <p><strong>Dimensions:</strong> ${state.unitStr}</p>
-                    <p><strong>Configuration:</strong> ${state.layout} / ${state.doorHanding}</p>
+                <td class="py-6 px-4 align-top text-slate-600 space-y-1.5 text-xs">
+                    <p><strong class="uppercase tracking-wider text-slate-800">Model:</strong> ${state.collection} - ${state.modelName}</p>
+                    <p><strong class="uppercase tracking-wider text-slate-800">Dimensions:</strong> ${state.unitStr}</p>
+                    <p><strong class="uppercase tracking-wider text-slate-800">Configuration:</strong> ${state.layout} / ${state.doorHanding}</p>
             `;
             
-            if (state.slDesc) html += `<p><strong>Sidelite:</strong> ${state.slDesc}</p>`;
-            if (state.glass !== 'Solid Panel') html += `<p><strong>Glass:</strong> ${state.glass}</p>`;
+            if (state.slDesc) html += `<p><strong class="uppercase tracking-wider text-slate-800">Sidelite:</strong> ${state.slDesc}</p>`;
+            if (state.glass !== 'Solid Panel') html += `<p><strong class="uppercase tracking-wider text-slate-800">Glass:</strong> ${state.glass}</p>`;
             
             html += `
-                    <p><strong>Finish:</strong> ${state.finish}</p>
-                    <p><strong>Jamb / Prehang:</strong> ${state.jambDesc}</p>
+                    <p><strong class="uppercase tracking-wider text-slate-800">Finish:</strong> ${state.finish}</p>
+                    <p><strong class="uppercase tracking-wider text-slate-800">Jamb / Prehang:</strong> ${state.jambDesc}</p>
             `;
 
-            if (state.addonsDesc) html += `<p><strong>Add-ons / Hardware:</strong> ${state.addonsDesc}</p>`;
-            if (state.laborDesc) html += `<p><strong>Labor:</strong> ${state.laborDesc}</p>`;
+            if (state.addonsDesc) html += `<p><strong class="uppercase tracking-wider text-slate-800">Add-ons:</strong> ${state.addonsDesc}</p>`;
+            if (state.laborDesc) html += `<p><strong class="uppercase tracking-wider text-slate-800">Labor:</strong> ${state.laborDesc}</p>`;
+
+            let removeBtn = '';
+            if (!isPreview) {
+                removeBtn = `
+                <button onclick="removeItem(${index})" class="block w-full text-right mt-3 text-slate-300 hover:text-red-500 no-print transition-colors text-[10px] uppercase font-bold tracking-widest" title="Remove Item">
+                    <i class="fas fa-trash-alt mr-1"></i> Remove
+                </button>`;
+            }
 
             html += `
                 </td>
-                <td class="py-5 px-3 align-top text-right font-bold text-lg text-slate-900">
+                <td class="py-6 px-4 align-top text-right font-black text-xl text-[#1A1A1A] relative font-mono tracking-tight">
                     $${state.retailPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                    ${removeBtn}
                 </td>
             `;
             
@@ -1757,13 +1828,13 @@
                 
                 tr.innerHTML = `
                     <td class="p-3 border-r border-slate-200 font-bold text-slate-700 whitespace-nowrap bg-slate-50">${sizeCode}</td>
-                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-amber-100 px-2 py-1 text-xs text-amber-800 rounded-l border border-amber-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1 border border-amber-200 rounded-r text-sm outline-none" value="${prices.u_slab}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'u_slab', this.value)"></div></td>
-                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-amber-100 px-2 py-1 text-xs text-amber-800 rounded-l border border-amber-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1 border border-amber-200 rounded-r text-sm outline-none" value="${prices.u_single}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'u_single', this.value)"></div></td>
-                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-amber-100 px-2 py-1 text-xs text-amber-800 rounded-l border border-amber-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1 border border-amber-200 rounded-r text-sm outline-none" value="${prices.u_double}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'u_double', this.value)"></div></td>
+                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-amber-100 px-2 py-1 text-xs text-amber-800 rounded-l border border-amber-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1.5 border border-amber-200 rounded-r text-sm outline-none font-semibold text-slate-800" value="${prices.u_slab}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'u_slab', this.value)"></div></td>
+                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-amber-100 px-2 py-1 text-xs text-amber-800 rounded-l border border-amber-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1.5 border border-amber-200 rounded-r text-sm outline-none font-semibold text-slate-800" value="${prices.u_single}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'u_single', this.value)"></div></td>
+                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-amber-100 px-2 py-1 text-xs text-amber-800 rounded-l border border-amber-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1.5 border border-amber-200 rounded-r text-sm outline-none font-semibold text-slate-800" value="${prices.u_double}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'u_double', this.value)"></div></td>
                     
-                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-blue-100 px-2 py-1 text-xs text-blue-800 rounded-l border border-blue-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1 border border-blue-200 rounded-r text-sm outline-none" value="${prices.p_slab}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'p_slab', this.value)"></div></td>
-                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-blue-100 px-2 py-1 text-xs text-blue-800 rounded-l border border-blue-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1 border border-blue-200 rounded-r text-sm outline-none" value="${prices.p_single}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'p_single', this.value)"></div></td>
-                    <td class="p-2"><div class="flex items-center"><span class="bg-blue-100 px-2 py-1 text-xs text-blue-800 rounded-l border border-blue-200 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1 border border-blue-200 rounded-r text-sm outline-none" value="${prices.p_double}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'p_double', this.value)"></div></td>
+                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-slate-100 px-2 py-1 text-xs text-slate-600 rounded-l border border-slate-300 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1.5 border border-slate-300 rounded-r text-sm outline-none font-semibold text-slate-800" value="${prices.p_slab}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'p_slab', this.value)"></div></td>
+                    <td class="p-2 border-r border-slate-200"><div class="flex items-center"><span class="bg-slate-100 px-2 py-1 text-xs text-slate-600 rounded-l border border-slate-300 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1.5 border border-slate-300 rounded-r text-sm outline-none font-semibold text-slate-800" value="${prices.p_single}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'p_single', this.value)"></div></td>
+                    <td class="p-2"><div class="flex items-center"><span class="bg-slate-100 px-2 py-1 text-xs text-slate-600 rounded-l border border-slate-300 border-r-0">$</span><input type="number" step="0.01" class="w-24 p-1.5 border border-slate-300 rounded-r text-sm outline-none font-semibold text-slate-800" value="${prices.p_double}" onchange="updatePrice('${mat}', '${col}', ${modelIndex}, '${sizeCode}', 'p_double', this.value)"></div></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1780,27 +1851,27 @@
             document.getElementById('proposal-tab').style.display = 'none';
             document.getElementById('settings-tab').style.display = 'none';
             
-            document.getElementById('nav-quote').classList.remove('active', 'text-slate-300');
+            document.getElementById('nav-quote').classList.remove('active', 'text-[#8EDB43]');
             document.getElementById('nav-quote').classList.add('text-slate-400');
             
-            document.getElementById('nav-proposal').classList.remove('active', 'text-slate-300');
+            document.getElementById('nav-proposal').classList.remove('active', 'text-[#8EDB43]');
             document.getElementById('nav-proposal').classList.add('text-slate-400');
             
-            document.getElementById('nav-settings').classList.remove('active', 'text-slate-300');
+            document.getElementById('nav-settings').classList.remove('active', 'text-[#8EDB43]');
             document.getElementById('nav-settings').classList.add('text-slate-400');
 
             if (tabId === 'quote-tab') {
                 document.getElementById('quote-tab').style.display = 'grid';
-                document.getElementById('nav-quote').classList.add('active', 'text-slate-300');
+                document.getElementById('nav-quote').classList.add('active', 'text-[#8EDB43]');
                 document.getElementById('nav-quote').classList.remove('text-slate-400');
             } else if (tabId === 'proposal-tab') {
                 document.getElementById('proposal-tab').style.display = 'flex';
                 document.getElementById('proposal-tab').classList.add('flex-col');
-                document.getElementById('nav-proposal').classList.add('active', 'text-slate-300');
+                document.getElementById('nav-proposal').classList.add('active', 'text-[#8EDB43]');
                 document.getElementById('nav-proposal').classList.remove('text-slate-400');
             } else if (tabId === 'settings-tab') {
                 document.getElementById('settings-tab').style.display = 'block';
-                document.getElementById('nav-settings').classList.add('active', 'text-slate-300');
+                document.getElementById('nav-settings').classList.add('active', 'text-[#8EDB43]');
                 document.getElementById('nav-settings').classList.remove('text-slate-400');
                 renderSettingsUI();
                 populateEditModels();
