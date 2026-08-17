@@ -70,13 +70,22 @@
         }
 
         @media print {
-            body { background-color: white; padding: 0; }
+            @page { margin: 0.5in; }
+            body { 
+                background-color: white; 
+                padding: 0; 
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important; 
+            }
             .no-print { display: none !important; }
             .print-only { display: block !important; }
             #proposal-tab { display: block !important; }
             .proposal-card { border: none !important; box-shadow: none !important; margin: 0 !important; padding: 0 !important; }
             .overflow-x-auto { overflow: visible !important; }
-            tr { page-break-inside: avoid; }
+            
+            /* Enhanced Pagination Logic */
+            .page-break { page-break-after: always !important; }
+            .no-page-break { page-break-inside: avoid !important; }
             thead { display: table-header-group; }
         }
         .print-only { display: none; }
@@ -537,7 +546,7 @@
                 </div>
             </div>
 
-            <div class="overflow-x-auto mb-8">
+            <div class="w-full mb-8">
                 <table class="w-full text-sm border-collapse min-w-[600px]">
                     <thead>
                         <tr class="bg-[#1A1A1A] text-white">
@@ -547,30 +556,44 @@
                             <th class="py-3 px-4 text-right text-[10px] font-black uppercase tracking-widest">Amount</th>
                         </tr>
                     </thead>
-                    <tbody id="prop-tbody" class="border-b-2 border-slate-200">
+                    <tbody id="prop-tbody">
                     </tbody>
                 </table>
             </div>
 
-            <div class="flex flex-row justify-between items-end gap-6">
-                <div class="w-2/3 pr-12 text-[10px] text-slate-500 space-y-2 leading-relaxed">
-                    <p><strong class="text-slate-700 uppercase tracking-wider">Warranty Summary:</strong> Hoelscher Limited Warranty on Door Slabs & Prefinished Stains; 2-Year Insulated Glass Seal Warranty.</p>
-                    <p><strong class="text-slate-700 uppercase tracking-wider">Deposit Requirement:</strong> 50% deposit required upon order approval. Remaining balance due upon installation completion.</p>
+            <!-- Grand Totals & Signature Block (Kept together) -->
+            <div class="no-page-break">
+                <div class="flex flex-row justify-end items-end gap-6 mb-12">
+                    <div class="w-1/3 text-right space-y-1.5">
+                        <div class="flex justify-between text-xs text-slate-600"><span class="font-bold uppercase tracking-wider">Materials Subtotal:</span> <span id="prop-mat-total" class="font-mono font-semibold">$0.00</span></div>
+                        <div class="flex justify-between text-xs text-slate-600"><span class="font-bold uppercase tracking-wider">Labor Subtotal:</span> <span id="prop-lab-total" class="font-mono font-semibold">$0.00</span></div>
+                        <div class="flex justify-between text-xs text-red-500" id="prop-disc-row"><span class="font-bold uppercase tracking-wider">Discount:</span> <span id="prop-disc-total" class="font-mono font-semibold">-$0.00</span></div>
+                        <div class="flex justify-between text-xs text-slate-600" id="prop-tax-row"><span class="font-bold uppercase tracking-wider">Tax (<span id="prop-tax-rate">8.25</span>%):</span> <span id="prop-tax-total" class="font-mono font-semibold">$0.00</span></div>
+                        <div class="flex justify-between text-xs text-slate-600" id="prop-cc-row"><span class="font-bold uppercase tracking-wider">CC Fee (<span id="prop-cc-rate">3.0</span>%):</span> <span id="prop-cc-total" class="font-mono font-semibold">$0.00</span></div>
+                        
+                        <div class="border-t-2 border-[#1A1A1A] mt-3 pt-3"></div>
+                        <div class="flex justify-between items-end mt-2">
+                            <span class="text-sm font-black text-slate-800 uppercase tracking-widest">TOTAL</span>
+                            <span class="text-3xl font-black text-[#8EDB43] tracking-tight" id="prop-grand-total">$0.00</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="w-1/3 text-right space-y-1.5">
-                    <div class="flex justify-between text-xs text-slate-600"><span class="font-bold uppercase tracking-wider">Materials Subtotal:</span> <span id="prop-mat-total" class="font-mono font-semibold">$0.00</span></div>
-                    <div class="flex justify-between text-xs text-slate-600"><span class="font-bold uppercase tracking-wider">Labor Subtotal:</span> <span id="prop-lab-total" class="font-mono font-semibold">$0.00</span></div>
-                    <div class="flex justify-between text-xs text-red-500" id="prop-disc-row"><span class="font-bold uppercase tracking-wider">Discount:</span> <span id="prop-disc-total" class="font-mono font-semibold">-$0.00</span></div>
-                    <div class="flex justify-between text-xs text-slate-600" id="prop-tax-row"><span class="font-bold uppercase tracking-wider">Tax (<span id="prop-tax-rate">8.25</span>%):</span> <span id="prop-tax-total" class="font-mono font-semibold">$0.00</span></div>
-                    <div class="flex justify-between text-xs text-slate-600" id="prop-cc-row"><span class="font-bold uppercase tracking-wider">CC Fee (<span id="prop-cc-rate">3.0</span>%):</span> <span id="prop-cc-total" class="font-mono font-semibold">$0.00</span></div>
-                    
-                    <div class="border-t-2 border-[#1A1A1A] mt-3 pt-3"></div>
-                    <div class="flex justify-between items-end mt-2">
-                        <span class="text-sm font-black text-slate-800 uppercase tracking-widest">TOTAL</span>
-                        <span class="text-3xl font-black text-[#8EDB43] tracking-tight" id="prop-grand-total">$0.00</span>
+
+                <!-- SIGNATURE BLOCK -->
+                <div class="pt-8 border-t-2 border-[#1A1A1A] print-only flex justify-between items-end gap-12">
+                    <div class="w-1/2">
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-6">Acceptance of Proposal</p>
+                        <p class="text-xs text-slate-600 font-medium leading-relaxed mb-8">To proceed with this order, please sign below and remit the 50% deposit. Custom orders are non-refundable once approved and placed into production.</p>
+                        <div class="border-b border-slate-400 mb-2 h-8"></div>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Customer Signature & Date</p>
+                    </div>
+                    <div class="w-1/3">
+                        <div class="border-b border-slate-400 mb-2 h-8"></div>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest text-right">Printed Name</p>
                     </div>
                 </div>
             </div>
+            
         </div>
     </main>
 
@@ -771,7 +794,7 @@
         let currentCollection = 'Mahogany';
         let currentlySelectedModel = null;
         let currentlySelectedSidelite = null;
-        let editingIndex = null; // State tracker for Edit Mode
+        let editingIndex = null; 
 
         function slugify(text) {
             if (!text) return '';
@@ -1280,7 +1303,6 @@
             setTimeout(() => { document.title = originalTitle; }, 2000);
         }
 
-        // EDIT LIFECYCLE
         function editItem(index) {
             const item = quoteItems[index];
             const cfg = item.rawConfig;
@@ -1492,7 +1514,6 @@
             const unitLaborRetail = laborNet; 
             const unitRetailPrice = unitMaterialsRetail + unitLaborRetail;
 
-            // Update UI with UNIT costs for clarity in the breakdown
             document.getElementById('marginDisplay').innerText = `${(margin * 100).toFixed(0)}%`;
             document.getElementById('costSlab').innerText = `$${slabNet.toFixed(2)}`;
             
@@ -1516,8 +1537,6 @@
             
             document.getElementById('costLabor').innerText = `$${laborNet.toFixed(2)}`;
             document.getElementById('costTotal').innerText = `$${(unitMaterialsDealerCost + laborNet).toFixed(2)}`;
-            
-            // Multiply final retail display by QTY
             document.getElementById('priceRetail').innerText = `$${(unitRetailPrice * qty).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
             let unitStr, roStr;
@@ -1555,7 +1574,6 @@
             
             document.getElementById('sku-display').innerText = `SKU: ${sku}`;
 
-            // DYNAMIC IMAGE PATH GENERATION
             const matFolder = currentMaterial === 'wood' ? 'wood' : 'fiberglass';
             const doorImgEl = document.getElementById('preview-door');
             const safeDoorName = slugify(currentlySelectedModel.name);
@@ -1777,7 +1795,7 @@
             tbody.innerHTML = '';
 
             itemsToCalc.forEach((item, index) => {
-                renderProposalRow(item, tbody, index, isPreview);
+                renderProposalRow(item, tbody, index, isPreview, itemsToCalc.length);
             });
 
             document.getElementById('prop-mat-total').innerText = `$${totalMaterials.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
@@ -1812,17 +1830,23 @@
             document.getElementById('prop-grand-total').innerText = `$${grandTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
         }
 
-        function renderProposalRow(state, tbody, index, isPreview) {
+        function renderProposalRow(state, tbody, index, isPreview, totalItems) {
             const tr = document.createElement('tr');
-            tr.className = "border-b-2 border-slate-100";
+            tr.className = "border-b-2 border-slate-100 no-page-break";
+            
+            // 1-2-2 Pagination Rule: Break after Item 1, 3, 5... BUT never break after the very last item.
+            if (index % 2 === 0 && index !== totalItems - 1 && totalItems > 1) {
+                tr.classList.add('page-break');
+            }
             
             let html = `
-                <td class="py-6 px-4 align-top font-bold text-slate-800 text-xs tracking-wider uppercase">
-                    Hoelscher Door Unit<br>
-                    <span class="text-[10px] font-black tracking-widest text-slate-500"><span class="text-[#8EDB43]">${state.qty}x</span> ${state.sku}</span>
+                <td class="py-6 px-4 align-top text-xs uppercase">
+                    <span class="font-black text-slate-800 tracking-wider block mb-1">Hoelscher Door Unit</span>
+                    <span class="text-[10px] font-black tracking-widest text-[#1A1A1A] bg-[#8EDB43] px-2 py-0.5 rounded inline-block shadow-sm">QTY: ${state.qty}</span><br>
+                    <span class="text-[10px] font-black tracking-widest text-slate-500 mt-2 inline-block">${state.sku}</span>
                 </td>
                 <td class="py-6 px-4 align-top text-center text-slate-400">
-                    <div class="flex flex-wrap gap-2 justify-center">
+                    <div class="flex flex-wrap gap-2 justify-center w-full max-w-[150px] mx-auto">
             `;
 
             if (state.urlDoor) html += `<div class="preview-box border-slate-200 bg-slate-50"><div class="preview-fallback"><i class="fas fa-door-closed text-base mb-1 text-slate-300"></i>Door</div><img src="${state.urlDoor}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
@@ -1839,22 +1863,22 @@
             html += `
                     </div>
                 </td>
-                <td class="py-6 px-4 align-top text-slate-600 space-y-1.5 text-xs">
-                    <p><strong class="uppercase tracking-wider text-slate-800">Model:</strong> ${state.collection} - ${state.modelName}</p>
-                    <p><strong class="uppercase tracking-wider text-slate-800">Dimensions:</strong> ${state.unitStr}</p>
-                    <p><strong class="uppercase tracking-wider text-slate-800">Configuration:</strong> ${state.layout} / ${state.doorHanding}</p>
+                <td class="py-6 px-4 align-top space-y-1.5 text-xs">
+                    <p><strong class="uppercase tracking-wider text-[#1A1A1A] font-black">Model:</strong> <span class="text-slate-500 font-semibold">${state.collection} - ${state.modelName}</span></p>
+                    <p><strong class="uppercase tracking-wider text-[#1A1A1A] font-black">Dimensions:</strong> <span class="text-slate-500 font-semibold">${state.unitStr}</span></p>
+                    <p><strong class="uppercase tracking-wider text-[#1A1A1A] font-black">Configuration:</strong> <span class="text-slate-500 font-semibold">${state.layout} / ${state.doorHanding}</span></p>
             `;
             
-            if (state.slDesc) html += `<p><strong class="uppercase tracking-wider text-slate-800">Sidelite:</strong> ${state.slDesc}</p>`;
-            if (state.glass !== 'Solid Panel') html += `<p><strong class="uppercase tracking-wider text-slate-800">Glass:</strong> ${state.glass}</p>`;
+            if (state.slDesc) html += `<p><strong class="uppercase tracking-wider text-[#1A1A1A] font-black">Sidelite:</strong> <span class="text-slate-500 font-semibold">${state.slDesc}</span></p>`;
+            if (state.glass !== 'Solid Panel') html += `<p><strong class="uppercase tracking-wider text-[#1A1A1A] font-black">Glass:</strong> <span class="text-slate-500 font-semibold">${state.glass}</span></p>`;
             
             html += `
-                    <p><strong class="uppercase tracking-wider text-slate-800">Finish:</strong> ${state.finish}</p>
-                    <p><strong class="uppercase tracking-wider text-slate-800">Jamb / Prehang:</strong> ${state.jambDesc}</p>
+                    <p><strong class="uppercase tracking-wider text-[#1A1A1A] font-black">Finish:</strong> <span class="text-slate-500 font-semibold">${state.finish}</span></p>
+                    <p><strong class="uppercase tracking-wider text-[#1A1A1A] font-black">Jamb / Prehang:</strong> <span class="text-slate-500 font-semibold">${state.jambDesc}</span></p>
             `;
 
-            if (state.addonsDesc) html += `<p><strong class="uppercase tracking-wider text-slate-800">Add-ons:</strong> ${state.addonsDesc}</p>`;
-            if (state.laborDesc) html += `<p><strong class="uppercase tracking-wider text-slate-800">Labor:</strong> ${state.laborDesc}</p>`;
+            if (state.addonsDesc) html += `<p><strong class="uppercase tracking-wider text-[#1A1A1A] font-black">Add-ons:</strong> <span class="text-slate-500 font-semibold">${state.addonsDesc}</span></p>`;
+            if (state.laborDesc) html += `<p><strong class="uppercase tracking-wider text-[#1A1A1A] font-black">Labor:</strong> <span class="text-slate-500 font-semibold">${state.laborDesc}</span></p>`;
 
             let actionBtns = '';
             if (!isPreview) {
