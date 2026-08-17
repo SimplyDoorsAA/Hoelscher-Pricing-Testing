@@ -33,7 +33,7 @@
             column-gap: 0.75rem;
         }
 
-        /* Image Placeholder Underlayers */
+        /* Image Placeholder Wireframes */
         .preview-box {
             position: relative;
             height: 6rem;
@@ -117,7 +117,7 @@
                         <option value="House Account">House Account</option>
                     </select>
                 </div>
-                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-sm font-semibold transition-colors flex items-center shrink-0">
+                <button onclick="printProposal()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-sm font-semibold transition-colors flex items-center shrink-0">
                     <i class="fas fa-print mr-2"></i> Print / PDF
                 </button>
             </div>
@@ -336,7 +336,10 @@
                             <img id="preview-glass" src="" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')">
                         </div>
                         <div class="preview-box" id="preview-container-finish">
-                            <div class="preview-fallback"><i class="fas fa-paint-roller text-base mb-1 text-amber-400"></i>Finish</div>
+                            <div class="preview-fallback">
+                                <i id="preview-finish-icon" class="fas fa-paint-roller text-base mb-1 text-amber-400"></i>
+                                <span id="preview-finish-text">Finish</span>
+                            </div>
                             <img id="preview-finish" src="" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')">
                         </div>
                         <div class="preview-box" id="preview-container-addon" style="display:none;">
@@ -449,9 +452,15 @@
                         <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Grand Total</span>
                         <span class="text-2xl font-black text-white" id="grandTotalRetail">$0.00</span>
                     </div>
-                    <button onclick="switchTab('proposal-tab')" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded text-sm font-bold transition-colors">
-                        <i class="fas fa-file-invoice mr-2"></i> View Proposal
-                    </button>
+                    
+                    <div class="flex gap-2 mt-2">
+                        <button onclick="clearQuote()" class="w-1/3 bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white py-2 rounded text-xs font-bold transition-colors border border-red-500/30">
+                            <i class="fas fa-trash-alt"></i> Clear
+                        </button>
+                        <button onclick="switchTab('proposal-tab')" class="w-2/3 bg-blue-600 hover:bg-blue-500 text-white py-2 rounded text-sm font-bold transition-colors">
+                            <i class="fas fa-file-invoice mr-1"></i> View Proposal
+                        </button>
+                    </div>
                 </div>
             </div>
             
@@ -459,12 +468,16 @@
     </main>
 
     <!-- TAB 2: CUSTOMER PROPOSAL -->
-    <main id="proposal-tab" class="max-w-4xl mx-auto p-6 hidden w-full">
+    <main id="proposal-tab" class="max-w-4xl mx-auto p-6 hidden w-full flex-1 overflow-y-auto">
         
         <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-6 no-print">
-            <h2 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
-                <i class="fas fa-address-card text-blue-500 mr-2"></i> Client Information for Document
-            </h2>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-sm font-bold text-slate-700 flex items-center">
+                    <i class="fas fa-address-card text-blue-500 mr-2"></i> Client Information for Document
+                </h2>
+                <button onclick="clearQuote()" class="text-xs text-red-500 hover:text-red-700 font-bold px-3 py-1 bg-red-50 rounded border border-red-200 transition-colors"><i class="fas fa-trash-alt mr-1"></i> Start New Quote</button>
+            </div>
+            
             <div class="grid grid-cols-4 gap-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Customer Name</label>
@@ -754,6 +767,25 @@
             return text.toString().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
         }
 
+        // AUTO PATCH FOR MISSING JSON DATA (0.0 FIX)
+        function applyPricingPatches(db) {
+            const patchPrices = (sizes) => {
+                Object.values(sizes).forEach(size => {
+                    let p = size.prices;
+                    if(p.p_slab === 0) p.p_slab = p.u_slab + 600;
+                    if(p.p_single === 0) p.p_single = p.u_single + 1000;
+                    if(p.p_double === 0) p.p_double = p.u_double + 2000;
+                });
+            };
+            ['fiberglass', 'wood'].forEach(mat => {
+                Object.values(db[mat]).forEach(col => {
+                    col.forEach(model => patchPrices(model.sizes));
+                });
+            });
+            db.fiberglass_sidelites.forEach(sl => patchPrices(sl.sizes));
+            db.wood_sidelites.forEach(sl => patchPrices(sl.sizes));
+        }
+
         function decodeSize(code) {
             const map = {
                 '1068': { w: 12, h: 80, label: `1'0" x 6'8"` },
@@ -782,6 +814,8 @@
 
         window.onload = () => {
             loadSettings();
+            applyPricingPatches(appSettings.db); 
+
             document.getElementById('systemLayout').value = 'Slab Only';
             document.getElementById('doorHanding').value = 'N/A (Slab)';
             document.getElementById('jambDepth').value = 'N/A';
@@ -1211,6 +1245,32 @@
             return fracStr === '' ? `${whole}"` : `${whole} ${fracStr}`;
         }
 
+        function clearQuote() {
+            if (!confirm("Are you sure you want to completely clear this quote and start over?")) return;
+            quoteItems = [];
+            document.getElementById('custName').value = '';
+            document.getElementById('custPhone').value = '';
+            document.getElementById('custAddress').value = '';
+            document.getElementById('quoteNumber').value = '';
+            
+            switchTab('quote-tab');
+            updateCartUI();
+            
+            const toast = document.getElementById('toast');
+            toast.innerHTML = `<i class="fas fa-trash text-red-400 mr-2"></i> Quote Cleared!`;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => { toast.classList.add('opacity-0'); }, 2000);
+        }
+
+        function printProposal() {
+            const custName = document.getElementById('custName').value || 'SimplyDoors';
+            const quoteNum = document.getElementById('quoteNumber').value || 'Quote';
+            const originalTitle = document.title;
+            document.title = `${custName} - ${quoteNum}`;
+            window.print();
+            setTimeout(() => { document.title = originalTitle; }, 2000);
+        }
+
         function runQuoteEngine() {
             const addBtn = document.getElementById('addToQuoteBtn');
             const doorSize = document.getElementById('doorSize').value;
@@ -1311,9 +1371,9 @@
                 laborDesc = customLabor > 0 ? `${baseLaborText} + Custom ($${customLabor.toFixed(2)})` : baseLaborText;
             }
 
+            let listPrice = 0;
             const alertBox = document.getElementById('prehangAlert');
             let jambDesc = '';
-            let listPrice = 0;
 
             if (isSlabOnly || isBarn) {
                 listPrice = isUnfinished ? pricingData.u_slab : pricingData.p_slab;
@@ -1433,45 +1493,50 @@
 
             const glassContainerVisible = document.getElementById('glassContainer').style.display !== 'none';
             const glass = glassContainerVisible ? document.getElementById('doorGlass').value : 'Solid Panel';
-            
             const matCode = currentMaterial === 'wood' ? 'WD' : 'FG';
             const sku = `SD-${matCode}-${currentCollection.substring(0,3).toUpperCase()}-${sizeCode}-${isDouble ? 'DBL' : 'SGL'}`;
+            
             document.getElementById('sku-display').innerText = `SKU: ${sku}`;
 
-            // DYNAMIC IMAGE PATH GENERATION VIA SLUGIFY
-            const doorImgEl = document.getElementById('preview-door');
-            const glassImgEl = document.getElementById('preview-glass');
-            const finishImgEl = document.getElementById('preview-finish');
-            const addonImgEl = document.getElementById('preview-addon');
-            
+            // DYNAMIC IMAGE PATH GENERATION
             const matFolder = currentMaterial === 'wood' ? 'wood' : 'fiberglass';
             
-            // Door
+            // Door Image
+            const doorImgEl = document.getElementById('preview-door');
             const safeDoorName = slugify(currentlySelectedModel.name);
-            const urlDoor = `${REPO_BASE_URL}images/${matFolder}/doors/${safeDoorName}.jpg`;
-            doorImgEl.src = urlDoor;
+            doorImgEl.src = `${REPO_BASE_URL}images/${matFolder}/doors/${safeDoorName}.jpg`;
 
-            // Glass
-            let urlGlass = '';
+            // Glass Image
+            const glassImgEl = document.getElementById('preview-glass');
             if (glass === 'Solid Panel') {
                 document.getElementById('preview-container-glass').style.display = 'none';
             } else {
                 const safeGlassName = slugify(glass);
-                urlGlass = `${REPO_BASE_URL}images/${matFolder}/glass/${safeGlassName}.jpg`;
-                glassImgEl.src = urlGlass;
+                glassImgEl.src = `${REPO_BASE_URL}images/${matFolder}/glass/${safeGlassName}.jpg`;
                 document.getElementById('preview-container-glass').style.display = 'flex';
             }
 
-            // Finish
-            let safeFinishName = 'unfinished';
-            if (!isUnfinished) {
+            // Finish Image & UNFINISHED Badge Logic
+            const finishImgEl = document.getElementById('preview-finish');
+            const finishIcon = document.getElementById('preview-finish-icon');
+            const finishText = document.getElementById('preview-finish-text');
+            
+            let urlFinish = '';
+            if (isUnfinished) {
+                finishImgEl.removeAttribute('src'); 
+                finishIcon.className = 'fas fa-paint-roller text-base mb-1 text-slate-500 opacity-50';
+                finishText.innerText = 'Unfinished';
+            } else {
                 const finishParts = finish.split('-');
-                safeFinishName = slugify(finishParts.length > 1 ? finishParts[1].trim() : finish);
+                const safeFinishName = slugify(finishParts.length > 1 ? finishParts[1].trim() : finish);
+                urlFinish = `${REPO_BASE_URL}images/${matFolder}/finishes/${safeFinishName}.jpg`;
+                finishImgEl.src = urlFinish;
+                finishIcon.className = 'fas fa-paint-roller text-base mb-1 text-amber-400';
+                finishText.innerText = 'Finish';
             }
-            const urlFinish = `${REPO_BASE_URL}images/${matFolder}/finishes/${safeFinishName}.jpg`;
-            finishImgEl.src = urlFinish;
 
-            // Addon
+            // Addon Image
+            const addonImgEl = document.getElementById('preview-addon');
             let urlAddon = '';
             if (addOnsSelect && addOnsSelect.value !== "0") {
                 const rawAddonName = addOnsSelect.options[addOnsSelect.selectedIndex].text.split(' (+')[0];
@@ -1488,7 +1553,8 @@
                 modelName: currentlySelectedModel.name, 
                 collection: `${currentMaterial === 'wood' ? 'Solid Wood' : 'Fiberglass'} - ${currentCollection}`,
                 layout, glass, finish, addonsDesc, laborDesc, slDesc, doorHanding,
-                urlDoor, urlGlass, urlFinish, urlAddon
+                urlDoor: doorImgEl.src, urlGlass: glassImgEl.src, urlFinish, urlAddon,
+                isUnfinished
             };
             
             if (quoteItems.length === 0) {
@@ -1524,7 +1590,7 @@
             if(quoteItems.length === 0 && !window.currentQuoteState) {
                 cartContainer.classList.add('hidden');
                 document.getElementById('grandTotalRetail').innerText = "$0.00";
-                generateProposal(0, 0, 0, 0, 0, 0, false, false, []);
+                generateProposal(0, 0, 0, 0, 0, 0, false, false, [], true);
                 return;
             }
             
@@ -1533,9 +1599,10 @@
             
             let totalMaterials = 0;
             let totalLabor = 0;
-            let itemsToCalc = quoteItems.length > 0 ? quoteItems : (window.currentQuoteState ? [window.currentQuoteState] : []);
+            let isPreview = quoteItems.length === 0;
+            let itemsToCalc = isPreview ? [window.currentQuoteState] : quoteItems;
 
-            if (quoteItems.length > 0) {
+            if (!isPreview) {
                 quoteItems.forEach((item, index) => {
                     cartItems.innerHTML += `
                         <div class="flex justify-between items-center text-sm bg-slate-800 p-3 rounded shadow-sm border border-slate-700 mb-2">
@@ -1612,10 +1679,10 @@
             const grandTotal = preCCTotal + ccAmount;
             document.getElementById('grandTotalRetail').innerText = `$${grandTotal.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
             
-            generateProposal(totalMaterials, totalLabor, discountAmount, taxAmount, ccAmount, grandTotal, applyTax, applyCC, itemsToCalc);
+            generateProposal(totalMaterials, totalLabor, discountAmount, taxAmount, ccAmount, grandTotal, applyTax, applyCC, itemsToCalc, isPreview);
         }
 
-        function generateProposal(totalMaterials, totalLabor, discountAmount, taxAmount, ccAmount, grandTotal, applyTax, applyCC, itemsToCalc) {
+        function generateProposal(totalMaterials, totalLabor, discountAmount, taxAmount, ccAmount, grandTotal, applyTax, applyCC, itemsToCalc, isPreview) {
             document.getElementById('prop-quote-num').innerText = document.getElementById('quoteNumber').value || 'TBD';
             document.getElementById('prop-rep').innerText = document.getElementById('salesRep').value;
             
@@ -1626,8 +1693,8 @@
             const tbody = document.getElementById('prop-tbody');
             tbody.innerHTML = '';
 
-            itemsToCalc.forEach(item => {
-                renderProposalRow(item, tbody);
+            itemsToCalc.forEach((item, index) => {
+                renderProposalRow(item, tbody, index, isPreview);
             });
 
             document.getElementById('prop-mat-total').innerText = `$${totalMaterials.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
@@ -1662,7 +1729,7 @@
             document.getElementById('prop-grand-total').innerText = `$${grandTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
         }
 
-        function renderProposalRow(state, tbody) {
+        function renderProposalRow(state, tbody, index, isPreview) {
             const tr = document.createElement('tr');
             tr.className = "border-b border-slate-200";
             
@@ -1677,7 +1744,13 @@
 
             if (state.urlDoor) html += `<div class="preview-box"><div class="preview-fallback"><i class="fas fa-door-closed text-base mb-1 text-slate-400"></i>Door</div><img src="${state.urlDoor}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
             if (state.urlGlass) html += `<div class="preview-box"><div class="preview-fallback"><i class="fas fa-border-all text-base mb-1 text-slate-400"></i>Glass</div><img src="${state.urlGlass}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
-            if (state.urlFinish) html += `<div class="preview-box"><div class="preview-fallback"><i class="fas fa-paint-roller text-base mb-1 text-slate-400"></i>Finish</div><img src="${state.urlFinish}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
+            
+            if (state.isUnfinished) {
+                html += `<div class="preview-box"><div class="preview-fallback !bg-slate-100"><i class="fas fa-paint-roller text-base mb-1 text-slate-300"></i><span class="text-[9px] text-slate-400 font-bold leading-tight">UNFINISHED</span></div></div>`;
+            } else if (state.urlFinish) {
+                html += `<div class="preview-box"><div class="preview-fallback"><i class="fas fa-paint-roller text-base mb-1 text-slate-400"></i>Finish</div><img src="${state.urlFinish}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
+            }
+            
             if (state.urlAddon) html += `<div class="preview-box"><div class="preview-fallback"><i class="fas fa-shield-alt text-base mb-1 text-slate-400"></i>Accent</div><img src="${state.urlAddon}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
 
             html += `
@@ -1700,10 +1773,19 @@
             if (state.addonsDesc) html += `<p><strong>Add-ons / Hardware:</strong> ${state.addonsDesc}</p>`;
             if (state.laborDesc) html += `<p><strong>Labor:</strong> ${state.laborDesc}</p>`;
 
+            let removeBtn = '';
+            if (!isPreview) {
+                removeBtn = `
+                <button onclick="removeItem(${index})" class="block w-full text-right mt-2 text-slate-400 hover:text-red-500 no-print transition-colors text-xs font-normal" title="Remove Item">
+                    <i class="fas fa-trash-alt mr-1"></i> Remove
+                </button>`;
+            }
+
             html += `
                 </td>
-                <td class="py-5 px-3 align-top text-right font-bold text-lg text-slate-900">
+                <td class="py-5 px-3 align-top text-right font-bold text-lg text-slate-900 relative">
                     $${state.retailPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                    ${removeBtn}
                 </td>
             `;
             
