@@ -33,24 +33,39 @@
             column-gap: 0.75rem;
         }
 
-        /* Image Placeholder Wireframes */
-        .img-placeholder {
+        /* Image Placeholder Underlayers */
+        .preview-box {
+            position: relative;
             height: 6rem;
             width: 4.5rem;
-            border: 2px dashed #475569;
-            border-radius: 0.375rem;
+            border: 1px solid #475569;
+            border-radius: 0.25rem;
+            background-color: #1e293b;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .preview-fallback {
+            position: absolute;
+            inset: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             font-weight: bold;
             text-transform: uppercase;
-            color: #94a3b8;
-            background-color: #1e293b;
+            color: #64748b;
             text-align: center;
-            padding: 0.25rem;
-            flex-shrink: 0;
+            z-index: 0;
+        }
+        .preview-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: white;
+            z-index: 10;
         }
 
         @media print {
@@ -60,7 +75,6 @@
             #proposal-tab { display: block !important; }
             .proposal-card { border: none !important; box-shadow: none !important; margin: 0 !important; padding: 0 !important; }
             .overflow-x-auto { overflow: visible !important; }
-            /* Print protections for large tables */
             tr { page-break-inside: avoid; }
             thead { display: table-header-group; }
         }
@@ -310,24 +324,24 @@
                     <span class="text-[10px] bg-slate-800 px-2 py-1 rounded text-slate-300 font-mono" id="sku-display">SKU: ---</span>
                 </div>
 
-                <!-- Inner scrollable body to prevent panel cut-offs -->
                 <div class="overflow-y-auto custom-scroll flex-1 bg-slate-800/50">
+                    <!-- DYNAMIC IMAGE PREVIEWS -->
                     <div class="p-4 border-b border-slate-700 bg-slate-800/80 flex justify-center gap-3">
-                        <div class="img-placeholder">
-                            <i class="fas fa-door-closed text-base mb-1 text-blue-400"></i>
-                            <span>Door</span>
+                        <div class="preview-box">
+                            <div class="preview-fallback"><i class="fas fa-door-closed text-base mb-1 text-blue-400"></i>Door</div>
+                            <img id="preview-door" src="" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')">
                         </div>
-                        <div class="img-placeholder" id="preview-glass" style="display:none;">
-                            <i class="fas fa-border-all text-base mb-1 text-emerald-400"></i>
-                            <span>Glass</span>
+                        <div class="preview-box" id="preview-container-glass" style="display:none;">
+                            <div class="preview-fallback"><i class="fas fa-border-all text-base mb-1 text-emerald-400"></i>Glass</div>
+                            <img id="preview-glass" src="" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')">
                         </div>
-                        <div class="img-placeholder" id="preview-finish">
-                            <i class="fas fa-paint-roller text-base mb-1 text-amber-400"></i>
-                            <span>Finish</span>
+                        <div class="preview-box" id="preview-container-finish">
+                            <div class="preview-fallback"><i class="fas fa-paint-roller text-base mb-1 text-amber-400"></i>Finish</div>
+                            <img id="preview-finish" src="" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')">
                         </div>
-                        <div class="img-placeholder" id="preview-addon" style="display:none;">
-                            <i class="fas fa-shield-alt text-base mb-1 text-purple-400"></i>
-                            <span>Accent</span>
+                        <div class="preview-box" id="preview-container-addon" style="display:none;">
+                            <div class="preview-fallback"><i class="fas fa-shield-alt text-base mb-1 text-purple-400"></i>Accent</div>
+                            <img id="preview-addon" src="" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')">
                         </div>
                     </div>
                     
@@ -445,7 +459,7 @@
     </main>
 
     <!-- TAB 2: CUSTOMER PROPOSAL -->
-    <main id="proposal-tab" class="max-w-4xl mx-auto p-6 hidden w-full flex-1 overflow-y-auto">
+    <main id="proposal-tab" class="max-w-4xl mx-auto p-6 hidden w-full">
         
         <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-6 no-print">
             <h2 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
@@ -505,7 +519,7 @@
                     <thead>
                         <tr class="bg-[#0f172a] text-white">
                             <th class="py-2 px-3 text-left w-2/5">SKU / Item Description</th>
-                            <th class="py-2 px-3 text-center w-1/4">Visual Preview</th>
+                            <th class="py-2 px-3 text-center w-1/4">Visuals</th>
                             <th class="py-2 px-3 text-left">Specs & Options</th>
                             <th class="py-2 px-3 text-right">Amount</th>
                         </tr>
@@ -735,6 +749,11 @@
         let currentlySelectedModel = null;
         let currentlySelectedSidelite = null;
 
+        function slugify(text) {
+            if (!text) return '';
+            return text.toString().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+        }
+
         function decodeSize(code) {
             const map = {
                 '1068': { w: 12, h: 80, label: `1'0" x 6'8"` },
@@ -763,8 +782,6 @@
 
         window.onload = () => {
             loadSettings();
-            
-            // Hard reset system layout defaults on page load
             document.getElementById('systemLayout').value = 'Slab Only';
             document.getElementById('doorHanding').value = 'N/A (Slab)';
             document.getElementById('jambDepth').value = 'N/A';
@@ -773,6 +790,7 @@
             document.getElementById('prop-date').innerText = new Date().toISOString().split('T')[0];
             updateLaborDropdowns();
             closeCatalogModal();
+            runQuoteEngine();
         };
 
         function loadSettings() {
@@ -785,12 +803,7 @@
                     appSettings.ccRate = parsed.ccRate || 3.0;
                     appSettings.labor = parsed.labor || appSettings.labor;
                     appSettings.addons = parsed.addons || appSettings.addons;
-                    
-                    if(parsed.db && parsed.db.wood) {
-                        appSettings.db = parsed.db;
-                    } else {
-                        appSettings.db = defaultDBJSON;
-                    }
+                    appSettings.db = (parsed.db && parsed.db.wood) ? parsed.db : defaultDBJSON;
                 } catch(e) {
                     appSettings.db = defaultDBJSON;
                 }
@@ -820,7 +833,6 @@
                     addons: appSettings.addons,
                     db: appSettings.db 
                 }));
-                
                 const toast = document.getElementById('toast');
                 toast.innerHTML = `<i class="fas fa-check-circle text-emerald-400 mr-2"></i> Settings Saved Successfully!`;
                 toast.classList.remove('opacity-0');
@@ -833,7 +845,6 @@
             }
 
             updateLaborDropdowns();
-            
             document.getElementById('taxRateLabel').innerText = appSettings.taxRate;
             document.getElementById('prop-tax-rate').innerText = appSettings.taxRate;
             document.getElementById('ccRateInput').value = appSettings.ccRate;
@@ -876,8 +887,7 @@
             const grid = document.getElementById('collection-grid');
             grid.innerHTML = '';
             
-            const collections = Object.keys(appSettings.db[currentMaterial]);
-            collections.forEach((col, idx) => {
+            Object.keys(appSettings.db[currentMaterial]).forEach((col, idx) => {
                 const btn = document.createElement('button');
                 btn.onclick = () => setCollection(col);
                 btn.id = 'col-' + col.replace(/\s+/g, '');
@@ -886,22 +896,17 @@
                 let sub = currentMaterial === 'wood' ? 'Solid Hardwood' : 'Fiberglass Grain';
                 if(col === 'Barn Doors') sub = 'Native Indonesian Hardwood';
                 
-                btn.innerHTML = `
-                    <h4 class="font-bold text-sm mb-1 text-slate-800">${col}</h4>
-                    <p class="text-xs text-slate-500">${sub}</p>
-                `;
+                btn.innerHTML = `<h4 class="font-bold text-sm mb-1 text-slate-800">${col}</h4><p class="text-xs text-slate-500">${sub}</p>`;
                 grid.appendChild(btn);
             });
 
-            currentCollection = collections[0];
+            currentCollection = Object.keys(appSettings.db[currentMaterial])[0];
             populateModelDropdown();
         }
 
         function setCollection(collection) {
             currentCollection = collection;
-            
-            const collections = Object.keys(appSettings.db[currentMaterial]);
-            collections.forEach(col => {
+            Object.keys(appSettings.db[currentMaterial]).forEach(col => {
                 const el = document.getElementById('col-' + col.replace(/\s+/g, ''));
                 if(el) el.classList.remove('active');
             });
@@ -917,17 +922,10 @@
             let page = currentlySelectedModel.page || 1;
 
             if (currentMaterial === 'wood' && currentCollection === 'Mahogany Wood') {
-                if (currentlySelectedModel.name.includes("Contemporary")) {
-                    filename = "Mahogany%20Contemporary%20Doors.pdf";
-                } else if (currentlySelectedModel.name.includes("TDL") || currentlySelectedModel.name.includes("Divided")) {
-                    filename = "Mahogany%20True%20Divided%20Lite%20Doors.pdf";
-                }
+                if (currentlySelectedModel.name.includes("Contemporary")) filename = "Mahogany%20Contemporary%20Doors.pdf";
+                else if (currentlySelectedModel.name.includes("TDL") || currentlySelectedModel.name.includes("Divided")) filename = "Mahogany%20True%20Divided%20Lite%20Doors.pdf";
             }
-            
-            if (filename) {
-                return `${REPO_BASE_URL}${filename}#page=${page}`;
-            }
-            return null;
+            return filename ? `${REPO_BASE_URL}${filename}#page=${page}` : null;
         }
 
         function openCatalogModal() {
@@ -953,8 +951,7 @@
             appSettings.db[currentMaterial][currentCollection].forEach((model, index) => {
                 const opt = document.createElement('option');
                 opt.value = index;
-                const pageLabel = model.page ? ` (Pg. ${model.page})` : '';
-                opt.innerText = `${model.name}${pageLabel}`;
+                opt.innerText = `${model.name}${model.page ? ` (Pg. ${model.page})` : ''}`;
                 modelSelect.appendChild(opt);
             });
 
@@ -965,47 +962,29 @@
         function populateFinishDropdown() {
             const finishSelect = document.getElementById('doorFinish');
             finishSelect.innerHTML = '';
-
             let list = [];
+            
             if (currentMaterial === 'wood') {
-                list = [
-                    "Unfinished (Slab/Prehung)",
-                    "Prefinished - Aged Barrel",
-                    "Prefinished - Ebony",
-                    "Prefinished - English Chestnut",
-                    "Prefinished - Jacobean",
-                    "Prefinished - Red Oak",
-                    "Prefinished - Special Walnut"
-                ];
+                list = ["Unfinished (Slab/Prehung)", "Prefinished - Aged Barrel", "Prefinished - Ebony", "Prefinished - English Chestnut", "Prefinished - Jacobean", "Prefinished - Red Oak", "Prefinished - Special Walnut"];
             } else {
-                list = [
-                    "Unfinished (Slab/Prehung)",
-                    "Prefinished - Midnight (M)",
-                    "Prefinished - Slate (S)",
-                    "Prefinished - Bourbon (B)",
-                    "Prefinished - Fox (F)"
-                ];
-                if (currentCollection === 'Smooth') {
-                    list.push("Black Brushed Smooth (Smooth Only)");
-                }
+                list = ["Unfinished (Slab/Prehung)", "Prefinished - Midnight (M)", "Prefinished - Slate (S)", "Prefinished - Bourbon (B)", "Prefinished - Fox (F)"];
+                if (currentCollection === 'Smooth') list.push("Black Brushed Smooth (Smooth Only)");
             }
 
-            let firstFinish = null;
             list.forEach((item, idx) => {
                 const opt = document.createElement('option');
                 opt.value = item;
                 opt.innerText = item;
+                if (idx === 0) opt.selected = true; 
                 finishSelect.appendChild(opt);
-                if (idx === 0) firstFinish = item;
             });
-            finishSelect.value = firstFinish; 
         }
 
         function populateOptions() {
             const modelIndex = document.getElementById('doorModel').value;
             const sizeSelect = document.getElementById('doorSize');
             
-            if (modelIndex === '' || modelIndex === null || !appSettings.db[currentMaterial][currentCollection]) {
+            if (!modelIndex || !appSettings.db[currentMaterial][currentCollection]) {
                 currentlySelectedModel = null;
                 sizeSelect.innerHTML = '<option value="" disabled selected>Select a Model first...</option>';
                 runQuoteEngine();
@@ -1025,11 +1004,8 @@
             }
 
             const shapedNotice = document.getElementById('shapedTopNotice');
-            if (currentlySelectedModel.shaped) {
-                shapedNotice.classList.remove('hidden');
-            } else {
-                shapedNotice.classList.add('hidden');
-            }
+            if (currentlySelectedModel.shaped) shapedNotice.classList.remove('hidden');
+            else shapedNotice.classList.add('hidden');
 
             const isBarn = currentlySelectedModel.barn || currentCollection === 'Barn Doors';
             const barnContainer = document.getElementById('barnHardwareContainer');
@@ -1055,19 +1031,14 @@
             }
             
             sizeSelect.innerHTML = '';
-            const sizes = Object.keys(currentlySelectedModel.sizes);
-            let firstSize = null;
-            
-            sizes.forEach((sizeCode, idx) => {
+            Object.keys(currentlySelectedModel.sizes).forEach((sizeCode, idx) => {
                 const opt = document.createElement('option');
                 opt.value = sizeCode;
                 const dims = decodeSize(sizeCode);
                 opt.innerText = `${dims.label} (${dims.w}" x ${dims.h}")`;
+                if (idx === 0) opt.selected = true; 
                 sizeSelect.appendChild(opt);
-                if (idx === 0) firstSize = sizeCode;
             });
-            
-            sizeSelect.value = firstSize; 
 
             const addOnContainer = document.getElementById('addOnContainer');
             const addOnsSelect = document.getElementById('addOns');
@@ -1080,8 +1051,7 @@
                     <option value="maskList_Windsor">Windsor Iron Mask (+$242 List)</option>
                     <option value="speakeasyKit">Speakeasy Glass/Wood Kit (+$345 List)</option>
                     <option value="clavos">Clavos (+$25 List ea.)</option>
-                    <option value="straps">Straps 14"/17" (+$76 List ea.)</option>
-                `;
+                    <option value="straps">Straps 14"/17" (+$76 List ea.)</option>`;
                 addOnContainer.style.display = 'block';
             } else if (currentlySelectedModel.name.includes("3/4 Lite") && currentMaterial === 'fiberglass') {
                 addOnsSelect.innerHTML += `
@@ -1095,19 +1065,14 @@
                     <option value="grilleList_Santiago">Santiago Iron Grille (+$${appSettings.addons.grilleList} List)</option>
                     <option value="grilleList_Sienna">Sienna Iron Grille (+$${appSettings.addons.grilleList} List)</option>
                     <option value="grilleList_Southampton">Southampton Iron Grille (3080 Only) (+$${appSettings.addons.grilleList} List)</option>
-                    <option value="grilleList_Whitney">Whitney Iron Grille (+$${appSettings.addons.grilleList} List)</option>
-                `;
+                    <option value="grilleList_Whitney">Whitney Iron Grille (+$${appSettings.addons.grilleList} List)</option>`;
                 addOnContainer.style.display = 'block';
             } else {
                 addOnContainer.style.display = 'none';
             }
 
             const casingAdderContainer = document.getElementById('casingAdderContainer');
-            if (currentMaterial === 'wood' && !isBarn) {
-                casingAdderContainer.style.display = 'block';
-            } else {
-                casingAdderContainer.style.display = 'none';
-            }
+            casingAdderContainer.style.display = (currentMaterial === 'wood' && !isBarn) ? 'block' : 'none';
 
             handleSizeChange();
         }
@@ -1140,23 +1105,16 @@
 
             if (validGlass.length > 0) {
                 glassContainer.style.display = 'block';
-                let firstGlass = null;
                 validGlass.forEach((g, idx) => {
                     const opt = document.createElement('option');
                     opt.value = g;
                     opt.innerText = g;
+                    if (idx === 0) opt.selected = true; 
                     glassSelect.appendChild(opt);
-                    if (idx === 0) firstGlass = g;
                 });
-                glassSelect.value = firstGlass; 
             } else {
                 glassContainer.style.display = 'none';
-                const opt = document.createElement('option');
-                opt.value = 'Solid Panel';
-                opt.innerText = 'Solid Panel';
-                opt.selected = true;
-                glassSelect.appendChild(opt);
-                glassSelect.value = 'Solid Panel';
+                glassSelect.innerHTML = '<option value="Solid Panel" selected>Solid Panel</option>';
             }
 
             runQuoteEngine();
@@ -1172,12 +1130,8 @@
                 handingSelect.value = 'N/A (Slab)';
                 jambSelect.value = 'N/A';
             } else {
-                if (handingSelect.value === 'N/A (Slab)' || handingSelect.value === '') {
-                    handingSelect.value = 'Left Hand (LH) Inswing';
-                }
-                if (jambSelect.value === 'N/A' || jambSelect.value === '') {
-                    jambSelect.value = '4 9/16';
-                }
+                if (handingSelect.value === 'N/A (Slab)' || !handingSelect.value) handingSelect.value = 'Left Hand (LH) Inswing';
+                if (jambSelect.value === 'N/A' || !jambSelect.value) jambSelect.value = '4 9/16';
             }
             
             if (layout.includes('SL')) {
@@ -1188,15 +1142,13 @@
                 slModelSelect.innerHTML = '';
                 const sideliteDb = currentMaterial === 'wood' ? appSettings.db.wood_sidelites : appSettings.db.fiberglass_sidelites;
                 
-                let firstSL = null;
                 sideliteDb.forEach((sl, index) => {
                     const opt = document.createElement('option');
                     opt.value = index;
                     opt.innerText = sl.name;
+                    if(index === 0) opt.selected = true;
                     slModelSelect.appendChild(opt);
-                    if(index === 0) firstSL = index;
                 });
-                slModelSelect.value = firstSL;
                 
                 populateSideliteSizes();
             } else {
@@ -1216,17 +1168,13 @@
             const slSizeSelect = document.getElementById('slSize');
             slSizeSelect.innerHTML = '';
             
-            const sizes = Object.keys(currentlySelectedSidelite.sizes);
-            let firstSize = null;
-            sizes.forEach((sizeCode, idx) => {
+            Object.keys(currentlySelectedSidelite.sizes).forEach((sizeCode, idx) => {
                 const opt = document.createElement('option');
                 opt.value = sizeCode;
-                const dims = decodeSize(sizeCode);
-                opt.innerText = `${dims.label}`;
+                opt.innerText = decodeSize(sizeCode).label;
+                if (idx === 0) opt.selected = true;
                 slSizeSelect.appendChild(opt);
-                if (idx === 0) firstSize = sizeCode;
             });
-            slSizeSelect.value = firstSize;
             
             populateSideliteGlass();
         }
@@ -1240,15 +1188,13 @@
             const slGlassSelect = document.getElementById('slGlass');
             slGlassSelect.innerHTML = '';
             
-            let firstGlass = null;
             sizeData.glass.forEach((g, idx) => {
                 const opt = document.createElement('option');
                 opt.value = g;
                 opt.innerText = g;
+                if (idx === 0) opt.selected = true;
                 slGlassSelect.appendChild(opt);
-                if (idx === 0) firstGlass = g;
             });
-            slGlassSelect.value = firstGlass;
 
             runQuoteEngine();
         }
@@ -1262,7 +1208,6 @@
             else if (frac === 0.75) fracStr = '3/4"';
             else if (frac === 0.125) fracStr = '1/8"';
             else if (frac === 0.875) fracStr = '7/8"';
-            
             return fracStr === '' ? `${whole}"` : `${whole} ${fracStr}`;
         }
 
@@ -1270,7 +1215,6 @@
             const addBtn = document.getElementById('addToQuoteBtn');
             const doorSize = document.getElementById('doorSize').value;
             
-            // Core Empty State Gate - Only require Model Selection
             if (!currentlySelectedModel || !doorSize) {
                 document.getElementById('priceRetail').innerText = "$0.00";
                 document.getElementById('costTotal').innerText = "$0.00";
@@ -1367,10 +1311,9 @@
                 laborDesc = customLabor > 0 ? `${baseLaborText} + Custom ($${customLabor.toFixed(2)})` : baseLaborText;
             }
 
-            // REFACTORED PRICING AND ALERT BLOCK
-            let listPrice = 0;
             const alertBox = document.getElementById('prehangAlert');
             let jambDesc = '';
+            let listPrice = 0;
 
             if (isSlabOnly || isBarn) {
                 listPrice = isUnfinished ? pricingData.u_slab : pricingData.p_slab;
@@ -1414,14 +1357,9 @@
                     const slGlass = document.getElementById('slGlass').value || 'Standard';
                     slQty = layout.includes('2 SL') ? 2 : 1;
                     
-                    let slListPrice = 0;
-                    if(isSlabOnly) {
-                        slListPrice = isUnfinished ? slData.u_slab : slData.p_slab;
-                    } else if (isDouble) {
-                        slListPrice = isUnfinished ? slData.u_double : slData.p_double;
-                    } else {
-                        slListPrice = isUnfinished ? slData.u_single : slData.p_single;
-                    }
+                    let slListPrice = isSlabOnly ? (isUnfinished ? slData.u_slab : slData.p_slab)
+                                                 : (isDouble ? (isUnfinished ? slData.u_double : slData.p_double) 
+                                                             : (isUnfinished ? slData.u_single : slData.p_single));
                     
                     sideliteNet = (slListPrice * slQty) * appSettings.multiplier;
                     slDesc = `${slQty}x ${currentlySelectedSidelite.name} (${slSizeCode}) - ${slGlass}`;
@@ -1496,19 +1434,61 @@
             const glassContainerVisible = document.getElementById('glassContainer').style.display !== 'none';
             const glass = glassContainerVisible ? document.getElementById('doorGlass').value : 'Solid Panel';
             
-            // Toggle Placeholder Visibility
-            document.getElementById('preview-glass').style.display = glassContainerVisible ? 'flex' : 'none';
-            document.getElementById('preview-addon').style.display = addOnsNet > 0 ? 'flex' : 'none';
-
             const matCode = currentMaterial === 'wood' ? 'WD' : 'FG';
             const sku = `SD-${matCode}-${currentCollection.substring(0,3).toUpperCase()}-${sizeCode}-${isDouble ? 'DBL' : 'SGL'}`;
             document.getElementById('sku-display').innerText = `SKU: ${sku}`;
+
+            // DYNAMIC IMAGE PATH GENERATION VIA SLUGIFY
+            const doorImgEl = document.getElementById('preview-door');
+            const glassImgEl = document.getElementById('preview-glass');
+            const finishImgEl = document.getElementById('preview-finish');
+            const addonImgEl = document.getElementById('preview-addon');
+            
+            const matFolder = currentMaterial === 'wood' ? 'wood' : 'fiberglass';
+            
+            // Door
+            const safeDoorName = slugify(currentlySelectedModel.name);
+            const urlDoor = `${REPO_BASE_URL}images/${matFolder}/doors/${safeDoorName}.jpg`;
+            doorImgEl.src = urlDoor;
+
+            // Glass
+            let urlGlass = '';
+            if (glass === 'Solid Panel') {
+                document.getElementById('preview-container-glass').style.display = 'none';
+            } else {
+                const safeGlassName = slugify(glass);
+                urlGlass = `${REPO_BASE_URL}images/${matFolder}/glass/${safeGlassName}.jpg`;
+                glassImgEl.src = urlGlass;
+                document.getElementById('preview-container-glass').style.display = 'flex';
+            }
+
+            // Finish
+            let safeFinishName = 'unfinished';
+            if (!isUnfinished) {
+                const finishParts = finish.split('-');
+                safeFinishName = slugify(finishParts.length > 1 ? finishParts[1].trim() : finish);
+            }
+            const urlFinish = `${REPO_BASE_URL}images/${matFolder}/finishes/${safeFinishName}.jpg`;
+            finishImgEl.src = urlFinish;
+
+            // Addon
+            let urlAddon = '';
+            if (addOnsSelect && addOnsSelect.value !== "0") {
+                const rawAddonName = addOnsSelect.options[addOnsSelect.selectedIndex].text.split(' (+')[0];
+                const safeAddonName = slugify(rawAddonName);
+                urlAddon = `${REPO_BASE_URL}images/${matFolder}/addons/${safeAddonName}.jpg`;
+                addonImgEl.src = urlAddon;
+                document.getElementById('preview-container-addon').style.display = 'flex';
+            } else {
+                document.getElementById('preview-container-addon').style.display = 'none';
+            }
 
             window.currentQuoteState = {
                 sku, unitStr, roStr, jambDesc, retailPrice, materialsRetail, laborRetail,
                 modelName: currentlySelectedModel.name, 
                 collection: `${currentMaterial === 'wood' ? 'Solid Wood' : 'Fiberglass'} - ${currentCollection}`,
-                layout, glass, finish, addonsDesc, laborDesc, slDesc, doorHanding
+                layout, glass, finish, addonsDesc, laborDesc, slDesc, doorHanding,
+                urlDoor, urlGlass, urlFinish, urlAddon
             };
             
             if (quoteItems.length === 0) {
@@ -1521,7 +1501,6 @@
             const item = JSON.parse(JSON.stringify(window.currentQuoteState));
             quoteItems.push(item);
             
-            // Visual feedback
             const toast = document.getElementById('toast');
             toast.innerHTML = `<i class="fas fa-check-circle text-emerald-400 mr-2"></i> Added ${item.sku} to Quote!`;
             toast.classList.remove('opacity-0');
@@ -1637,7 +1616,7 @@
         }
 
         function generateProposal(totalMaterials, totalLabor, discountAmount, taxAmount, ccAmount, grandTotal, applyTax, applyCC, itemsToCalc) {
-            document.getElementById('prop-quote-num').innerText = document.getElementById('quoteNumber').value || 'SD-2026-001';
+            document.getElementById('prop-quote-num').innerText = document.getElementById('quoteNumber').value || 'TBD';
             document.getElementById('prop-rep').innerText = document.getElementById('salesRep').value;
             
             document.getElementById('prop-cust-name').innerText = document.getElementById('custName').value || 'Customer Name';
@@ -1693,9 +1672,15 @@
                     <span class="text-xs font-normal text-slate-500">${state.sku}</span>
                 </td>
                 <td class="py-5 px-3 align-top text-center text-slate-400">
-                    <div class="inline-flex flex-col items-center justify-center p-3 bg-slate-100 border border-dashed border-slate-300 rounded">
-                        <i class="fas fa-door-closed text-2xl mb-1 text-slate-500"></i>
-                        <span class="text-[10px] uppercase font-bold text-slate-600">Pending<br>Preview</span>
+                    <div class="flex flex-wrap gap-2 justify-center">
+            `;
+
+            if (state.urlDoor) html += `<div class="preview-box"><div class="preview-fallback"><i class="fas fa-door-closed text-base mb-1 text-slate-400"></i>Door</div><img src="${state.urlDoor}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
+            if (state.urlGlass) html += `<div class="preview-box"><div class="preview-fallback"><i class="fas fa-border-all text-base mb-1 text-slate-400"></i>Glass</div><img src="${state.urlGlass}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
+            if (state.urlFinish) html += `<div class="preview-box"><div class="preview-fallback"><i class="fas fa-paint-roller text-base mb-1 text-slate-400"></i>Finish</div><img src="${state.urlFinish}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
+            if (state.urlAddon) html += `<div class="preview-box"><div class="preview-fallback"><i class="fas fa-shield-alt text-base mb-1 text-slate-400"></i>Accent</div><img src="${state.urlAddon}" class="preview-img hidden" onload="this.classList.remove('hidden')" onerror="this.classList.add('hidden')"></div>`;
+
+            html += `
                     </div>
                 </td>
                 <td class="py-5 px-3 align-top text-slate-600 space-y-1 text-xs">
@@ -1704,26 +1689,16 @@
                     <p><strong>Configuration:</strong> ${state.layout} / ${state.doorHanding}</p>
             `;
             
-            if (state.slDesc) {
-                html += `<p><strong>Sidelite:</strong> ${state.slDesc}</p>`;
-            }
-            
-            if (state.glass !== 'Solid Panel') {
-                html += `<p><strong>Glass:</strong> ${state.glass}</p>`;
-            }
+            if (state.slDesc) html += `<p><strong>Sidelite:</strong> ${state.slDesc}</p>`;
+            if (state.glass !== 'Solid Panel') html += `<p><strong>Glass:</strong> ${state.glass}</p>`;
             
             html += `
                     <p><strong>Finish:</strong> ${state.finish}</p>
                     <p><strong>Jamb / Prehang:</strong> ${state.jambDesc}</p>
             `;
 
-            if (state.addonsDesc) {
-                html += `<p><strong>Add-ons / Hardware:</strong> ${state.addonsDesc}</p>`;
-            }
-            
-            if (state.laborDesc) {
-                html += `<p><strong>Labor:</strong> ${state.laborDesc}</p>`;
-            }
+            if (state.addonsDesc) html += `<p><strong>Add-ons / Hardware:</strong> ${state.addonsDesc}</p>`;
+            if (state.laborDesc) html += `<p><strong>Labor:</strong> ${state.laborDesc}</p>`;
 
             html += `
                 </td>
@@ -1819,7 +1794,8 @@
                 document.getElementById('nav-quote').classList.add('active', 'text-slate-300');
                 document.getElementById('nav-quote').classList.remove('text-slate-400');
             } else if (tabId === 'proposal-tab') {
-                document.getElementById('proposal-tab').style.display = 'block';
+                document.getElementById('proposal-tab').style.display = 'flex';
+                document.getElementById('proposal-tab').classList.add('flex-col');
                 document.getElementById('nav-proposal').classList.add('active', 'text-slate-300');
                 document.getElementById('nav-proposal').classList.remove('text-slate-400');
             } else if (tabId === 'settings-tab') {
