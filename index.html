@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SimplyDoors Quoting System - Hoelscher 2026</title>
+    <!-- Tailwind CDN used for strict single-file architecture -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -397,12 +398,19 @@
 
                 <div class="p-5 bg-[#1A1A1A] flex justify-between items-center shrink-0 border-t border-[#333333]">
                     <div class="text-left">
-                        <p class="text-[9px] text-[#8EDB43] font-black uppercase tracking-[0.2em] mb-0.5">Item Retail</p>
+                        <p class="text-[9px] text-[#8EDB43] font-black uppercase tracking-[0.2em] mb-0.5">Line Total</p>
                         <p class="text-2xl font-black text-white tracking-tight" id="priceRetail">$0.00</p>
                     </div>
-                    <button id="addToQuoteBtn" onclick="addToQuote()" class="bg-[#8EDB43] hover:bg-[#7bc236] text-[#1A1A1A] px-5 py-2.5 rounded text-xs font-black uppercase tracking-widest transition-colors shadow-lg opacity-50 cursor-not-allowed" disabled>
-                        <i class="fas fa-plus mr-1"></i> Add
-                    </button>
+                    
+                    <div class="flex items-center gap-2">
+                        <div class="flex items-center bg-[#222222] border border-[#444444] rounded overflow-hidden h-[40px]">
+                            <span class="px-2 text-[10px] font-black text-slate-400 tracking-widest">QTY</span>
+                            <input type="number" id="itemQty" value="1" min="1" onchange="runQuoteEngine()" class="w-12 h-full bg-[#1A1A1A] text-white text-center font-mono text-sm outline-none border-l border-[#444444]">
+                        </div>
+                        <button id="addToQuoteBtn" onclick="addToQuote()" class="bg-[#8EDB43] hover:bg-[#7bc236] text-[#1A1A1A] px-4 h-[40px] rounded text-xs font-black uppercase tracking-widest transition-colors shadow-lg opacity-50 cursor-not-allowed" disabled>
+                            <i class="fas fa-plus mr-1"></i> Add
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -550,8 +558,8 @@
                     <p><strong class="text-slate-700 uppercase tracking-wider">Deposit Requirement:</strong> 50% deposit required upon order approval. Remaining balance due upon installation completion.</p>
                 </div>
                 <div class="w-1/3 text-right space-y-1.5">
-                    <div class="flex justify-between text-xs text-slate-600"><span class="font-bold uppercase tracking-wider">Materials:</span> <span id="prop-mat-total" class="font-mono font-semibold">$0.00</span></div>
-                    <div class="flex justify-between text-xs text-slate-600"><span class="font-bold uppercase tracking-wider">Labor:</span> <span id="prop-lab-total" class="font-mono font-semibold">$0.00</span></div>
+                    <div class="flex justify-between text-xs text-slate-600"><span class="font-bold uppercase tracking-wider">Materials Subtotal:</span> <span id="prop-mat-total" class="font-mono font-semibold">$0.00</span></div>
+                    <div class="flex justify-between text-xs text-slate-600"><span class="font-bold uppercase tracking-wider">Labor Subtotal:</span> <span id="prop-lab-total" class="font-mono font-semibold">$0.00</span></div>
                     <div class="flex justify-between text-xs text-red-500" id="prop-disc-row"><span class="font-bold uppercase tracking-wider">Discount:</span> <span id="prop-disc-total" class="font-mono font-semibold">-$0.00</span></div>
                     <div class="flex justify-between text-xs text-slate-600" id="prop-tax-row"><span class="font-bold uppercase tracking-wider">Tax (<span id="prop-tax-rate">8.25</span>%):</span> <span id="prop-tax-total" class="font-mono font-semibold">$0.00</span></div>
                     <div class="flex justify-between text-xs text-slate-600" id="prop-cc-row"><span class="font-bold uppercase tracking-wider">CC Fee (<span id="prop-cc-rate">3.0</span>%):</span> <span id="prop-cc-total" class="font-mono font-semibold">$0.00</span></div>
@@ -763,6 +771,7 @@
         let currentCollection = 'Mahogany';
         let currentlySelectedModel = null;
         let currentlySelectedSidelite = null;
+        let editingIndex = null; // State tracker for Edit Mode
 
         function slugify(text) {
             if (!text) return '';
@@ -1256,6 +1265,7 @@
             document.getElementById('custAddress').value = '';
             document.getElementById('quoteNumber').value = '';
             
+            cancelEditMode();
             switchTab('quote-tab');
             updateCartUI();
             showToast("Quote Cleared!");
@@ -1268,6 +1278,58 @@
             document.title = `${custName} - ${quoteNum}`;
             window.print();
             setTimeout(() => { document.title = originalTitle; }, 2000);
+        }
+
+        // EDIT LIFECYCLE
+        function editItem(index) {
+            const item = quoteItems[index];
+            const cfg = item.rawConfig;
+            
+            setMaterial(cfg.material);
+            setCollection(cfg.collection);
+            document.getElementById('doorModel').value = cfg.modelIdx;
+            populateOptions();
+            document.getElementById('doorSize').value = cfg.sizeCode;
+            handleSizeChange();
+            document.getElementById('doorGlass').value = cfg.glass;
+            document.getElementById('doorFinish').value = cfg.finish;
+            document.getElementById('systemLayout').value = cfg.layout;
+            handleLayoutChange();
+            document.getElementById('doorHanding').value = cfg.handing;
+            document.getElementById('jambDepth').value = cfg.jamb;
+            
+            if (cfg.layout.includes('SL')) {
+                document.getElementById('slModel').value = cfg.slModelIdx;
+                populateSideliteSizes();
+                document.getElementById('slSize').value = cfg.slSize;
+                populateSideliteGlass();
+                document.getElementById('slGlass').value = cfg.slGlass;
+            }
+            
+            if (document.getElementById('barnHardware')) document.getElementById('barnHardware').value = cfg.barnHw;
+            if (document.getElementById('addOns')) document.getElementById('addOns').value = cfg.addons;
+            if (document.getElementById('casingAdder')) document.getElementById('casingAdder').value = cfg.casing;
+            if (document.getElementById('installLabor')) document.getElementById('installLabor').value = cfg.labor;
+            document.getElementById('customLabor').value = cfg.customLabor;
+            document.getElementById('itemQty').value = cfg.qty || 1;
+            
+            editingIndex = index;
+            const btn = document.getElementById('addToQuoteBtn');
+            btn.innerHTML = `<i class="fas fa-save mr-1"></i> Update`;
+            btn.classList.remove('bg-[#8EDB43]', 'hover:bg-[#7bc236]', 'text-[#1A1A1A]');
+            btn.classList.add('bg-blue-600', 'hover:bg-blue-500', 'text-white');
+            
+            switchTab('quote-tab');
+            runQuoteEngine();
+        }
+
+        function cancelEditMode() {
+            editingIndex = null;
+            document.getElementById('itemQty').value = 1;
+            const btn = document.getElementById('addToQuoteBtn');
+            btn.innerHTML = `<i class="fas fa-plus mr-1"></i> Add`;
+            btn.classList.remove('bg-blue-600', 'hover:bg-blue-500', 'text-white');
+            btn.classList.add('bg-[#8EDB43]', 'hover:bg-[#7bc236]', 'text-[#1A1A1A]');
         }
 
         function runQuoteEngine() {
@@ -1318,6 +1380,7 @@
             
             const jamb = document.getElementById('jambDepth').value || 'N/A';
             const margin = parseFloat(document.getElementById('marginSlider').value) / 100;
+            const qty = parseInt(document.getElementById('itemQty').value) || 1;
 
             const addOnsSelect = document.getElementById('addOns');
             let addOnsNet = 0;
@@ -1389,18 +1452,17 @@
                     alertBox.innerHTML = `<strong><i class="fas fa-tree mr-2 text-slate-500"></i> HARDWOOD PREHANG INCLUDED</strong><br>Exterior Wood Frame up to 6-9/16" Included in Prehang Price.`;
                     jambDesc = `Hoelscher Matching Hardwood Frame (${jamb}")`;
                 } else if (isUnfinished) {
-                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-slate-100 border-slate-300 text-slate-700";
+                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-amber-50 border-amber-200 text-amber-800";
                     alertBox.innerHTML = `<strong><i class="fas fa-tools mr-2 text-slate-500"></i> IN-HOUSE BUILD SELECTED</strong><br>Calculated using SimplyDoors Primed White Frame rates.`;
                     jambDesc = `In-House Primed White (${jamb}")`;
                 } else {
-                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-slate-100 border-slate-300 text-slate-700";
+                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-blue-50 border-blue-200 text-blue-800";
                     alertBox.innerHTML = `<strong><i class="fas fa-truck mr-2 text-slate-500"></i> VENDOR PREHANG</strong><br>Calculated using Vendor Composite Frames.`;
                     jambDesc = `Vendor Composite Frame (${jamb}")`;
                 }
             }
             
             let slabNet = listPrice * appSettings.multiplier;
-            
             if(currentMaterial === 'fiberglass' && isUnfinished && !isSlabOnly && jamb === '6 9/16') {
                  slabNet += (10 * appSettings.multiplier);
             }
@@ -1425,12 +1487,12 @@
                 }
             }
 
-            const materialsDealerCost = slabNet + sideliteNet + addOnsNet;
-            const materialsRetail = materialsDealerCost / (1 - margin);
-            const laborRetail = laborNet; 
-            const totalDealerCost = materialsDealerCost + laborNet; 
-            const retailPrice = materialsRetail + laborRetail;
+            const unitMaterialsDealerCost = slabNet + sideliteNet + addOnsNet;
+            const unitMaterialsRetail = unitMaterialsDealerCost / (1 - margin);
+            const unitLaborRetail = laborNet; 
+            const unitRetailPrice = unitMaterialsRetail + unitLaborRetail;
 
+            // Update UI with UNIT costs for clarity in the breakdown
             document.getElementById('marginDisplay').innerText = `${(margin * 100).toFixed(0)}%`;
             document.getElementById('costSlab').innerText = `$${slabNet.toFixed(2)}`;
             
@@ -1453,36 +1515,32 @@
             }
             
             document.getElementById('costLabor').innerText = `$${laborNet.toFixed(2)}`;
-            document.getElementById('costTotal').innerText = `$${totalDealerCost.toFixed(2)}`;
-            document.getElementById('priceRetail').innerText = `$${retailPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('costTotal').innerText = `$${(unitMaterialsDealerCost + laborNet).toFixed(2)}`;
+            
+            // Multiply final retail display by QTY
+            document.getElementById('priceRetail').innerText = `$${(unitRetailPrice * qty).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
             let unitStr, roStr;
-
             if (isSlabOnly || isBarn) {
                 let slabW = nomW - 0.25;
                 let slabH = nomH - 0.75;
                 if (isDouble) slabW = (nomW * 2) - 0.25; 
-                
                 if (slQty > 0) {
                     const slW = decodeSize(document.getElementById('slSize').value).w - 0.25;
                     slabW += (slW * slQty);
                 }
-                
                 unitStr = `${formatDimStr(slabW)} x ${formatDimStr(slabH)} (Net Slab Size)`;
                 roStr = isBarn ? "N/A (Barn Door)" : "N/A (Slab Only)";
             } else {
                 let unitW = nomW + 1.75;
                 let unitH = nomH + 2.75;
-                
                 if (isDouble) unitW = (nomW * 2) + 2.625;
                 if (slQty > 0) {
                     const slW = decodeSize(document.getElementById('slSize').value).w;
                     unitW += (slW * slQty) + (1.5 * slQty);
                 }
-
                 const roW = unitW + 1.0;
                 const roH = unitH + 0.75;
-
                 unitStr = `${formatDimStr(unitW)} x ${formatDimStr(unitH)}`;
                 roStr = `${formatDimStr(roW)} x ${formatDimStr(roH)}`;
             }
@@ -1497,8 +1555,8 @@
             
             document.getElementById('sku-display').innerText = `SKU: ${sku}`;
 
+            // DYNAMIC IMAGE PATH GENERATION
             const matFolder = currentMaterial === 'wood' ? 'wood' : 'fiberglass';
-            
             const doorImgEl = document.getElementById('preview-door');
             const safeDoorName = slugify(currentlySelectedModel.name);
             doorImgEl.src = `${REPO_BASE_URL}images/${matFolder}/doors/${safeDoorName}.jpg`;
@@ -1543,29 +1601,64 @@
             }
 
             window.currentQuoteState = {
-                sku, unitStr, roStr, jambDesc, retailPrice, materialsRetail, laborRetail,
+                sku, unitStr, roStr, jambDesc, 
+                qty: qty,
+                retailPrice: unitRetailPrice,
+                materialsRetail: unitMaterialsRetail,
+                laborRetail: unitLaborRetail,
+                lineRetail: unitRetailPrice * qty,
+                lineMaterials: unitMaterialsRetail * qty,
+                lineLabor: unitLaborRetail * qty,
                 modelName: currentlySelectedModel.name, 
                 collection: `${currentMaterial === 'wood' ? 'Solid Wood' : 'Fiberglass'} - ${currentCollection}`,
                 layout, glass, finish, addonsDesc, laborDesc, slDesc, doorHanding,
                 urlDoor: doorImgEl.src, urlGlass: glassImgEl.src, urlFinish, urlAddon,
-                isUnfinished
+                isUnfinished,
+                rawConfig: {
+                    material: currentMaterial,
+                    collection: currentCollection,
+                    modelIdx: document.getElementById('doorModel').value,
+                    sizeCode: doorSize,
+                    glass: glass,
+                    finish: doorFinish,
+                    layout: layout,
+                    handing: doorHanding,
+                    jamb: jamb,
+                    slModelIdx: document.getElementById('slModel') ? document.getElementById('slModel').value : '',
+                    slSize: document.getElementById('slSize') ? document.getElementById('slSize').value : '',
+                    slGlass: document.getElementById('slGlass') ? document.getElementById('slGlass').value : '',
+                    barnHw: document.getElementById('barnHardware') ? document.getElementById('barnHardware').value : '0',
+                    addons: addOnsSelect ? addOnsSelect.value : '0',
+                    casing: document.getElementById('casingAdder') ? document.getElementById('casingAdder').value : '0',
+                    labor: laborSelect ? laborSelect.value : '0',
+                    customLabor: customLabor,
+                    qty: qty
+                }
             };
             
-            if (quoteItems.length === 0) {
-                updateCartUI(); 
-            }
+            if (quoteItems.length === 0) updateCartUI(); 
         }
 
         function addToQuote() {
             if (!window.currentQuoteState) return;
             const item = JSON.parse(JSON.stringify(window.currentQuoteState));
-            quoteItems.push(item);
-            showToast(`Added ${item.sku} to Quote!`);
+            
+            if (editingIndex !== null) {
+                quoteItems[editingIndex] = item;
+                showToast(`Updated ${item.sku}!`);
+                cancelEditMode();
+            } else {
+                quoteItems.push(item);
+                showToast(`Added ${item.sku} to Quote!`);
+                document.getElementById('itemQty').value = 1;
+                runQuoteEngine();
+            }
             updateCartUI();
         }
 
         function removeItem(index) {
             quoteItems.splice(index, 1);
+            if (editingIndex === index) cancelEditMode();
             updateCartUI();
         }
 
@@ -1596,12 +1689,13 @@
                     cartItems.innerHTML += `
                         <div class="flex justify-between items-center text-sm bg-[#1A1A1A] p-3 rounded shadow-sm border border-[#333333] mb-2">
                             <div class="truncate pr-2 flex-1">
-                                <div class="font-black text-white text-[11px] tracking-widest uppercase">${item.sku}</div>
+                                <div class="font-black text-white text-[11px] tracking-widest uppercase"><span class="text-[#8EDB43]">${item.qty}x</span> ${item.sku}</div>
                                 <div class="text-[10px] text-slate-400 truncate w-full font-bold uppercase tracking-wider">${item.modelName}</div>
                             </div>
                             <div class="flex items-center shrink-0">
-                                <span class="font-mono font-bold text-[#8EDB43] mr-4">$${item.retailPrice.toFixed(2)}</span>
-                                <button onclick="removeItem(${index})" class="text-slate-500 hover:text-red-400 transition-colors"><i class="fas fa-trash-alt"></i></button>
+                                <span class="font-mono font-bold text-[#8EDB43] mr-4">$${item.lineRetail.toFixed(2)}</span>
+                                <button onclick="editItem(${index})" class="text-slate-500 hover:text-blue-400 transition-colors mr-3" title="Edit Item"><i class="fas fa-edit"></i></button>
+                                <button onclick="removeItem(${index})" class="text-slate-500 hover:text-red-400 transition-colors" title="Remove Item"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
                     `;
@@ -1611,8 +1705,8 @@
             }
 
             itemsToCalc.forEach(item => {
-                totalMaterials += item.materialsRetail;
-                totalLabor += item.laborRetail;
+                totalMaterials += item.lineMaterials;
+                totalLabor += item.lineLabor;
             });
             
             const discountType = document.getElementById('discountType').value;
@@ -1725,7 +1819,7 @@
             let html = `
                 <td class="py-6 px-4 align-top font-bold text-slate-800 text-xs tracking-wider uppercase">
                     Hoelscher Door Unit<br>
-                    <span class="text-[10px] font-black tracking-widest text-[#8EDB43]">${state.sku}</span>
+                    <span class="text-[10px] font-black tracking-widest text-slate-500"><span class="text-[#8EDB43]">${state.qty}x</span> ${state.sku}</span>
                 </td>
                 <td class="py-6 px-4 align-top text-center text-slate-400">
                     <div class="flex flex-wrap gap-2 justify-center">
@@ -1762,19 +1856,24 @@
             if (state.addonsDesc) html += `<p><strong class="uppercase tracking-wider text-slate-800">Add-ons:</strong> ${state.addonsDesc}</p>`;
             if (state.laborDesc) html += `<p><strong class="uppercase tracking-wider text-slate-800">Labor:</strong> ${state.laborDesc}</p>`;
 
-            let removeBtn = '';
+            let actionBtns = '';
             if (!isPreview) {
-                removeBtn = `
-                <button onclick="removeItem(${index})" class="block w-full text-right mt-3 text-slate-300 hover:text-red-500 no-print transition-colors text-[10px] uppercase font-bold tracking-widest" title="Remove Item">
-                    <i class="fas fa-trash-alt mr-1"></i> Remove
-                </button>`;
+                actionBtns = `
+                <div class="flex justify-end gap-3 mt-3 no-print">
+                    <button onclick="editItem(${index})" class="text-slate-400 hover:text-blue-500 transition-colors text-[10px] uppercase font-bold tracking-widest" title="Edit Item">
+                        <i class="fas fa-edit mr-1"></i> Edit
+                    </button>
+                    <button onclick="removeItem(${index})" class="text-slate-400 hover:text-red-500 transition-colors text-[10px] uppercase font-bold tracking-widest" title="Remove Item">
+                        <i class="fas fa-trash-alt mr-1"></i> Remove
+                    </button>
+                </div>`;
             }
 
             html += `
                 </td>
                 <td class="py-6 px-4 align-top text-right font-black text-xl text-[#1A1A1A] relative font-mono tracking-tight">
-                    $${state.retailPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
-                    ${removeBtn}
+                    $${state.lineRetail.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                    ${actionBtns}
                 </td>
             `;
             
