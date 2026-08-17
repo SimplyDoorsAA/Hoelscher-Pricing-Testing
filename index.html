@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SimplyDoors Quoting System - Hoelscher 2026</title>
-    <!-- Note: Tailwind CDN is intentionally used to maintain strict single-file architecture -->
+    <!-- Tailwind CDN used for strict single-file architecture -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -50,6 +50,7 @@
             background-color: #1e293b;
             text-align: center;
             padding: 0.25rem;
+            flex-shrink: 0;
         }
 
         @media print {
@@ -62,15 +63,15 @@
         }
         .print-only { display: none; }
         
-        .cart-scroll::-webkit-scrollbar { width: 4px; }
-        .cart-scroll::-webkit-scrollbar-track { background: #1e293b; }
-        .cart-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #1e293b; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 6px; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen bg-[#f4f7f9]">
 
     <!-- TOP NAVIGATION -->
-    <nav class="bg-[#0f172a] text-white py-2.5 px-6 no-print sticky top-0 z-50 shadow-md">
+    <nav class="bg-[#0f172a] text-white py-2.5 px-6 no-print sticky top-0 z-50 shadow-md shrink-0">
         <div class="max-w-7xl mx-auto nav-header-wrapper">
             <!-- Branding -->
             <div class="flex items-center space-x-3 shrink-0">
@@ -107,10 +108,10 @@
     </nav>
 
     <!-- TAB 1: MAIN DASHBOARD (QUOTE BUILDER) -->
-    <main id="quote-tab" class="max-w-7xl mx-auto p-6 grid grid-cols-12 gap-6 no-print" style="display: grid;">
+    <main id="quote-tab" class="max-w-7xl mx-auto grid grid-cols-12 gap-6 no-print p-6 items-start">
         
-        <!-- LEFT COLUMN (CONFIGURATOR) -->
-        <div class="col-span-8 space-y-6">
+        <!-- LEFT COLUMN (CONFIGURATOR - SCROLLS NORMALLY WITH PAGE) -->
+        <div class="col-span-8 space-y-6 pb-12">
             
             <!-- 1. Material & Collection Toggle -->
             <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
@@ -119,7 +120,6 @@
                     <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">Door Material & Collection</h2>
                 </div>
 
-                <!-- Primary Material Toggle -->
                 <div class="grid grid-cols-2 gap-4 mb-6">
                     <button onclick="setMaterial('fiberglass')" id="mat-fiberglass" class="material-btn active p-3 border-2 rounded-lg text-center font-bold text-sm transition-all flex items-center justify-center">
                         <i class="fas fa-layer-group mr-2"></i> Fiberglass Entry Doors
@@ -129,7 +129,6 @@
                     </button>
                 </div>
 
-                <!-- Collection Cards Container -->
                 <div id="collection-grid" class="grid grid-cols-4 gap-4">
                     <!-- Dynamic collection buttons -->
                 </div>
@@ -157,7 +156,6 @@
                     </div>
                 </div>
 
-                <!-- Shaped Top Warning Badge -->
                 <div id="shapedTopNotice" class="mt-4 p-3 bg-amber-50 border border-amber-200 text-amber-800 rounded text-xs hidden flex items-center">
                     <i class="fas fa-exclamation-triangle text-amber-600 mr-2 text-base"></i>
                     <div>
@@ -197,27 +195,28 @@
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 mb-1">System Layout</label>
                         <select id="systemLayout" onchange="handleLayoutChange()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
-                            <option value="Single" selected>Single Door System</option>
+                            <option value="Slab Only" selected>Slab Only (No Frame)</option>
+                            <option value="Single">Single Door System</option>
                             <option value="Single + 1 SL">Single w/ 1 Sidelite</option>
                             <option value="Single + 2 SL">Single w/ 2 Sidelites</option>
                             <option value="Double">Double Door System</option>
-                            <option value="Slab Only">Slab Only (No Frame)</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 mb-1">Handing & Swing</label>
                         <select id="doorHanding" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
-                            <option value="Left Hand (LH) Inswing" selected>Left Hand (LH) Inswing</option>
+                            <option value="N/A (Slab)" selected>N/A (Slab Only)</option>
+                            <option value="Left Hand (LH) Inswing">Left Hand (LH) Inswing</option>
                             <option value="Right Hand (RH) Inswing">Right Hand (RH) Inswing</option>
                             <option value="Left Hand (LH) Outswing">Left Hand (LH) Outswing</option>
                             <option value="Right Hand (RH) Outswing">Right Hand (RH) Outswing</option>
-                            <option value="N/A (Slab)">N/A (Slab Only)</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 mb-1">Jamb Depth</label>
                         <select id="jambDepth" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm font-medium">
-                            <option value="4 9/16" selected>4-9/16" Standard Jamb</option>
+                            <option value="N/A" selected>N/A (Slab Only)</option>
+                            <option value="4 9/16">4-9/16" Standard Jamb</option>
                             <option value="6 9/16">6-9/16" Wide Jamb</option>
                         </select>
                     </div>
@@ -251,7 +250,6 @@
                     <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">Add-ons, Hardware & Labor</h2>
                 </div>
 
-                <!-- Barn Door Hardware Section -->
                 <div id="barnHardwareContainer" class="hidden space-y-4 mb-4 p-4 bg-slate-50 rounded border border-slate-200">
                     <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center"><i class="fas fa-toolbox text-blue-500 mr-2"></i> Barn Door Hardware Kits</h3>
                     <div class="grid grid-cols-2 gap-4">
@@ -264,7 +262,6 @@
                     </div>
                 </div>
 
-                <!-- Standard Add-ons & Speakeasy Options -->
                 <div id="standardAddonsContainer" class="grid grid-cols-3 gap-6 mb-4">
                     <div id="addOnContainer" style="display: none;" class="col-span-2">
                         <label class="block text-xs font-semibold text-slate-500 mb-1">Decorative Grille / Speakeasy Mask</label>
@@ -273,7 +270,6 @@
                         </select>
                     </div>
 
-                    <!-- Wood Casing Adders -->
                     <div id="casingAdderContainer" style="display: none;" class="col-span-1">
                         <label class="block text-xs font-semibold text-slate-500 mb-1">Prehang Interior Casing Adders</label>
                         <select id="casingAdder" onchange="runQuoteEngine()" class="w-full p-2 border border-slate-300 rounded focus:border-blue-500 outline-none text-sm">
@@ -284,7 +280,6 @@
                     </div>
                 </div>
 
-                <!-- Installation Labor -->
                 <div class="grid grid-cols-2 gap-6 pt-4 border-t border-slate-100 mt-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 mb-1">Standard Installation Labor</label>
@@ -301,19 +296,20 @@
 
         </div>
 
-        <!-- RIGHT COLUMN (SUMMARY STICKY & CART) -->
-        <div class="col-span-4">
-            <div class="bg-[#0f172a] text-white rounded-xl shadow-lg sticky top-20 border border-slate-800 flex flex-col max-h-[90vh]">
+        <!-- RIGHT COLUMN (STICKY SCROLL ARCHITECTURE) -->
+        <div class="col-span-4 sticky top-[80px] flex flex-col gap-4 self-start h-[calc(100vh-100px)]">
+            
+            <!-- CURRENT ITEM CONFIGURATION SUMMARY -->
+            <div id="summary-container" class="bg-[#0f172a] text-white rounded-xl shadow-lg border border-slate-800 flex flex-col overflow-hidden min-h-0 flex-1">
                 
-                <!-- CURRENT ITEM SUMMARY -->
-                <div class="flex-shrink-0">
-                    <div class="p-5 border-b border-slate-700 flex justify-between items-center bg-slate-900 rounded-t-xl">
-                        <h3 class="font-bold tracking-wide flex items-center"><i class="fas fa-calculator mr-2 text-blue-400"></i> CONFIGURATION</h3>
-                        <span class="text-xs bg-slate-800 px-2 py-1 rounded text-slate-300 font-mono" id="sku-display">SKU: ---</span>
-                    </div>
+                <div class="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-900 shrink-0">
+                    <h3 class="font-bold text-sm tracking-wide flex items-center"><i class="fas fa-calculator mr-2 text-blue-400"></i> CONFIGURATION</h3>
+                    <span class="text-[10px] bg-slate-800 px-2 py-1 rounded text-slate-300 font-mono" id="sku-display">SKU: ---</span>
+                </div>
 
-                    <!-- IMAGE PREVIEW PANE (PLACEHOLDERS) -->
-                    <div class="p-4 border-b border-slate-700 bg-slate-800/80 flex justify-center gap-3 min-h-[105px]">
+                <!-- Inner scrollable body to prevent panel cut-offs -->
+                <div class="overflow-y-auto custom-scroll flex-1 bg-slate-800/50">
+                    <div class="p-4 border-b border-slate-700 bg-slate-800/80 flex justify-center gap-3">
                         <div class="img-placeholder">
                             <i class="fas fa-door-closed text-base mb-1 text-blue-400"></i>
                             <span>Door</span>
@@ -332,14 +328,14 @@
                         </div>
                     </div>
                     
-                    <div class="p-4 border-b border-slate-700 bg-slate-800/50">
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="text-slate-400">Unit Size (W x H):</span>
-                            <span class="font-semibold font-mono" id="sumUnitSize">---</span>
+                    <div class="p-4 border-b border-slate-700">
+                        <div class="flex justify-between items-start text-sm mb-2 gap-4">
+                            <span class="text-slate-400 shrink-0">Unit Size (W x H):</span>
+                            <span class="font-semibold font-mono text-right" id="sumUnitSize">---</span>
                         </div>
-                        <div class="flex justify-between text-sm text-emerald-400">
-                            <span>Rec. Rough Opening:</span>
-                            <span class="font-semibold font-mono" id="sumRO">---</span>
+                        <div class="flex justify-between items-start text-sm gap-4 text-emerald-400">
+                            <span class="shrink-0">Rec. Rough Opening:</span>
+                            <span class="font-semibold font-mono text-right" id="sumRO">---</span>
                         </div>
                     </div>
 
@@ -370,85 +366,84 @@
                         </div>
                     </div>
 
-                    <div class="p-4 border-b border-slate-700">
+                    <div class="p-4">
                         <div class="flex justify-between text-xs font-bold text-slate-400 mb-2">
                             <span>TARGET GROSS MARGIN</span>
                             <span class="text-emerald-400" id="marginDisplay">40%</span>
                         </div>
                         <input type="range" id="marginSlider" min="15" max="60" value="40" oninput="runQuoteEngine()" class="w-full">
                     </div>
-                    
-                    <div class="p-4 bg-slate-900 text-center flex justify-between items-center">
-                        <div class="text-left">
-                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Current Item Price</p>
-                            <p class="text-2xl font-black text-white" id="priceRetail">$0.00</p>
-                        </div>
-                        <button id="addToQuoteBtn" onclick="addToQuote()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded text-sm font-bold transition-colors shadow-lg opacity-50 cursor-not-allowed" disabled>
-                            <i class="fas fa-plus mr-1"></i> Add to Quote
-                        </button>
-                    </div>
                 </div>
 
-                <!-- CART LIST & TOTALS -->
-                <div id="cart-container" class="hidden flex-col flex-1 overflow-hidden">
-                    <div class="p-3 bg-slate-800 text-xs font-bold text-slate-400 border-t border-b border-slate-700">
-                        QUOTE ITEMS (<span id="cart-count">0</span>)
+                <div class="p-4 bg-slate-900 flex justify-between items-center shrink-0 border-t border-slate-700">
+                    <div class="text-left">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Current Item Price</p>
+                        <p class="text-xl font-black text-white" id="priceRetail">$0.00</p>
                     </div>
-                    <div id="cart-items" class="p-3 space-y-2 overflow-y-auto cart-scroll flex-1">
-                        <!-- Populated by JS -->
-                    </div>
-                    <div class="p-4 bg-slate-900 border-t border-slate-700 mt-auto">
-                        
-                        <!-- QUOTE SETTINGS (Discount, Tax, CC) -->
-                        <div class="space-y-3 mb-4 text-sm bg-slate-800/50 p-3 rounded border border-slate-700">
-                            
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <select id="discountType" onchange="updateCartUI()" class="bg-slate-800 text-slate-300 border border-slate-600 rounded p-1 text-xs outline-none cursor-pointer">
-                                        <option value="none">No Discount</option>
-                                        <option value="percent">Discount (%)</option>
-                                        <option value="dollar">Discount ($)</option>
-                                    </select>
-                                    <input type="number" id="discountValue" placeholder="0" min="0" oninput="updateCartUI()" class="bg-slate-900 text-white border border-slate-600 rounded p-1 text-xs w-16 outline-none hidden">
-                                </div>
-                                <span id="display-discount" class="text-red-400 font-mono font-semibold">-$0.00</span>
-                            </div>
-                            
-                            <div class="flex items-center justify-between border-t border-slate-700 pt-3">
-                                <label class="flex items-center text-slate-300 text-xs cursor-pointer font-bold">
-                                    <input type="checkbox" id="applyTax" checked onchange="updateCartUI()" class="mr-2 rounded bg-slate-800 border-slate-600 text-blue-500 cursor-pointer h-4 w-4"> 
-                                    Apply Tax (<span id="taxRateLabel">8.25</span>%)
-                                </label>
-                                <span id="display-tax" class="text-slate-300 font-mono font-semibold">+$0.00</span>
-                            </div>
-                            
-                            <div class="flex items-center justify-between border-t border-slate-700 pt-3">
-                                <label class="flex items-center text-slate-300 text-xs cursor-pointer font-bold">
-                                    <input type="checkbox" id="applyCC" onchange="updateCartUI()" class="mr-2 rounded bg-slate-800 border-slate-600 text-blue-500 cursor-pointer h-4 w-4"> 
-                                    Add CC Fee (<input type="number" id="ccRateInput" value="3.0" min="0" max="99.9" oninput="updateCartUI()" class="bg-slate-900 text-white border border-slate-600 rounded px-1 w-12 outline-none h-6 ml-1 font-mono">%)
-                                </label>
-                                <span id="display-cc" class="text-slate-300 font-mono font-semibold">+$0.00</span>
-                            </div>
-                        </div>
+                    <button id="addToQuoteBtn" onclick="addToQuote()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded text-sm font-bold transition-colors shadow-lg opacity-50 cursor-not-allowed" disabled>
+                        <i class="fas fa-plus mr-1"></i> Add to Quote
+                    </button>
+                </div>
+            </div>
 
-                        <div class="flex justify-between items-center mb-4 pt-2 border-t border-slate-700">
-                            <span class="text-sm font-bold text-slate-400 uppercase tracking-widest">Grand Total</span>
-                            <span class="text-3xl font-black text-white" id="grandTotalRetail">$0.00</span>
-                        </div>
-                        <button onclick="switchTab('proposal-tab')" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded text-sm font-bold transition-colors">
-                            <i class="fas fa-file-invoice mr-2"></i> View Customer Proposal
-                        </button>
-                    </div>
+            <!-- CART LIST & TOTALS -->
+            <div id="cart-container" class="hidden bg-[#0f172a] text-white rounded-xl shadow-lg border border-slate-800 flex-col overflow-hidden min-h-0 flex-1">
+                
+                <div class="p-3 bg-slate-900 text-xs font-bold text-slate-400 border-b border-slate-700 shrink-0 flex justify-between items-center">
+                    <span><i class="fas fa-shopping-cart mr-1"></i> QUOTE ITEMS (<span id="cart-count">0</span>)</span>
                 </div>
                 
+                <div id="cart-items" class="p-3 space-y-2 overflow-y-auto custom-scroll flex-1 bg-slate-800/50">
+                    <!-- Populated by JS -->
+                </div>
+                
+                <div class="p-4 bg-slate-900 border-t border-slate-700 shrink-0">
+                    <div class="space-y-2 mb-3 text-[11px] bg-slate-800 p-3 rounded border border-slate-700">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <select id="discountType" onchange="updateCartUI()" class="bg-slate-800 text-slate-300 border border-slate-600 rounded p-1 outline-none cursor-pointer">
+                                    <option value="none">No Discount</option>
+                                    <option value="percent">Discount (%)</option>
+                                    <option value="dollar">Discount ($)</option>
+                                </select>
+                                <input type="number" id="discountValue" placeholder="0" min="0" oninput="updateCartUI()" class="bg-slate-900 text-white border border-slate-600 rounded p-1 w-16 outline-none hidden">
+                            </div>
+                            <span id="display-discount" class="text-red-400 font-mono font-semibold">-$0.00</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between border-t border-slate-700 pt-2">
+                            <label class="flex items-center text-slate-300 cursor-pointer font-bold">
+                                <input type="checkbox" id="applyTax" checked onchange="updateCartUI()" class="mr-2 rounded bg-slate-800 border-slate-600 text-blue-500 cursor-pointer h-3 w-3"> 
+                                Apply Tax (<span id="taxRateLabel">8.25</span>%)
+                            </label>
+                            <span id="display-tax" class="text-slate-300 font-mono font-semibold">+$0.00</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between border-t border-slate-700 pt-2">
+                            <label class="flex items-center text-slate-300 cursor-pointer font-bold">
+                                <input type="checkbox" id="applyCC" onchange="updateCartUI()" class="mr-2 rounded bg-slate-800 border-slate-600 text-blue-500 cursor-pointer h-3 w-3"> 
+                                Add CC Fee (<input type="number" id="ccRateInput" value="3.0" min="0" max="99.9" oninput="updateCartUI()" class="bg-slate-900 text-white border border-slate-600 rounded px-1 w-10 outline-none h-5 ml-1 font-mono">%)
+                            </label>
+                            <span id="display-cc" class="text-slate-300 font-mono font-semibold">+$0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-end mb-3">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Grand Total</span>
+                        <span class="text-2xl font-black text-white" id="grandTotalRetail">$0.00</span>
+                    </div>
+                    <button onclick="switchTab('proposal-tab')" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded text-sm font-bold transition-colors">
+                        <i class="fas fa-file-invoice mr-2"></i> View Proposal
+                    </button>
+                </div>
             </div>
+            
         </div>
     </main>
 
     <!-- TAB 2: CUSTOMER PROPOSAL -->
-    <main id="proposal-tab" class="max-w-4xl mx-auto p-6 hidden">
+    <main id="proposal-tab" class="max-w-4xl mx-auto p-6 hidden w-full">
         
-        <!-- Customer Details (Moved to Proposal Tab) -->
         <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-6 no-print">
             <h2 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
                 <i class="fas fa-address-card text-blue-500 mr-2"></i> Client Information for Document
@@ -474,8 +469,7 @@
         </section>
 
         <!-- PRINT PROPOSAL TEMPLATE -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-10 proposal-card print-only-wrapper">
-            
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-10 proposal-card print-only-wrapper mb-12">
             <div class="flex flex-wrap justify-between border-b border-slate-200 pb-6 mb-6 gap-4">
                 <div>
                     <h1 class="text-2xl font-black text-slate-900 tracking-tight">SimplyDoors</h1>
@@ -514,7 +508,6 @@
                         </tr>
                     </thead>
                     <tbody id="prop-tbody" class="border-b border-slate-200">
-                        <!-- Populated dynamically by JS -->
                     </tbody>
                 </table>
             </div>
@@ -525,7 +518,6 @@
                     <p><strong>Deposit Requirement:</strong> 50% deposit required upon order approval. Remaining balance due upon installation completion.</p>
                 </div>
                 <div class="w-1/3 text-right space-y-1">
-                    <!-- Dynamic Totals Block -->
                     <div class="flex justify-between text-sm text-slate-600"><span class="font-bold">Materials:</span> <span id="prop-mat-total">$0.00</span></div>
                     <div class="flex justify-between text-sm text-slate-600"><span class="font-bold">Installation Labor:</span> <span id="prop-lab-total">$0.00</span></div>
                     <div class="flex justify-between text-sm text-red-500" id="prop-disc-row"><span class="font-bold">Discount:</span> <span id="prop-disc-total">-$0.00</span></div>
@@ -543,8 +535,8 @@
     </main>
 
     <!-- TAB 3: SETTINGS & PRICING -->
-    <main id="settings-tab" class="max-w-7xl mx-auto p-6 hidden no-print">
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+    <main id="settings-tab" class="max-w-7xl mx-auto p-6 hidden no-print w-full">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-12">
             <div class="flex flex-wrap justify-between items-center border-b border-slate-200 pb-4 mb-6 gap-4">
                 <div>
                     <h2 class="text-2xl font-bold text-slate-800">Pricing Database & Settings</h2>
@@ -670,7 +662,7 @@
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-6 py-3 rounded shadow-xl font-semibold transition-opacity duration-300 opacity-0 pointer-events-none z-50 text-sm">
+    <div id="toast" class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded shadow-xl font-semibold transition-opacity duration-300 opacity-0 pointer-events-none z-[150] text-sm">
         <i class="fas fa-check-circle text-emerald-400 mr-2"></i> Settings Saved Successfully!
     </div>
 
@@ -768,11 +760,16 @@
 
         window.onload = () => {
             loadSettings();
+            
+            // Hard reset system layout defaults on page load
+            document.getElementById('systemLayout').value = 'Slab Only';
+            document.getElementById('doorHanding').value = 'N/A (Slab)';
+            document.getElementById('jambDepth').value = 'N/A';
+            
             setMaterial('fiberglass');
             document.getElementById('prop-date').innerText = new Date().toISOString().split('T')[0];
             updateLaborDropdowns();
             closeCatalogModal();
-            runQuoteEngine();
         };
 
         function loadSettings() {
@@ -840,6 +837,7 @@
             document.getElementById('prop-cc-rate').innerText = appSettings.ccRate;
             
             runQuoteEngine();
+            updateCartUI();
         }
 
         function renderSettingsUI() {
@@ -997,7 +995,7 @@
                 finishSelect.appendChild(opt);
                 if (idx === 0) firstFinish = item;
             });
-            finishSelect.value = firstFinish; // Explicit assignment
+            finishSelect.value = firstFinish; 
         }
 
         function populateOptions() {
@@ -1032,18 +1030,24 @@
 
             const isBarn = currentlySelectedModel.barn || currentCollection === 'Barn Doors';
             const barnContainer = document.getElementById('barnHardwareContainer');
+            const handingSelect = document.getElementById('doorHanding');
+            const jambSelect = document.getElementById('jambDepth');
             
             if (isBarn) {
                 barnContainer.classList.remove('hidden');
                 document.getElementById('systemLayout').value = 'Slab Only';
                 document.getElementById('systemLayout').disabled = true;
-                document.getElementById('doorHanding').value = 'N/A (Slab)';
+                handingSelect.value = 'N/A (Slab)';
+                jambSelect.value = 'N/A';
                 populateBarnHardware();
             } else {
                 barnContainer.classList.add('hidden');
                 document.getElementById('systemLayout').disabled = false;
-                if (document.getElementById('doorHanding').value === 'N/A (Slab)' && document.getElementById('systemLayout').value !== 'Slab Only') {
-                    document.getElementById('doorHanding').value = 'Left Hand (LH) Inswing';
+                if (handingSelect.value === 'N/A (Slab)' && document.getElementById('systemLayout').value !== 'Slab Only') {
+                    handingSelect.value = 'Left Hand (LH) Inswing';
+                }
+                if (jambSelect.value === 'N/A' && document.getElementById('systemLayout').value !== 'Slab Only') {
+                    jambSelect.value = '4 9/16';
                 }
             }
             
@@ -1060,7 +1064,7 @@
                 if (idx === 0) firstSize = sizeCode;
             });
             
-            sizeSelect.value = firstSize; // Explicit assignment
+            sizeSelect.value = firstSize; 
 
             const addOnContainer = document.getElementById('addOnContainer');
             const addOnsSelect = document.getElementById('addOns');
@@ -1141,12 +1145,13 @@
                     glassSelect.appendChild(opt);
                     if (idx === 0) firstGlass = g;
                 });
-                glassSelect.value = firstGlass; // Explicit assignment
+                glassSelect.value = firstGlass; 
             } else {
                 glassContainer.style.display = 'none';
                 const opt = document.createElement('option');
                 opt.value = 'Solid Panel';
                 opt.innerText = 'Solid Panel';
+                opt.selected = true;
                 glassSelect.appendChild(opt);
                 glassSelect.value = 'Solid Panel';
             }
@@ -1158,11 +1163,18 @@
             const layout = document.getElementById('systemLayout').value;
             const slContainer = document.getElementById('slContainer');
             const handingSelect = document.getElementById('doorHanding');
+            const jambSelect = document.getElementById('jambDepth');
 
             if (layout === 'Slab Only') {
                 handingSelect.value = 'N/A (Slab)';
-            } else if (handingSelect.value === 'N/A (Slab)') {
-                handingSelect.value = 'Left Hand (LH) Inswing';
+                jambSelect.value = 'N/A';
+            } else {
+                if (handingSelect.value === 'N/A (Slab)' || handingSelect.value === '') {
+                    handingSelect.value = 'Left Hand (LH) Inswing';
+                }
+                if (jambSelect.value === 'N/A' || jambSelect.value === '') {
+                    jambSelect.value = '4 9/16';
+                }
             }
             
             if (layout.includes('SL')) {
@@ -1276,7 +1288,6 @@
                 return;
             }
 
-            // Valid core selections met. Proceed with calculation.
             addBtn.disabled = false;
             addBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
@@ -1289,17 +1300,17 @@
             const pricingData = sizeData.prices;
             
             const doorFinish = document.getElementById('doorFinish').value || 'Unfinished (Slab/Prehung)';
-            const doorHanding = document.getElementById('doorHanding').value || 'Left Hand (LH) Inswing';
+            const doorHanding = document.getElementById('doorHanding').value || 'N/A (Slab)';
             
             const finish = doorFinish;
             const isUnfinished = finish.includes('Unfinished');
             
-            const layout = document.getElementById('systemLayout').value || 'Single Door System';
+            const layout = document.getElementById('systemLayout').value || 'Slab Only';
             const isDouble = layout.includes('Double');
             const isSlabOnly = layout === 'Slab Only';
             const isBarn = currentlySelectedModel.barn || currentCollection === 'Barn Doors';
             
-            const jamb = document.getElementById('jambDepth').value || '4 9/16';
+            const jamb = document.getElementById('jambDepth').value || 'N/A';
             const margin = parseFloat(document.getElementById('marginSlider').value) / 100;
 
             const addOnsSelect = document.getElementById('addOns');
@@ -1429,7 +1440,7 @@
 
             const materialsDealerCost = slabNet + sideliteNet + addOnsNet;
             const materialsRetail = materialsDealerCost / (1 - margin);
-            const laborRetail = (laborNet / (1 - margin)); 
+            const laborRetail = laborNet; 
             const totalDealerCost = materialsDealerCost + laborNet; 
             const retailPrice = materialsRetail + laborRetail;
 
@@ -1489,8 +1500,8 @@
                 roStr = `${formatDimStr(roW)} x ${formatDimStr(roH)}`;
             }
 
-            document.getElementById('sumUnitSize').innerText = unitStr;
-            document.getElementById('sumRO').innerText = roStr;
+            document.getElementById('sumUnitSize').innerHTML = `<span class="text-right ml-4">${unitStr}</span>`;
+            document.getElementById('sumRO').innerHTML = `<span class="text-right ml-4">${roStr}</span>`;
 
             const glassContainerVisible = document.getElementById('glassContainer').style.display !== 'none';
             const glass = glassContainerVisible ? document.getElementById('doorGlass').value : 'Solid Panel';
@@ -1507,7 +1518,7 @@
                 sku, unitStr, roStr, jambDesc, retailPrice, materialsRetail, laborRetail,
                 modelName: currentlySelectedModel.name, 
                 collection: `${currentMaterial === 'wood' ? 'Solid Wood' : 'Fiberglass'} - ${currentCollection}`,
-                layout, glass, finish, addonsDesc, laborDesc, slDesc
+                layout, glass, finish, addonsDesc, laborDesc, slDesc, doorHanding
             };
             
             if (quoteItems.length === 0) {
@@ -1559,11 +1570,11 @@
                 quoteItems.forEach((item, index) => {
                     cartItems.innerHTML += `
                         <div class="flex justify-between items-center text-sm bg-slate-800 p-3 rounded shadow-sm border border-slate-700 mb-2">
-                            <div class="truncate pr-2">
+                            <div class="truncate pr-2 flex-1">
                                 <div class="font-bold text-white">${item.sku}</div>
-                                <div class="text-xs text-slate-400 truncate w-48">${item.modelName}</div>
+                                <div class="text-xs text-slate-400 truncate w-full">${item.modelName}</div>
                             </div>
-                            <div class="flex items-center">
+                            <div class="flex items-center shrink-0">
                                 <span class="font-mono font-bold text-emerald-400 mr-4">$${item.retailPrice.toFixed(2)}</span>
                                 <button onclick="removeItem(${index})" class="text-slate-500 hover:text-red-400 transition-colors"><i class="fas fa-trash-alt"></i></button>
                             </div>
@@ -1692,15 +1703,15 @@
                     <span class="text-xs font-normal text-slate-500">${state.sku}</span>
                 </td>
                 <td class="py-5 px-3 align-top text-center text-slate-400">
-                    <div class="inline-flex items-center justify-center p-3 bg-slate-100 border border-dashed border-slate-300 rounded">
-                        <i class="fas fa-door-closed text-2xl mr-2 text-slate-500"></i>
-                        <span class="text-xs font-bold text-slate-600">Door Slab</span>
+                    <div class="inline-flex flex-col items-center justify-center p-3 bg-slate-100 border border-dashed border-slate-300 rounded">
+                        <i class="fas fa-door-closed text-2xl mb-1 text-slate-500"></i>
+                        <span class="text-[10px] uppercase font-bold text-slate-600">Pending<br>Preview</span>
                     </div>
                 </td>
                 <td class="py-5 px-3 align-top text-slate-600 space-y-1 text-xs">
                     <p><strong>Model:</strong> ${state.collection} - ${state.modelName}</p>
                     <p><strong>Dimensions:</strong> ${state.unitStr}</p>
-                    <p><strong>Configuration:</strong> ${state.layout}</p>
+                    <p><strong>Configuration:</strong> ${state.layout} / ${state.doorHanding}</p>
             `;
             
             if (state.slDesc) {
