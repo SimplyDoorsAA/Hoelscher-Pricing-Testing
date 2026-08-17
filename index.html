@@ -60,6 +60,9 @@
             #proposal-tab { display: block !important; }
             .proposal-card { border: none !important; box-shadow: none !important; margin: 0 !important; padding: 0 !important; }
             .overflow-x-auto { overflow: visible !important; }
+            /* Print protections for large tables */
+            tr { page-break-inside: avoid; }
+            thead { display: table-header-group; }
         }
         .print-only { display: none; }
         
@@ -442,7 +445,7 @@
     </main>
 
     <!-- TAB 2: CUSTOMER PROPOSAL -->
-    <main id="proposal-tab" class="max-w-4xl mx-auto p-6 hidden w-full">
+    <main id="proposal-tab" class="max-w-4xl mx-auto p-6 hidden w-full flex-1 overflow-y-auto">
         
         <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-6 no-print">
             <h2 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
@@ -535,7 +538,7 @@
     </main>
 
     <!-- TAB 3: SETTINGS & PRICING -->
-    <main id="settings-tab" class="max-w-7xl mx-auto p-6 hidden no-print w-full">
+    <main id="settings-tab" class="max-w-7xl mx-auto p-6 hidden no-print w-full flex-1 overflow-y-auto">
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-12">
             <div class="flex flex-wrap justify-between items-center border-b border-slate-200 pb-4 mb-6 gap-4">
                 <div>
@@ -1274,8 +1277,8 @@
                 document.getElementById('costSlab').innerText = "$0.00";
                 document.getElementById('costLabor').innerText = "$0.00";
                 document.getElementById('costPrehang').innerText = "$0.00";
-                document.getElementById('sumUnitSize').innerText = "---";
-                document.getElementById('sumRO').innerText = "---";
+                document.getElementById('sumUnitSize').innerHTML = `<span class="text-right ml-4">---</span>`;
+                document.getElementById('sumRO').innerHTML = `<span class="text-right ml-4">---</span>`;
                 document.getElementById('sku-display').innerText = "SKU: ---";
                 
                 document.getElementById('summary-sidelite-row').style.display = 'none';
@@ -1364,39 +1367,26 @@
                 laborDesc = customLabor > 0 ? `${baseLaborText} + Custom ($${customLabor.toFixed(2)})` : baseLaborText;
             }
 
+            // REFACTORED PRICING AND ALERT BLOCK
+            let listPrice = 0;
             const alertBox = document.getElementById('prehangAlert');
             let jambDesc = '';
-            let listPrice = 0;
 
             if (isSlabOnly || isBarn) {
                 listPrice = isUnfinished ? pricingData.u_slab : pricingData.p_slab;
-                if(isDouble) listPrice *= 2;
+                if (isDouble) listPrice *= 2;
                 alertBox.style.display = 'none';
                 jambDesc = isBarn ? "N/A (Barn Door - Slab Only)" : "N/A (Slab Only - No Frame)";
-            } else if (isDouble) {
-                listPrice = isUnfinished ? pricingData.u_double : pricingData.p_double;
-                alertBox.style.display = 'block';
-                if(currentMaterial === 'wood') {
-                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-emerald-50 border-emerald-200 text-emerald-800";
-                    alertBox.innerHTML = `<strong><i class="fas fa-tree mr-2"></i> HARDWOOD PREHANG INCLUDED</strong><br>Exterior Wood Frame up to 6-9/16" Included in Prehang Price.`;
-                    jambDesc = `Hoelscher Matching Hardwood Frame (${jamb}")`;
-                } else if(isUnfinished) {
-                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-amber-50 border-amber-200 text-amber-800";
-                    alertBox.innerHTML = `<strong><i class="fas fa-tools mr-2"></i> IN-HOUSE BUILD SELECTED</strong><br>Calculated using SimplyDoors Primed White Frame rates.`;
-                    jambDesc = `In-House Primed White (${jamb}")`;
-                } else {
-                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-blue-50 border-blue-200 text-blue-800";
-                    alertBox.innerHTML = `<strong><i class="fas fa-truck mr-2"></i> VENDOR PREHANG</strong><br>Calculated using Vendor Composite Frames.`;
-                    jambDesc = `Vendor Composite Frame (${jamb}")`;
-                }
             } else {
-                listPrice = isUnfinished ? pricingData.u_single : pricingData.p_single;
+                listPrice = isDouble ? (isUnfinished ? pricingData.u_double : pricingData.p_double) 
+                                     : (isUnfinished ? pricingData.u_single : pricingData.p_single);
+                
                 alertBox.style.display = 'block';
-                if(currentMaterial === 'wood') {
+                if (currentMaterial === 'wood') {
                     alertBox.className = "p-4 rounded border text-sm mt-4 bg-emerald-50 border-emerald-200 text-emerald-800";
                     alertBox.innerHTML = `<strong><i class="fas fa-tree mr-2"></i> HARDWOOD PREHANG INCLUDED</strong><br>Exterior Wood Frame up to 6-9/16" Included in Prehang Price.`;
                     jambDesc = `Hoelscher Matching Hardwood Frame (${jamb}")`;
-                } else if(isUnfinished) {
+                } else if (isUnfinished) {
                     alertBox.className = "p-4 rounded border text-sm mt-4 bg-amber-50 border-amber-200 text-amber-800";
                     alertBox.innerHTML = `<strong><i class="fas fa-tools mr-2"></i> IN-HOUSE BUILD SELECTED</strong><br>Calculated using SimplyDoors Primed White Frame rates.`;
                     jambDesc = `In-House Primed White (${jamb}")`;
