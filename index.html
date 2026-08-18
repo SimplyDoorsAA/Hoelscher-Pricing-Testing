@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SimplyDoors Quoting System - Hoelscher 2026</title>
+    <!-- Tailwind CDN used for strict single-file architecture -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -14,6 +15,7 @@
             color: #1e293b; 
             overflow-x: hidden;
         }
+        /* SimplyDoors Official Color Adjustments */
         .material-btn.active { background-color: #8EDB43; color: #1A1A1A; border-color: #8EDB43; }
         .collection-card.active { border-color: #8EDB43; background-color: #f4fbf0; }
         .collection-card.active h4 { color: #1A1A1A; }
@@ -32,6 +34,7 @@
             column-gap: 0.75rem;
         }
 
+        /* Generic Preview Box for Sidebar */
         .preview-box {
             position: relative;
             height: 6rem;
@@ -42,6 +45,7 @@
             overflow: hidden;
             flex-shrink: 0;
         }
+        /* Hero Preview Box for Proposal Tab */
         .preview-hero {
             position: relative;
             height: 20rem;
@@ -51,6 +55,7 @@
             background-color: #f8fafc;
             overflow: hidden;
         }
+        /* Swatch Preview Box for Proposal Tab */
         .preview-swatch {
             position: relative;
             height: 4rem;
@@ -93,6 +98,7 @@
             #proposal-tab { display: block !important; }
             .proposal-card { border: none !important; box-shadow: none !important; margin: 0 !important; padding: 0 !important; }
             .overflow-x-auto { overflow: visible !important; }
+            /* Strict Print Protections */
             .proposal-item-card { page-break-inside: avoid; break-inside: avoid; }
             .preview-hero, .preview-swatch { background-color: white !important; border-color: transparent !important; }
             .print-border-bottom { border-bottom: 2px solid #1A1A1A !important; }
@@ -132,7 +138,10 @@
                     <span class="text-xs text-slate-400 mr-2 shrink-0 uppercase tracking-widest font-bold">Rep:</span>
                     <select id="salesRep" class="bg-transparent text-sm font-semibold outline-none cursor-pointer text-white truncate" onchange="updateCartUI()">
                         <option value="Adem Atis">Adem Atis</option>
+                        <option value="John Suttin">John Suttin</option>
+                        <option value="Steven Chandler">Steven Chandler</option>
                         <option value="Cory Broyles">Cory Broyles</option>
+                        <option value="Dennis Haberer">Dennis Haberer</option>
                         <option value="House Account">House Account</option>
                     </select>
                 </div>
@@ -408,9 +417,9 @@
                     <div class="p-4 bg-[#1A1A1A]">
                         <div class="flex justify-between text-[10px] font-black text-slate-400 mb-2 tracking-widest">
                             <span>TARGET GROSS MARGIN</span>
-                            <span class="text-[#8EDB43]" id="marginDisplay">30%</span>
+                            <span class="text-[#8EDB43]" id="marginDisplay">40%</span>
                         </div>
-                        <input type="range" id="marginSlider" min="0" max="60" value="30" oninput="runQuoteEngine()" class="w-full">
+                        <input type="range" id="marginSlider" min="15" max="60" value="40" oninput="runQuoteEngine()" class="w-full">
                     </div>
                 </div>
 
@@ -642,33 +651,6 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- In-House Prehang Rates -->
-                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 col-span-3">
-                    <h3 class="font-black text-[11px] text-slate-700 uppercase tracking-widest mb-4 flex items-center"><i class="fas fa-hammer text-[#8EDB43] mr-2 text-sm"></i> In-House Exterior Prehang Costs (Net $)</h3>
-                    <div class="grid grid-cols-5 gap-5">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Ext 6'8 Single</label>
-                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-prehang-sgl68" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Ext 8'0 Single</label>
-                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-prehang-sgl80" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Ext 6'8 Double</label>
-                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-prehang-dbl68" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Ext 8'0 Double</label>
-                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-prehang-dbl80" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">6-9/16 Jamb Upcharge</label>
-                            <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-prehang-wide" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="border-t border-slate-200 pt-8">
@@ -798,7 +780,6 @@
             ccRate: 3.0,
             labor: { std: 450, sl: 650, dbl: 800 },
             addons: { maskList: 207, grilleList: 440 },
-            prehang: { sgl68: 125, sgl80: 150, dbl68: 320, dbl80: 340, jambWide: 10 },
             db: defaultDBJSON
         };
 
@@ -874,7 +855,7 @@
         };
 
         function loadSettings() {
-            const saved = localStorage.getItem('simplyDoorsPricingDB_v3');
+            const saved = localStorage.getItem('simplyDoorsPricingDB_v2');
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
@@ -883,7 +864,6 @@
                     appSettings.ccRate = parsed.ccRate || 3.0;
                     appSettings.labor = parsed.labor || appSettings.labor;
                     appSettings.addons = parsed.addons || appSettings.addons;
-                    appSettings.prehang = parsed.prehang || appSettings.prehang;
                     appSettings.db = (parsed.db && parsed.db.wood) ? parsed.db : defaultDBJSON;
                 } catch(e) {
                     appSettings.db = defaultDBJSON;
@@ -904,21 +884,14 @@
             appSettings.labor.dbl = parseFloat(document.getElementById('set-labor-dbl').value);
             appSettings.addons.maskList = parseFloat(document.getElementById('set-addon-mask').value);
             appSettings.addons.grilleList = parseFloat(document.getElementById('set-addon-grille').value);
-            
-            appSettings.prehang.sgl68 = parseFloat(document.getElementById('set-prehang-sgl68').value);
-            appSettings.prehang.sgl80 = parseFloat(document.getElementById('set-prehang-sgl80').value);
-            appSettings.prehang.dbl68 = parseFloat(document.getElementById('set-prehang-dbl68').value);
-            appSettings.prehang.dbl80 = parseFloat(document.getElementById('set-prehang-dbl80').value);
-            appSettings.prehang.jambWide = parseFloat(document.getElementById('set-prehang-wide').value);
 
             try {
-                localStorage.setItem('simplyDoorsPricingDB_v3', JSON.stringify({
+                localStorage.setItem('simplyDoorsPricingDB_v2', JSON.stringify({
                     multiplier: appSettings.multiplier,
                     taxRate: appSettings.taxRate,
                     ccRate: appSettings.ccRate,
                     labor: appSettings.labor,
                     addons: appSettings.addons,
-                    prehang: appSettings.prehang,
                     db: appSettings.db 
                 }));
                 showToast("Settings Saved Successfully!");
@@ -953,12 +926,6 @@
             document.getElementById('set-labor-dbl').value = appSettings.labor.dbl;
             document.getElementById('set-addon-mask').value = appSettings.addons.maskList;
             document.getElementById('set-addon-grille').value = appSettings.addons.grilleList;
-            
-            document.getElementById('set-prehang-sgl68').value = appSettings.prehang.sgl68;
-            document.getElementById('set-prehang-sgl80').value = appSettings.prehang.sgl80;
-            document.getElementById('set-prehang-dbl68').value = appSettings.prehang.dbl68;
-            document.getElementById('set-prehang-dbl80').value = appSettings.prehang.dbl80;
-            document.getElementById('set-prehang-wide').value = appSettings.prehang.jambWide;
             
             document.getElementById('taxRateLabel').innerText = appSettings.taxRate;
             document.getElementById('prop-tax-rate').innerText = appSettings.taxRate;
@@ -1330,6 +1297,7 @@
             setTimeout(() => { document.title = originalTitle; }, 2000);
         }
 
+        // EDIT LIFECYCLE
         function editItem(index) {
             const item = quoteItems[index];
             const cfg = item.rawConfig;
@@ -1428,11 +1396,7 @@
             const isBarn = currentlySelectedModel.barn || currentCollection === 'Barn Doors';
             
             const jamb = document.getElementById('jambDepth').value || 'N/A';
-            
-            let marginVal = parseFloat(document.getElementById('marginSlider').value);
-            if(isNaN(marginVal)) marginVal = 30;
-            const margin = marginVal / 100;
-            
+            const margin = parseFloat(document.getElementById('marginSlider').value) / 100;
             const qty = parseInt(document.getElementById('itemQty').value) || 1;
 
             const addOnsSelect = document.getElementById('addOns');
@@ -1487,57 +1451,37 @@
             }
 
             let listPrice = 0;
-            let slabNet = 0;
-            let inHousePrehangNet = 0;
             const alertBox = document.getElementById('prehangAlert');
             let jambDesc = '';
 
             if (isSlabOnly || isBarn) {
                 listPrice = isUnfinished ? pricingData.u_slab : pricingData.p_slab;
                 if (isDouble) listPrice *= 2;
-                slabNet = listPrice * appSettings.multiplier;
                 alertBox.style.display = 'none';
                 jambDesc = isBarn ? "N/A (Barn Door - Slab Only)" : "N/A (Slab Only - No Frame)";
             } else {
-                if (currentMaterial === 'wood' || !isUnfinished) {
-                    listPrice = isDouble ? (isUnfinished ? pricingData.u_double : pricingData.p_double) 
-                                         : (isUnfinished ? pricingData.u_single : pricingData.p_single);
-                    slabNet = listPrice * appSettings.multiplier;
-                    if(currentMaterial === 'fiberglass' && !isSlabOnly && jamb === '6 9/16') {
-                         slabNet += (10 * appSettings.multiplier);
-                    }
-                    
-                    alertBox.style.display = 'block';
-                    if (currentMaterial === 'wood') {
-                        alertBox.className = "p-4 rounded border text-sm mt-4 bg-slate-100 border-slate-300 text-slate-700";
-                        alertBox.innerHTML = `<strong><i class="fas fa-tree mr-2 text-slate-500"></i> HARDWOOD PREHANG INCLUDED</strong><br>Exterior Wood Frame up to 6-9/16" Included in Prehang Price.`;
-                        jambDesc = `Hoelscher Matching Hardwood Frame (${jamb}")`;
-                    } else {
-                        alertBox.className = "p-4 rounded border text-sm mt-4 bg-slate-100 border-slate-300 text-slate-700";
-                        alertBox.innerHTML = `<strong><i class="fas fa-truck mr-2 text-slate-500"></i> VENDOR PREHANG</strong><br>Calculated using Vendor Composite Frames.`;
-                        jambDesc = `Vendor Composite Frame (${jamb}")`;
-                    }
-                } else {
-                    listPrice = pricingData.u_slab;
-                    if (isDouble) listPrice *= 2;
-                    slabNet = listPrice * appSettings.multiplier;
-
-                    const is80 = nomH === 96;
-                    if (isDouble) {
-                        inHousePrehangNet = is80 ? appSettings.prehang.dbl80 : appSettings.prehang.dbl68;
-                    } else {
-                        inHousePrehangNet = is80 ? appSettings.prehang.sgl80 : appSettings.prehang.sgl68;
-                    }
-
-                    if (jamb === '6 9/16') {
-                        inHousePrehangNet += appSettings.prehang.jambWide;
-                    }
-
-                    alertBox.style.display = 'block';
+                listPrice = isDouble ? (isUnfinished ? pricingData.u_double : pricingData.p_double) 
+                                     : (isUnfinished ? pricingData.u_single : pricingData.p_single);
+                
+                alertBox.style.display = 'block';
+                if (currentMaterial === 'wood') {
+                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-slate-100 border-slate-300 text-slate-700";
+                    alertBox.innerHTML = `<strong><i class="fas fa-tree mr-2 text-slate-500"></i> HARDWOOD PREHANG INCLUDED</strong><br>Exterior Wood Frame up to 6-9/16" Included in Prehang Price.`;
+                    jambDesc = `Hoelscher Matching Hardwood Frame (${jamb}")`;
+                } else if (isUnfinished) {
                     alertBox.className = "p-4 rounded border text-sm mt-4 bg-amber-50 border-amber-200 text-amber-800";
-                    alertBox.innerHTML = `<strong><i class="fas fa-tools mr-2 text-amber-600"></i> IN-HOUSE BUILD SELECTED</strong><br>Calculated using SimplyDoors true shop cost.`;
+                    alertBox.innerHTML = `<strong><i class="fas fa-tools mr-2 text-slate-500"></i> IN-HOUSE BUILD SELECTED</strong><br>Calculated using SimplyDoors Primed White Frame rates.`;
                     jambDesc = `In-House Primed White (${jamb}")`;
+                } else {
+                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-blue-50 border-blue-200 text-blue-800";
+                    alertBox.innerHTML = `<strong><i class="fas fa-truck mr-2 text-slate-500"></i> VENDOR PREHANG</strong><br>Calculated using Vendor Composite Frames.`;
+                    jambDesc = `Vendor Composite Frame (${jamb}")`;
                 }
+            }
+            
+            let slabNet = listPrice * appSettings.multiplier;
+            if(currentMaterial === 'fiberglass' && isUnfinished && !isSlabOnly && jamb === '6 9/16') {
+                 slabNet += (10 * appSettings.multiplier);
             }
             
             let sideliteNet = 0;
@@ -1551,30 +1495,17 @@
                     const slGlass = document.getElementById('slGlass').value || 'Standard';
                     slQty = layout.includes('2 SL') ? 2 : 1;
                     
-                    let slListPrice = 0;
-                    if (isSlabOnly) {
-                         slListPrice = isUnfinished ? slData.u_slab : slData.p_slab;
-                    } else if (currentMaterial === 'fiberglass' && isUnfinished) {
-                         slListPrice = slData.u_slab;
-                    } else {
-                         slListPrice = isDouble ? (isUnfinished ? slData.u_double : slData.p_double) 
-                                                : (isUnfinished ? slData.u_single : slData.p_single);
-                    }
+                    let slListPrice = isSlabOnly ? (isUnfinished ? slData.u_slab : slData.p_slab)
+                                                 : (isDouble ? (isUnfinished ? slData.u_double : slData.p_double) 
+                                                             : (isUnfinished ? slData.u_single : slData.p_single));
                     
                     sideliteNet = (slListPrice * slQty) * appSettings.multiplier;
                     slDesc = `${slQty}x ${currentlySelectedSidelite.name} (${slSizeCode}) - ${slGlass}`;
                 }
             }
 
-            const unitMaterialsDealerCost = slabNet + sideliteNet + addOnsNet + inHousePrehangNet;
-            
-            let unitMaterialsRetail = 0;
-            if(margin >= 1) {
-                unitMaterialsRetail = unitMaterialsDealerCost; 
-            } else {
-                unitMaterialsRetail = unitMaterialsDealerCost / (1 - margin);
-            }
-            
+            const unitMaterialsDealerCost = slabNet + sideliteNet + addOnsNet;
+            const unitMaterialsRetail = unitMaterialsDealerCost / (1 - margin);
             const unitLaborRetail = laborNet; 
             const unitRetailPrice = unitMaterialsRetail + unitLaborRetail;
 
@@ -1589,7 +1520,7 @@
                 slRow.style.display = 'none';
             }
             
-            document.getElementById('costPrehang').innerText = inHousePrehangNet > 0 ? `+$${inHousePrehangNet.toFixed(2)}` : `Included in Unit Cost`;
+            document.getElementById('costPrehang').innerText = `Included in Unit Cost`;
             
             const summaryAddonsRow = document.getElementById('summary-addons-row');
             if (addOnsNet > 0) {
