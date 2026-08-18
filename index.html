@@ -137,12 +137,12 @@
                     <i class="fas fa-user-circle text-slate-400 mr-2 text-sm"></i>
                     <span class="text-xs text-slate-400 mr-2 shrink-0 uppercase tracking-widest font-bold">Rep:</span>
                     <select id="salesRep" class="bg-transparent text-sm font-semibold outline-none cursor-pointer text-white truncate" onchange="updateCartUI()">
-                        <option value="Adem Atis">Adem Atis</option>
-                        <option value="John Suttin">John Suttin</option>
-                        <option value="Steven Chandler">Steven Chandler</option>
-                        <option value="Cory Broyles">Cory Broyles</option>
-                        <option value="Dennis Haberer">Dennis Haberer</option>
-                        <option value="House Account">House Account</option>
+                        <option value="Adem Atis" class="bg-[#1A1A1A] text-white">Adem Atis</option>
+                        <option value="John Suttin" class="bg-[#1A1A1A] text-white">John Suttin</option>
+                        <option value="Steven Chandler" class="bg-[#1A1A1A] text-white">Steven Chandler</option>
+                        <option value="Cory Broyles" class="bg-[#1A1A1A] text-white">Cory Broyles</option>
+                        <option value="Dennis Haberer" class="bg-[#1A1A1A] text-white">Dennis Haberer</option>
+                        <option value="House Account" class="bg-[#1A1A1A] text-white">House Account</option>
                     </select>
                 </div>
                 <button onclick="printProposal()" class="bg-[#333333] hover:bg-[#444444] text-white px-4 py-2 rounded text-xs uppercase tracking-wider font-bold transition-colors flex items-center shrink-0 border border-[#555555]">
@@ -1336,6 +1336,7 @@
             btn.classList.remove('bg-[#8EDB43]', 'hover:bg-[#7bc236]', 'text-[#1A1A1A]');
             btn.classList.add('bg-blue-600', 'hover:bg-blue-500', 'text-white');
             
+            window.scrollTo(0, 0); // Gracefully pop to top
             switchTab('quote-tab');
             runQuoteEngine();
         }
@@ -1938,9 +1939,23 @@
                         </div>`;
             }
 
+            let actionBtns = '';
+            if (!isPreview) {
+                actionBtns = `
+                <div class="flex justify-end gap-3 mt-3 no-print">
+                    <button onclick="editItem(${index})" class="text-slate-400 hover:text-blue-500 transition-colors text-[10px] uppercase font-bold tracking-widest" title="Edit Item">
+                        <i class="fas fa-edit mr-1"></i> Edit
+                    </button>
+                    <button onclick="removeItem(${index})" class="text-slate-400 hover:text-red-500 transition-colors text-[10px] uppercase font-bold tracking-widest" title="Remove Item">
+                        <i class="fas fa-trash-alt mr-1"></i> Remove
+                    </button>
+                </div>`;
+            }
+
             html += `
                     </div>
                 </div>
+                ${actionBtns}
             `;
             
             card.innerHTML = html;
