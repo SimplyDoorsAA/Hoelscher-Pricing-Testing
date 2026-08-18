@@ -604,6 +604,33 @@
                 </button>
             </div>
 
+            <!-- NEW IN-HOUSE SHOP COSTS SECTION -->
+            <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 mb-8">
+                <h3 class="font-black text-[11px] text-slate-700 uppercase tracking-widest mb-4 flex items-center"><i class="fas fa-tools text-[#8EDB43] mr-2 text-sm"></i> In-House Shop Costs (Net Parts + Labor)</h3>
+                <div class="grid grid-cols-5 gap-5">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">6'8" Single</label>
+                        <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-ph-sgl68" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">8'0" Single</label>
+                        <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-ph-sgl80" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">6'8" Double</label>
+                        <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-ph-dbl68" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">8'0" Double</label>
+                        <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-ph-dbl80" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">6-9/16" Jamb Adder</label>
+                        <div class="flex items-center"><span class="bg-slate-200 px-3 py-2.5 border border-r-0 border-slate-300 rounded-l text-sm text-slate-600 font-bold">$</span><input type="number" id="set-ph-jamb" class="w-full p-2.5 border border-slate-300 rounded-r focus:border-[#8EDB43] outline-none font-mono text-slate-800 text-sm font-bold bg-white"></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="grid grid-cols-3 gap-8 mb-8">
                 <!-- Global Variables -->
                 <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
@@ -780,6 +807,7 @@
             ccRate: 3.0,
             labor: { std: 450, sl: 650, dbl: 800 },
             addons: { maskList: 207, grilleList: 440 },
+            prehang: { sgl68: 125, sgl80: 150, dbl68: 320, dbl80: 340, jambWide: 10 },
             db: defaultDBJSON
         };
 
@@ -864,6 +892,7 @@
                     appSettings.ccRate = parsed.ccRate || 3.0;
                     appSettings.labor = parsed.labor || appSettings.labor;
                     appSettings.addons = parsed.addons || appSettings.addons;
+                    appSettings.prehang = parsed.prehang || appSettings.prehang;
                     appSettings.db = (parsed.db && parsed.db.wood) ? parsed.db : defaultDBJSON;
                 } catch(e) {
                     appSettings.db = defaultDBJSON;
@@ -885,6 +914,12 @@
             appSettings.addons.maskList = parseFloat(document.getElementById('set-addon-mask').value);
             appSettings.addons.grilleList = parseFloat(document.getElementById('set-addon-grille').value);
 
+            appSettings.prehang.sgl68 = parseFloat(document.getElementById('set-ph-sgl68').value);
+            appSettings.prehang.sgl80 = parseFloat(document.getElementById('set-ph-sgl80').value);
+            appSettings.prehang.dbl68 = parseFloat(document.getElementById('set-ph-dbl68').value);
+            appSettings.prehang.dbl80 = parseFloat(document.getElementById('set-ph-dbl80').value);
+            appSettings.prehang.jambWide = parseFloat(document.getElementById('set-ph-jamb').value);
+
             try {
                 localStorage.setItem('simplyDoorsPricingDB_v2', JSON.stringify({
                     multiplier: appSettings.multiplier,
@@ -892,6 +927,7 @@
                     ccRate: appSettings.ccRate,
                     labor: appSettings.labor,
                     addons: appSettings.addons,
+                    prehang: appSettings.prehang,
                     db: appSettings.db 
                 }));
                 showToast("Settings Saved Successfully!");
@@ -926,6 +962,12 @@
             document.getElementById('set-labor-dbl').value = appSettings.labor.dbl;
             document.getElementById('set-addon-mask').value = appSettings.addons.maskList;
             document.getElementById('set-addon-grille').value = appSettings.addons.grilleList;
+
+            document.getElementById('set-ph-sgl68').value = appSettings.prehang.sgl68;
+            document.getElementById('set-ph-sgl80').value = appSettings.prehang.sgl80;
+            document.getElementById('set-ph-dbl68').value = appSettings.prehang.dbl68;
+            document.getElementById('set-ph-dbl80').value = appSettings.prehang.dbl80;
+            document.getElementById('set-ph-jamb').value = appSettings.prehang.jambWide;
             
             document.getElementById('taxRateLabel').innerText = appSettings.taxRate;
             document.getElementById('prop-tax-rate').innerText = appSettings.taxRate;
@@ -1452,8 +1494,11 @@
             }
 
             let listPrice = 0;
+            let prehangNet = 0;
             const alertBox = document.getElementById('prehangAlert');
             let jambDesc = '';
+
+            let isInHouse = (currentMaterial === 'fiberglass' && isUnfinished && !isSlabOnly && !isBarn);
 
             if (isSlabOnly || isBarn) {
                 listPrice = isUnfinished ? pricingData.u_slab : pricingData.p_slab;
@@ -1461,29 +1506,42 @@
                 alertBox.style.display = 'none';
                 jambDesc = isBarn ? "N/A (Barn Door - Slab Only)" : "N/A (Slab Only - No Frame)";
             } else {
-                listPrice = isDouble ? (isUnfinished ? pricingData.u_double : pricingData.p_double) 
-                                     : (isUnfinished ? pricingData.u_single : pricingData.p_single);
-                
-                alertBox.style.display = 'block';
-                if (currentMaterial === 'wood') {
-                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-slate-100 border-slate-300 text-slate-700";
-                    alertBox.innerHTML = `<strong><i class="fas fa-tree mr-2 text-slate-500"></i> HARDWOOD PREHANG INCLUDED</strong><br>Exterior Wood Frame up to 6-9/16" Included in Prehang Price.`;
-                    jambDesc = `Hoelscher Matching Hardwood Frame (${jamb}")`;
-                } else if (isUnfinished) {
+                if (isInHouse) {
+                    listPrice = pricingData.u_slab; 
+                    if (isDouble) listPrice *= 2;
+                    
+                    alertBox.style.display = 'block';
                     alertBox.className = "p-4 rounded border text-sm mt-4 bg-amber-50 border-amber-200 text-amber-800";
-                    alertBox.innerHTML = `<strong><i class="fas fa-tools mr-2 text-slate-500"></i> IN-HOUSE BUILD SELECTED</strong><br>Calculated using SimplyDoors Primed White Frame rates.`;
+                    alertBox.innerHTML = `<strong><i class="fas fa-tools mr-2 text-slate-500"></i> IN-HOUSE BUILD SELECTED</strong><br>Calculated using SimplyDoors Primed White Frame shop costs.`;
                     jambDesc = `In-House Primed White (${jamb}")`;
+                    
+                    let is80 = nomH === 96;
+                    if (isDouble) {
+                        prehangNet = is80 ? appSettings.prehang.dbl80 : appSettings.prehang.dbl68;
+                    } else {
+                        prehangNet = is80 ? appSettings.prehang.sgl80 : appSettings.prehang.sgl68;
+                    }
+                    if (jamb === '6 9/16') {
+                        prehangNet += appSettings.prehang.jambWide;
+                    }
                 } else {
-                    alertBox.className = "p-4 rounded border text-sm mt-4 bg-blue-50 border-blue-200 text-blue-800";
-                    alertBox.innerHTML = `<strong><i class="fas fa-truck mr-2 text-slate-500"></i> VENDOR PREHANG</strong><br>Calculated using Vendor Composite Frames.`;
-                    jambDesc = `Vendor Composite Frame (${jamb}")`;
+                    listPrice = isDouble ? (isUnfinished ? pricingData.u_double : pricingData.p_double) 
+                                         : (isUnfinished ? pricingData.u_single : pricingData.p_single);
+                    
+                    alertBox.style.display = 'block';
+                    if (currentMaterial === 'wood') {
+                        alertBox.className = "p-4 rounded border text-sm mt-4 bg-slate-100 border-slate-300 text-slate-700";
+                        alertBox.innerHTML = `<strong><i class="fas fa-tree mr-2 text-slate-500"></i> HARDWOOD PREHANG INCLUDED</strong><br>Exterior Wood Frame up to 6-9/16" Included in Prehang Price.`;
+                        jambDesc = `Hoelscher Matching Hardwood Frame (${jamb}")`;
+                    } else {
+                        alertBox.className = "p-4 rounded border text-sm mt-4 bg-blue-50 border-blue-200 text-blue-800";
+                        alertBox.innerHTML = `<strong><i class="fas fa-truck mr-2 text-slate-500"></i> VENDOR PREHANG</strong><br>Calculated using Vendor Composite Frames.`;
+                        jambDesc = `Vendor Composite Frame (${jamb}")`;
+                    }
                 }
             }
             
             let slabNet = listPrice * appSettings.multiplier;
-            if(currentMaterial === 'fiberglass' && isUnfinished && !isSlabOnly && jamb === '6 9/16') {
-                 slabNet += (10 * appSettings.multiplier);
-            }
             
             let sideliteNet = 0;
             let slDesc = "";
@@ -1496,16 +1554,20 @@
                     const slGlass = document.getElementById('slGlass').value || 'Standard';
                     slQty = layout.includes('2 SL') ? 2 : 1;
                     
-                    let slListPrice = isSlabOnly ? (isUnfinished ? slData.u_slab : slData.p_slab)
-                                                 : (isDouble ? (isUnfinished ? slData.u_double : slData.p_double) 
-                                                             : (isUnfinished ? slData.u_single : slData.p_single));
+                    let slListPrice = 0;
+                    if (isSlabOnly || isInHouse) {
+                         slListPrice = isUnfinished ? slData.u_slab : slData.p_slab;
+                    } else {
+                         slListPrice = isDouble ? (isUnfinished ? slData.u_double : slData.p_double) 
+                                                : (isUnfinished ? slData.u_single : slData.p_single);
+                    }
                     
                     sideliteNet = (slListPrice * slQty) * appSettings.multiplier;
                     slDesc = `${slQty}x ${currentlySelectedSidelite.name} (${slSizeCode}) - ${slGlass}`;
                 }
             }
 
-            const unitMaterialsDealerCost = slabNet + sideliteNet + addOnsNet;
+            const unitMaterialsDealerCost = slabNet + sideliteNet + addOnsNet + prehangNet;
             const unitMaterialsRetail = unitMaterialsDealerCost / (1 - margin);
             const unitLaborRetail = laborNet; 
             const unitRetailPrice = unitMaterialsRetail + unitLaborRetail;
@@ -1521,7 +1583,12 @@
                 slRow.style.display = 'none';
             }
             
-            document.getElementById('costPrehang').innerText = `Included in Unit Cost`;
+            const summaryPrehangRow = document.getElementById('summary-prehang-row');
+            if (prehangNet > 0) {
+                document.getElementById('costPrehang').innerText = `$${prehangNet.toFixed(2)}`;
+            } else {
+                document.getElementById('costPrehang').innerText = `Included in Unit Cost`;
+            }
             
             const summaryAddonsRow = document.getElementById('summary-addons-row');
             if (addOnsNet > 0) {
